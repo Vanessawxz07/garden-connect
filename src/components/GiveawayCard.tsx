@@ -24,7 +24,6 @@ export const GiveawayCard = ({ giveaway }: GiveawayCardProps) => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
-      // Check if already participating
       const { data: existing } = await supabase
         .from("giveaway_participants")
         .select("id")
@@ -36,7 +35,6 @@ export const GiveawayCard = ({ giveaway }: GiveawayCardProps) => {
         throw new Error("Already participating");
       }
 
-      // Check if following VIP
       const { data: following } = await supabase
         .from("user_follows")
         .select("id")
@@ -44,7 +42,6 @@ export const GiveawayCard = ({ giveaway }: GiveawayCardProps) => {
         .eq("following_id", giveaway.vip_user_id)
         .maybeSingle();
 
-      // If not following, follow first
       if (!following) {
         const { error: followError } = await supabase
           .from("user_follows")
@@ -56,7 +53,6 @@ export const GiveawayCard = ({ giveaway }: GiveawayCardProps) => {
         if (followError) throw followError;
       }
 
-      // Participate in giveaway
       const { error } = await supabase
         .from("giveaway_participants")
         .insert({
@@ -91,191 +87,170 @@ export const GiveawayCard = ({ giveaway }: GiveawayCardProps) => {
     const url = `${window.location.origin}/giveaways/${giveaway.id}`;
     navigator.clipboard.writeText(url);
     toast({
-      title: "Link copied!",
-      description: "Share this giveaway with your friends",
+      title: "链接已复制！",
+      description: "分享这个抽奖给你的朋友",
     });
   };
 
   const isCompleted = giveaway.status === "completed";
-  const isUpcoming = new Date(giveaway.draw_time) > new Date();
   const drawTime = new Date(giveaway.draw_time);
   const now = new Date();
   const secondsRemaining = differenceInSeconds(drawTime, now);
-  const isAboutToStart = secondsRemaining > 0 && secondsRemaining < 3600; // Less than 1 hour
 
-  // Get first item for display
   const firstItem = giveaway.giveaway_items?.[0]?.items;
-
-  // Mock participant count (will be replaced with real data)
   const participantCount = 36;
-  const maxParticipants = 50;
 
   return (
-    <Card className="group relative overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-card via-card to-primary/5 transition-all hover:border-primary/40 hover:shadow-xl">
-      {/* Decorative corner accents */}
-      <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-primary/10 blur-2xl" />
-      <div className="absolute -bottom-8 -left-8 h-24 w-24 rounded-full bg-accent/10 blur-2xl" />
-      
-      <div className="relative flex flex-col gap-4 p-5">
-        {/* Header: Status Badge & VIP Info */}
-        <div className="flex items-start justify-between gap-3">
-          {/* Status Badge */}
-          <Badge
-            variant={isCompleted ? "secondary" : "default"}
-            className="flex items-center gap-1.5 px-3 py-1 text-xs font-semibold"
-          >
-            {isCompleted ? (
-              <>
-                <CheckCircle2 className="h-3 w-3" />
-                已完成
-              </>
-            ) : isAboutToStart ? (
-              <>
-                <Sparkles className="h-3 w-3" />
-                即将开始
-              </>
-            ) : (
-              <>
-                <Clock className="h-3 w-3 animate-pulse" />
-                进行中
-              </>
+    <Card className="relative overflow-hidden border-2 border-border bg-card transition-all hover:shadow-lg">
+      <div className="flex items-start gap-4 p-5">
+        {/* Left Section: Creator Info & Details */}
+        <div className="flex-1 space-y-4">
+          {/* Top: Status & Countdown */}
+          <div className="flex items-center gap-3">
+            <Badge
+              variant={isCompleted ? "secondary" : "default"}
+              className="flex items-center gap-1.5 rounded-full px-3 py-1"
+            >
+              <div className="h-2 w-2 rounded-full bg-current" />
+              <span className="text-xs font-semibold">
+                {isCompleted ? "已完成" : "进行中"}
+              </span>
+            </Badge>
+            
+            {!isCompleted && (
+              <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                <Clock className="h-4 w-4" />
+                <span>
+                  {formatDistanceToNow(drawTime, { addSuffix: true })} 开奖
+                </span>
+              </div>
             )}
-          </Badge>
-
-          {/* VIP Creator Info */}
-          <Link
-            to={`/profile/${giveaway.vip_user_id}`}
-            className="flex items-center gap-2 transition-opacity hover:opacity-80"
-          >
-            <span className="text-xs text-muted-foreground">by</span>
-            <Avatar className="h-6 w-6 border border-primary/20">
-              <AvatarImage src="" />
-              <AvatarFallback className="bg-primary text-primary-foreground text-[10px]">
-                VIP
-              </AvatarFallback>
-            </Avatar>
-            <span className="text-sm font-medium text-foreground">VIP Creator</span>
-          </Link>
-        </div>
-
-        {/* Main Content Area */}
-        <div className="flex gap-4">
-          {/* Prize Item Image */}
-          <div className="relative flex-shrink-0">
-            <div className="relative h-24 w-24 overflow-hidden rounded-xl border-2 border-primary/30 bg-gradient-to-br from-primary/20 to-accent/20 shadow-lg transition-transform group-hover:scale-105">
-              {firstItem?.image_url ? (
-                <img
-                  src={firstItem.image_url}
-                  alt={firstItem.name}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center">
-                  <Gift className="h-10 w-10 text-primary" />
-                </div>
-              )}
-              {/* Rarity badge overlay */}
-              {firstItem?.name && (
-                <div className="absolute left-1 top-1 rounded bg-gradient-to-r from-purple-500 to-pink-500 px-1.5 py-0.5 text-[10px] font-bold text-white shadow-md">
-                  Mythical
-                </div>
-              )}
-            </div>
           </div>
 
-          {/* Giveaway Details */}
-          <div className="flex-1 space-y-3">
-            {/* Prize Name & Value */}
+          {/* Creator Info */}
+          <Link
+            to={`/profile/${giveaway.vip_user_id}`}
+            className="flex items-center gap-3 transition-opacity hover:opacity-80"
+          >
+            <Avatar className="h-12 w-12 border-2 border-primary/20">
+              <AvatarImage src="" />
+              <AvatarFallback className="bg-primary text-primary-foreground font-bold">
+                L
+              </AvatarFallback>
+            </Avatar>
             <div>
-              <h3 className="text-lg font-bold text-foreground line-clamp-1">
-                {firstItem?.name || "Mystery Prize"}
-              </h3>
+              <div className="font-semibold text-foreground">Luke</div>
+              <div className="text-xs text-muted-foreground">
+                Published {formatDistanceToNow(new Date(giveaway.created_at || ""), { addSuffix: true })}
+              </div>
+            </div>
+          </Link>
+
+          {/* Giveaway Title & Prize Info */}
+          <div className="space-y-2">
+            <h3 className="text-xl font-bold text-foreground">
+              {giveaway.title}
+            </h3>
+            
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-foreground">Prize:</span>
+                <span className="text-sm font-bold text-destructive">
+                  {firstItem?.name || "Mystery Prize"}
+                </span>
+              </div>
+              
               {firstItem?.value && (
-                <div className="mt-1 flex items-center gap-1.5">
-                  <Sparkles className="h-3.5 w-3.5 text-yellow-500" />
-                  <span className="text-sm font-semibold text-primary">
-                    ${firstItem.value}
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-foreground">Prize Value:</span>
+                  <span className="text-sm font-bold text-destructive">
+                    {firstItem.value}
                   </span>
                 </div>
               )}
             </div>
 
-            {/* Giveaway Title */}
-            <p className="text-sm text-muted-foreground line-clamp-2">
-              {giveaway.title}
-            </p>
-
-            {/* Stats Row */}
-            <div className="flex flex-wrap items-center gap-4 text-xs">
-              {/* Participant Count */}
-              <div className="flex items-center gap-1.5">
-                <Users className="h-4 w-4 text-muted-foreground" />
-                <span className="font-medium text-foreground">
-                  {participantCount}/{maxParticipants}
-                </span>
-                <span className="text-muted-foreground">参与中</span>
-              </div>
-
-              {/* Timer/Status */}
-              <div className="flex items-center gap-1.5">
-                <Clock className="h-4 w-4 text-muted-foreground" />
-                <span className="text-muted-foreground">
-                  {isCompleted
-                    ? "已结束"
-                    : `${formatDistanceToNow(drawTime, { addSuffix: true })} 开奖`}
-                </span>
-              </div>
+            <div className="text-sm text-muted-foreground">
+              <span className="font-medium">开奖时间：</span>
+              {drawTime.toLocaleString("zh-CN", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+              })}
             </div>
 
-            {/* Requirements hint */}
-            {!isCompleted && (
-              <p className="text-xs text-muted-foreground">
-                要求：关注 + 50 用户
+            {giveaway.description && (
+              <p className="text-sm text-muted-foreground line-clamp-2">
+                {giveaway.description}
               </p>
             )}
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center gap-2 pt-2">
+        {/* Right Section: Prize Image & Actions */}
+        <div className="flex flex-col items-end gap-4">
+          {/* Prize Image */}
+          {firstItem?.image_url && (
+            <div className="h-20 w-20 overflow-hidden rounded-lg border-2 border-border shadow-sm">
+              <img
+                src={firstItem.image_url}
+                alt={firstItem.name}
+                className="h-full w-full object-cover"
+              />
+            </div>
+          )}
+
+          {/* Join Button & Participant Count */}
+          <div className="flex flex-col items-end gap-2">
+            <Button
+              size="lg"
+              className="min-w-[140px] bg-green-600 font-bold text-white hover:bg-green-700"
+              disabled={isCompleted || isParticipating || participateMutation.isPending}
+              onClick={handleParticipate}
+            >
+              {isCompleted
+                ? "已结束"
+                : isParticipating
+                ? "已参与"
+                : participateMutation.isPending
+                ? "加入中..."
+                : "Join Now"}
+            </Button>
+            
+            {!isCompleted && (
+              <div className="text-xs text-destructive font-medium">
+                {participantCount} users joining!
+              </div>
+            )}
+          </div>
+
+          {/* Share Button */}
           <Button
             size="sm"
-            className="flex-1 font-semibold"
-            disabled={isCompleted || isParticipating || participateMutation.isPending}
-            onClick={handleParticipate}
-          >
-            {isCompleted
-              ? "已结束"
-              : isParticipating
-              ? "已参与 ✓"
-              : participateMutation.isPending
-              ? "加入中..."
-              : "立即参与 🔥"}
-          </Button>
-          
-          <Button
-            size="sm"
-            variant="outline"
-            className="flex-shrink-0"
+            variant="ghost"
+            className="gap-2 text-muted-foreground"
             onClick={handleShare}
           >
             <Share2 className="h-4 w-4" />
-            <span className="ml-1.5 hidden sm:inline">分享</span>
+            分享
           </Button>
         </div>
-
-        {/* Winner announcement for completed */}
-        {isCompleted && (
-          <div className="rounded-lg bg-primary/10 px-3 py-2">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-primary">
-                获奖者已公布！
-              </span>
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Winner announcement for completed */}
+      {isCompleted && (
+        <div className="border-t border-border bg-muted/50 px-5 py-3">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="h-4 w-4 text-primary" />
+            <span className="text-sm font-medium text-primary">
+              获奖者已公布！
+            </span>
+          </div>
+        </div>
+      )}
     </Card>
   );
 };
