@@ -245,13 +245,32 @@
 - 点击后跳转到 `/settings/privacy` 页面
 - 原弹窗中设置在线时间，将所有样式和交互、数据逻辑迁到页面中，设置中包括隐私、在线时间两类，点击tab切换
 
-#### 6.1.2 设置按钮样式
+#### 6.1.2 样式
 用文案+开关按钮示意该项内容模块设置打开/关闭
 
 ### 6.2 隐私设置页面布局
-参考示意图
+双列布局（左侧导航，右侧内容）; 样式参考示意图
 ```
 ```
+
+#### 6.2.1 设置页面合规文案
+在隐私设置页面顶部增加说明卡片：
+```
+ℹ️ 隐私说明
+我们尊重你的隐私，并为你提供完全的控制权。
+你可以自主选择每项信息的可见范围，我们不会未经你的同意分享你的个人信息。
+敏感信息（如交易记录）默认为私密状态，只有你自己可见。
+```
+#### 6.2.2 每个设置项的说明文案
+在每个设置项下方增加简短说明（灰色小字）：
+- **注册时间**："让其他用户了解你加入社区的时间"
+- **关注/粉丝数**："展示你的社交连接，隐藏后显示为***"
+- **用户标签**："展示你获得的成就和身份标识"
+- **个人简介**："让其他用户更了解你"
+- **动态**："你发起的抽奖活动"
+- **交易记录**："你的道具交易历史，涉及敏感信息，建议仅自己可见"
+- **收藏**："你收藏的内容"
+- **宠物图鉴**："你拥有的宠物收藏"
 
 ### 6.3 隐私设置项详细说明
 
@@ -280,100 +299,7 @@
 - **默认值**：仅自己可见
 
 
-### 6.4 数据库设计
-
-#### 6.4.1 user_privacy_settings 表（新建）
-```sql
-CREATE TABLE user_privacy_settings (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id uuid UNIQUE NOT NULL,
-  
-  -- 全局可见性
-  profile_visibility text DEFAULT 'public', -- 'public', 'followers', 'private'
-  
-  -- 个人信息可见性
-  registration_time_visibility text DEFAULT 'public',
-  follower_count_visibility text DEFAULT 'public',
-  user_tags_visibility text DEFAULT 'public',
-  bio_visibility text DEFAULT 'public',
-  
-  -- 内容模块可见性
-  activity_visibility text DEFAULT 'public',
-  trade_history_visibility text DEFAULT 'private',
-  favorites_visibility text DEFAULT 'private',
-  pet_album_visibility text DEFAULT 'followers',
-  
-  -- 在线状态
-  show_online_status boolean DEFAULT true,
-  preferred_online_time text DEFAULT NULL, -- V2: '19:00-23:00'
-  
-  created_at timestamptz DEFAULT now(),
-  updated_at timestamptz DEFAULT now()
-);
-
--- 触发器：自动更新 updated_at
-CREATE TRIGGER update_user_privacy_settings_updated_at
-  BEFORE UPDATE ON user_privacy_settings
-  FOR EACH ROW
-  EXECUTE FUNCTION update_updated_at_column();
-```
-
-#### 6.4.2 user_tags 表（新建）
-```sql
-CREATE TABLE user_tags (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id uuid NOT NULL,
-  tag_name text NOT NULL,
-  tag_color text DEFAULT 'blue', -- 标签颜色
-  tag_icon text DEFAULT NULL, -- 图标名称（可选）
-  created_at timestamptz DEFAULT now(),
-  created_by uuid NOT NULL -- 创建者（运营人员ID）
-);
-
--- 索引
-CREATE INDEX idx_user_tags_user_id ON user_tags(user_id);
-```
-
-#### 6.4.3 profiles 表（扩展）
-需要在现有 `profiles` 表中增加字段（如果不存在）：
-```sql
-ALTER TABLE profiles ADD COLUMN IF NOT EXISTS bio text;
-ALTER TABLE profiles ADD COLUMN IF NOT EXISTS avatar_url text;
-ALTER TABLE profiles ADD COLUMN IF NOT EXISTS last_active_at timestamptz DEFAULT now();
-```
-
-### 6.5 隐私设置初始化
-
-#### 6.5.1 新用户注册时
-- 自动创建 `user_privacy_settings` 记录，使用默认值
-- 通过数据库触发器实现：
-```sql
-CREATE OR REPLACE FUNCTION init_user_privacy_settings()
-RETURNS TRIGGER AS $$
-BEGIN
-  INSERT INTO user_privacy_settings (user_id)
-  VALUES (NEW.id);
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER on_user_created_init_privacy
-  AFTER INSERT ON auth.users
-  FOR EACH ROW
-  EXECUTE FUNCTION init_user_privacy_settings();
-```
-
-#### 6.5.2 老用户迁移
-- 对于现有用户，在首次访问设置页面时自动创建默认隐私设置
-- 或通过迁移脚本批量创建
-
-### 6.6 隐私设置保存
-
-#### 6.6.1 保存按钮
-- 位置：页面底部居中
-- 样式：主要按钮样式
-- 文案：「保存设置」
-- 禁用条件：设置未变更时禁用
+### 6.4 隐私设置保存
 
 #### 6.6.2 保存流程
 1. 点击「保存设置」按钮
@@ -385,6 +311,16 @@ CREATE TRIGGER on_user_created_init_privacy
 5. 失败时：
    - 显示错误Toast："保存失败，请重试"
    - 按钮恢复到「保存设置」状态
+
+
+### 6.5 隐私设置初始化
+
+#### 6.5.1 新用户注册时
+自动创建 `user_privacy_settings` 记录，使用默认值
+
+#### 6.5.2 老用户迁移
+- 一次性批量创建
+
 
 ---
 
@@ -406,8 +342,8 @@ CREATE TRIGGER on_user_created_init_privacy
 - 遮罩：半透明黑色背景
 - 位置：屏幕居中
 - 关闭方式：
-  - 点击按钮
-  - 不支持点击遮罩或ESC关闭（确保用户知情）
+  - 必须点击主次按钮
+  - 不支持点击弹窗关闭按钮、遮罩或ESC关闭（确保用户知情）
 
 #### 7.2.2 弹窗内容
 
@@ -433,9 +369,9 @@ CREATE TRIGGER on_user_created_init_privacy
 │   ┌─────────────────┐  ┌──────────────────┐  │
 │   │   前往设置       │  │   稍后再说        │  │
 │   └─────────────────┘  └──────────────────┘  │
-│                                                │
-│              了解更多 >                         │
+│  查看隐私政策                                              │
 └───────────────────────────────────────────────┘
+关联：隐私政策法律文件需更新
 ```
 
 #### 7.2.3 按钮说明
@@ -455,50 +391,17 @@ CREATE TRIGGER on_user_created_init_privacy
   - 如果查看次数 < 2，下次登录时再次显示
   - 如果查看次数 >= 2，不再显示
 
-**了解更多**
-- 样式：文本链接
-- 行为：
-  - 打开帮助文档页面（新标签页）
-  - 弹窗保持打开状态
 
 ### 7.3 数据存储方案
 
-#### 7.3.1 方案一：LocalStorage（推荐用于本次实现）
-```typescript
-// 数据结构
-{
-  "profile_update_notification_v1": {
-    "viewCount": 1, // 查看次数
-    "lastViewedAt": "2024-11-30T12:00:00Z",
-    "dismissed": false // 用户是否点击了"前往设置"
-  }
-}
-```
-
+#### 7.3.1 方案：LocalStorage（推荐用于本次实现）
 **优点**：
 - 实现简单，无需数据库迁移
 - 性能好，不增加服务器负担
-
-**缺点**：
+**缺点**：（可接受）
 - 清除浏览器数据会重置
 - 无法跨设备同步
 
-#### 7.3.2 方案二：数据库字段（V2迭代考虑）
-在 `profiles` 表中增加字段：
-```sql
-ALTER TABLE profiles ADD COLUMN IF NOT EXISTS 
-  profile_update_notification_view_count integer DEFAULT 0;
-ALTER TABLE profiles ADD COLUMN IF NOT EXISTS 
-  profile_update_notification_dismissed boolean DEFAULT false;
-```
-
-**优点**：
-- 跨设备同步
-- 数据持久化
-
-**缺点**：
-- 需要数据库迁移
-- 增加查询开销
 
 ### 7.4 隐私合规说明
 
@@ -508,27 +411,6 @@ ALTER TABLE profiles ADD COLUMN IF NOT EXISTS
 - **用户控制**：提供细粒度的隐私设置，用户可自主选择
 - **透明度**：在设置页面提供清晰的说明文案
 - **数据访问权**：用户可随时查看和修改自己的隐私设置
-
-#### 7.4.2 设置页面合规文案
-在隐私设置页面顶部增加说明卡片：
-
-```
-ℹ️ 隐私说明
-我们尊重你的隐私，并为你提供完全的控制权。
-你可以自主选择每项信息的可见范围，我们不会未经你的同意分享你的个人信息。
-敏感信息（如交易记录）默认为私密状态，只有你自己可见。
-```
-
-#### 7.4.3 每个设置项的说明文案
-在每个设置项下方增加简短说明（灰色小字）：
-- **注册时间**："让其他用户了解你加入社区的时间"
-- **关注/粉丝数**："展示你的社交连接，隐藏后显示为***"
-- **用户标签**："展示你获得的成就和身份标识"
-- **个人简介**："让其他用户更了解你"
-- **动态**："你发起的抽奖活动"
-- **交易记录**："你的道具交易历史，涉及敏感信息，建议仅自己可见"
-- **收藏**："你收藏的内容"
-- **宠物图鉴**："你拥有的宠物收藏"
 
 ---
 
@@ -565,255 +447,14 @@ ALTER TABLE profiles ADD COLUMN IF NOT EXISTS
 profile_visibility = ?
     ↓ public
   展示访客态（所有公开内容）
-    ↓ followers
-  当前用户是否关注目标用户？
-    ↓ 是
-  展示访客态（关注者可见内容）
-    ↓ 否
-  显示403页面 + "关注Ta以查看"按钮
-    ↓ private
-  显示403页面 + "该用户主页为私密状态"
 ```
 
 ---
 
-## 九、前后端交互设计
+## 九、样式与交互细节
 
-### 9.1 API接口列表
-
-#### 9.1.1 获取用户主页信息
-```
-GET /api/user/:userId/profile
-
-Response:
-{
-  "user": {
-    "id": "uuid",
-    "username": "string",
-    "email": "string",
-    "avatar_url": "string",
-    "bio": "string",
-    "created_at": "timestamp",
-    "last_active_at": "timestamp"
-  },
-  "tags": [
-    { "name": "VIP", "color": "gold", "icon": "crown" }
-  ],
-  "stats": {
-    "follower_count": 340,
-    "following_count": 120
-  },
-  "privacy": {
-    "profile_visibility": "public",
-    "registration_time_visibility": "public",
-    ...
-  },
-  "isOwner": boolean,
-  "isFollowing": boolean,
-  "canView": {
-    "profile": boolean,
-    "registration_time": boolean,
-    "follower_count": boolean,
-    "activity": boolean,
-    "trade_history": boolean,
-    ...
-  }
-}
-```
-
-#### 9.1.2 获取用户动态
-```
-GET /api/user/:userId/activity?page=1&limit=12
-
-Response:
-{
-  "giveaways": [...],
-  "total": 50,
-  "page": 1,
-  "limit": 12,
-  "hasMore": boolean
-}
-```
-
-#### 9.1.3 关注/取消关注用户
-```
-POST /api/user/:userId/follow
-DELETE /api/user/:userId/follow
-
-Response:
-{
-  "success": boolean,
-  "isFollowing": boolean,
-  "follower_count": 341
-}
-```
-
-#### 9.1.4 获取隐私设置
-```
-GET /api/user/privacy-settings
-
-Response:
-{
-  "profile_visibility": "public",
-  "registration_time_visibility": "public",
-  ...
-}
-```
-
-#### 9.1.5 更新隐私设置
-```
-PUT /api/user/privacy-settings
-
-Body:
-{
-  "profile_visibility": "followers",
-  "trade_history_visibility": "private",
-  ...
-}
-
-Response:
-{
-  "success": boolean,
-  "settings": {...}
-}
-```
-
-### 9.2 权限验证逻辑
-
-#### 9.2.1 后端权限验证
-所有涉及隐私的接口都需要在后端进行权限验证：
-
-```typescript
-function canViewField(
-  targetUserId: string,
-  viewerId: string | null,
-  fieldVisibility: 'public' | 'followers' | 'private',
-  isFollowing: boolean
-): boolean {
-  // 本人永远可见
-  if (targetUserId === viewerId) return true;
-  
-  // 公开可见
-  if (fieldVisibility === 'public') return true;
-  
-  // 仅关注者可见
-  if (fieldVisibility === 'followers') {
-    return viewerId !== null && isFollowing;
-  }
-  
-  // 私密
-  return false;
-}
-```
-
-#### 9.2.2 RLS策略
-使用Supabase的Row Level Security确保数据安全：
-
-```sql
--- user_privacy_settings 表
--- 仅用户本人可查看和修改自己的隐私设置
-CREATE POLICY "Users can view their own privacy settings"
-  ON user_privacy_settings FOR SELECT
-  USING (auth.uid() = user_id);
-
-CREATE POLICY "Users can update their own privacy settings"
-  ON user_privacy_settings FOR UPDATE
-  USING (auth.uid() = user_id);
-```
-
----
-
-## 十、样式与交互细节
-
-### 10.1 响应式设计
-
-#### 10.1.1 断点
-- **移动端**：< 768px
-- **平板端**：768px - 1024px
-- **桌面端**：> 1024px
-
-#### 10.1.2 布局适配
-**移动端**
-- 头像尺寸：64x64px
-- Tab导航：支持横向滑动
-- 动态卡片：每行1个
-- 设置页面：单列布局
-
-**平板端**
-- 头像尺寸：80x80px
-- 动态卡片：每行2个
-- 设置页面：单列布局
-
-**桌面端**
-- 头像尺寸：88x88px
-- 动态卡片：每行3个
-- 设置页面：双列布局（左侧导航，右侧内容）（V2）
-
-### 10.2 动画效果
-
-#### 10.2.1 页面过渡
-- 页面切换：淡入淡出（300ms）
-- Tab切换：滑动切换（200ms）
-
-#### 10.2.2 按钮交互
-- Hover：背景色加深（150ms）
-- 点击：按下效果（scale: 0.98）（100ms）
-- 加载状态：Spinner旋转动画
-
-#### 10.2.3 弹窗动画
-- 弹出：从中心放大 + 淡入（250ms）
-- 关闭：缩小到中心 + 淡出（200ms）
-
-### 10.3 色彩系统
-
-#### 10.3.1 语义色彩
-使用 Tailwind 语义化变量：
-- **主题色**：`bg-primary`, `text-primary`
-- **次要色**：`bg-secondary`, `text-secondary`
-- **强调色**：`bg-accent`, `text-accent`
-- **成功**：`bg-green-500`
-- **警告**：`bg-yellow-500`
-- **错误**：`bg-destructive`
-- **背景**：`bg-background`
-- **前景**：`text-foreground`
-- **禁用**：`text-muted-foreground`
-
-#### 10.3.2 用户标签色彩
-- **VIP**：金色（`#FFD700`）
-- **活跃**：蓝色（`#3B82F6`）
-- **认证**：绿色（`#10B981`）
-- **新手**：灰色（`#6B7280`）
-
-### 10.4 加载状态
-
-#### 10.4.1 骨架屏
-在数据加载时显示骨架屏（Skeleton）：
-- 个人信息区域：头像、用户名、统计数据的骨架
-- 动态列表：卡片骨架，3个占位卡片
-
-#### 10.4.2 加载指示器
-- 按钮加载：Spinner + 文案变化
-- 页面加载：顶部进度条
-- 无限滚动：底部加载更多指示器
-
-### 10.5 错误状态
-
-#### 10.5.1 403权限错误
-```
-┌─────────────────────────────────────────────┐
-│                                              │
-│              🔒                              │
-│                                              │
-│         该内容暂不可见                        │
-│                                              │
-│    该用户的主页仅对[关注者/本人]可见         │
-│                                              │
-│         [关注Ta以查看主页]                   │
-│                                              │
-└─────────────────────────────────────────────┘
-```
-
-#### 10.5.2 404用户不存在
+### 9.1 错误状态
+用户不存在
 ```
 ┌─────────────────────────────────────────────┐
 │                                              │
@@ -828,164 +469,89 @@ CREATE POLICY "Users can update their own privacy settings"
 └─────────────────────────────────────────────┘
 ```
 
-#### 10.5.3 网络错误
-- Toast提示："网络连接失败，请检查网络后重试"
-- 提供「重试」按钮
-
 ---
 
-## 十一、测试用例设计
+## 十、测试用例设计
 
-### 11.1 功能测试
+### 10.1 功能测试
 
-#### 11.1.1 主人态访问
+#### 10.1.1 主人态访问
 - [ ] 访问 `/profile`，正确展示个人信息
 - [ ] 显示「设置」按钮
 - [ ] 可以查看所有Tab内容（包括私密内容）
 - [ ] 所有统计数据正确显示
 
-#### 11.1.2 访客态访问
+#### 10.1.2 访客态访问
 - [ ] 访问 `/user/:userId`（其他用户），正确展示公开信息
 - [ ] 显示「关注」/「已关注」按钮
 - [ ] 根据隐私设置隐藏不可见内容
 - [ ] 点击关注按钮，关注成功
 
-#### 11.1.3 隐私权限控制
-- [ ] 设置 `profile_visibility` = 'private'，其他用户访问显示403
-- [ ] 设置 `trade_history_visibility` = 'private'，其他用户看不到交易记录Tab内容
-- [ ] 设置 `activity_visibility` = 'followers'，未关注用户看不到动态，关注后可见
+#### 10.1.3 隐私权限控制
+- [ ] 当用户设置某tab内容私密后，则其他用户不可访问
 
-#### 11.1.4 关注功能
+#### 10.1.4 关注功能
 - [ ] 点击「关注」，关注成功，按钮变为「已关注」
 - [ ] Hover「已关注」，显示「取消关注」，点击弹出确认对话框
 - [ ] 确认取消关注，成功取消，按钮变为「关注」
 - [ ] 关注后，粉丝数+1，取消关注后粉丝数-1
 
-#### 11.1.5 隐私设置
+#### 10.1.5 隐私设置
 - [ ] 打开隐私设置页面，正确展示当前设置
 - [ ] 修改设置后点击保存，成功保存并返回个人中心
 - [ ] 修改设置后不保存直接离开，设置未生效
 
-#### 11.1.6 首次更新通知
+#### 10.1.6 首次更新通知
 - [ ] 新用户首次登录，显示更新通知弹窗
 - [ ] 点击「前往设置」，跳转到隐私设置页面，不再重复显示
 - [ ] 点击「稍后再说」，关闭弹窗，下次登录再次显示
 - [ ] 点击2次「稍后再说」后，不再显示弹窗
 
-### 11.2 边界测试
 
-#### 11.2.1 数据边界
+### 10.2 边界测试
+
+#### 10.2.1 数据边界
 - [ ] 用户无粉丝时，显示"粉丝 0"
 - [ ] 用户无关注时，显示"关注 0"
 - [ ] 用户无动态时，显示空状态
 - [ ] 个人简介超过200字符时，截断显示
 
-#### 11.2.2 权限边界
+#### 10.2.2 权限边界
 - [ ] 未登录用户访问 `/profile`，重定向到 `/login`
 - [ ] 访问不存在的用户ID，显示404页面
 - [ ] 自己关注自己，显示错误提示
 
-#### 11.2.3 并发操作
+#### 10.2.3 并发操作
 - [ ] 同时点击多次「关注」按钮，只发送一次请求
 - [ ] 在保存设置过程中刷新页面，设置正确保存或回滚
 
-### 11.3 兼容性测试
-
-#### 11.3.1 浏览器兼容
-- [ ] Chrome（最新版）
-- [ ] Firefox（最新版）
-- [ ] Safari（最新版）
-- [ ] Edge（最新版）
-
-#### 11.3.2 设备兼容
-- [ ] iPhone（Safari）
-- [ ] Android（Chrome）
-- [ ] iPad（Safari）
-- [ ] 桌面端（各浏览器）
-
-### 11.4 性能测试
-
-#### 11.4.1 加载性能
-- [ ] 首屏加载时间 < 2秒
-- [ ] 动态列表首次加载 < 1秒
-- [ ] Tab切换响应时间 < 300ms
-
-#### 11.4.2 数据量测试
-- [ ] 用户有1000+粉丝时，统计数据正确显示
-- [ ] 用户有100+动态时，分页加载正常
-- [ ] 用户有50+标签时，展示正常（限制最多显示5个，其他省略）
 
 ---
 
-## 十二、迭代版本规划
+## 十一、迭代版本规划
 
-### 12.1 V1.0（本次实现）✅
+### 11.1 V1.0（本次实现）✅
 **目标**：建立基础的用户主页和隐私设置功能
 
 **功能清单**：
 - [x] 主人态页面（`/profile`）
-- [x] 访客态页面（`/user/:userId`）
+- [x] 访客态页面（`/user/userId`）
 - [x] 个人信息头部区域（头像、用户名、标签、简介、统计数据、在线状态）
 - [x] Tab导航（动态、交易记录、收藏、宠物图鉴）
 - [x] **动态Tab**：展示用户发起的抽奖活动
-- [x] **交易记录Tab**：占位状态
+- [x] **交易记录Tab**：复用
 - [x] **收藏Tab**：占位状态
-- [x] **宠物图鉴Tab**：占位状态
+- [x] **宠物图鉴Tab**：首期可为占位状态
 - [x] 关注/取消关注功能
 - [x] 隐私设置页面（`/settings/privacy`）
-- [x] 全局主页可见性设置
-- [x] 个人信息细粒度可见性设置
 - [x] 内容模块可见性设置
-- [x] 在线状态显示开关
 - [x] 首次更新通知弹窗（显示2次逻辑）
 - [x] 权限验证（前端+后端+RLS）
 - [x] 响应式设计
 - [x] 用户标签系统（运营后台打标）
 
-**数据库变更**：
-- 新建 `user_privacy_settings` 表
-- 新建 `user_tags` 表
-- 扩展 `profiles` 表（`bio`, `avatar_url`, `last_active_at`）
 
 ### 12.2 V2.0（后续迭代）🔄
-
-#### 12.2.1 交易记录Tab
-- [ ] 展示用户的Roblox道具交易记录
-- [ ] 支持筛选：交易类型、时间范围、道具类型
-- [ ] 支持搜索：道具名称、交易对方
-- [ ] 新建 `trade_records` 表
-
-#### 12.2.2 收藏Tab
-- [ ] 展示用户收藏的抽奖活动和道具
-- [ ] 支持取消收藏
-- [ ] 新建 `user_favorites` 表
-
-#### 12.2.3 宠物图鉴Tab
-- [ ] 展示用户拥有的Roblox宠物
-- [ ] 支持筛选：稀有度、宠物类型
-- [ ] 显示宠物获得时间和来源
-- [ ] 新建 `user_pets` 表
-
-#### 12.2.4 个人资料编辑
-- [ ] 主人态可编辑头像
-- [ ] 主人态可编辑个人简介
-- [ ] 主人态可编辑用户名（限制频率）
-- [ ] 头像上传到Supabase Storage
-
-#### 12.2.5 关注列表
-- [ ] 关注列表页面（`/user/:userId/following`）
-- [ ] 粉丝列表页面（`/user/:userId/followers`）
-- [ ] 支持在列表中关注/取消关注
-
-#### 12.2.6 在线状态增强
-- [ ] 偏好在线时间设置（时间段选择器）
-- [ ] 展示"通常在线时间：19:00-23:00"
-- [ ] 在线心跳机制优化
-
-#### 12.2.7 通知偏好设置
-- [ ] 设置页面增加「通知偏好」板块
-- [ ] 控制接收哪些类型的通知（关注、点赞、评论等）
-- [ ] 邮件通知开关
 
 #### 12.2.8 用户标签增强
 - [ ] 支持数据驱动的机制化标签（交易次数、登录天数等）
@@ -996,24 +562,13 @@ CREATE POLICY "Users can update their own privacy settings"
 
 #### 12.3.1 社交功能增强
 - [ ] 私信功能
-- [ ] 评论功能（在动态下评论）
-- [ ] 点赞功能
-- [ ] 分享到社交媒体
-
-#### 12.3.2 个人主页定制
-- [ ] 主页主题色定制
-- [ ] 主页背景图设置
-- [ ] 主页布局自定义
+- [ ] VIP用户发布动态post功能、post评论、点赞功能
 
 #### 12.3.3 成就系统
 - [ ] 成就徽章展示
 - [ ] 成就获得记录
 - [ ] 成就墙（展示所有成就）
 
-#### 12.3.4 数据统计
-- [ ] 个人主页访问统计
-- [ ] 粉丝增长趋势图
-- [ ] 动态互动数据分析
 
 ---
 
@@ -1022,30 +577,23 @@ CREATE POLICY "Users can update their own privacy settings"
 ### 13.1 相关文档链接
 - [抽奖功能PRD](./抽奖功能PRD.md)
 - [用户认证流程文档](待补充)
-- [隐私政策](待补充)
+- [隐私政策](待更新)
 
 ### 13.2 术语表
 | 术语 | 说明 |
 |------|------|
 | 主人态 | 用户查看自己的个人主页时的视图状态 |
 | 访客态 | 用户查看其他人的个人主页时的视图状态 |
-| RLS | Row Level Security，Supabase的行级安全策略 |
-| 动态 | 用户发起的抽奖活动（Giveaways） |
-| 道具 | Roblox游戏中的虚拟物品（Items） |
-| 宠物 | Roblox游戏中的宠物（Pets） |
+| 抽奖/Giveaways | 用户发起的抽奖活动（Giveaways） |
 
-### 13.3 设计稿与原型（待补充）
-- [ ] 设计稿链接
-- [ ] 交互原型链接
-- [ ] UI组件库链接
 
 ### 13.4 更新日志
 | 版本 | 日期 | 更新内容 | 作者 |
 |------|------|---------|------|
-| 1.0 | 2024-11-30 | 初始版本，完整PRD | - |
+| 1.0 | 2024-11-30 | 初始版本，完整PRD | Vanessa |
 
 ---
 
 **PRD编写完成时间**：2024-11-30
-**预计开发周期**：2-3周
-**预计上线时间**：2024-12-下旬
+**预计开发周期**：1周
+**预计上线时间**：2024-12-中旬
