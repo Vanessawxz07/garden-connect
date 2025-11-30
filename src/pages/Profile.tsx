@@ -33,7 +33,9 @@ const Profile = () => {
                 <User className="w-10 h-10 text-primary" />
               </div>
               <div className="flex-1">
-                <h2 className="text-xl font-semibold text-foreground">{user.username}</h2>
+                <h2 className="text-xl font-semibold text-foreground">
+                  {user.user_metadata?.username || user.email?.split("@")[0]}
+                </h2>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Mail className="w-4 h-4" />
                   <span>{user.email}</span>

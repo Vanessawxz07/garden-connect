@@ -19,22 +19,23 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    try {
-      await login(email, password);
+    const { error } = await login(email, password);
+    
+    if (error) {
+      toast({
+        title: "登录失败",
+        description: error.message || "请检查您的邮箱和密码",
+        variant: "destructive",
+      });
+    } else {
       toast({
         title: "登录成功",
         description: "欢迎回来！",
       });
       navigate("/profile");
-    } catch (error) {
-      toast({
-        title: "登录失败",
-        description: "请检查您的邮箱和密码",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
     }
+    
+    setIsLoading(false);
   };
 
   return (

@@ -31,22 +31,23 @@ const Register = () => {
 
     setIsLoading(true);
 
-    try {
-      await register(email, password, username);
-      toast({
-        title: "注册成功",
-        description: "欢迎加入！",
-      });
-      navigate("/profile");
-    } catch (error) {
+    const { error } = await register(email, password, username);
+    
+    if (error) {
       toast({
         title: "注册失败",
-        description: "请稍后重试",
+        description: error.message || "请稍后重试",
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
+    } else {
+      toast({
+        title: "注册成功",
+        description: "欢迎加入！自动登录中...",
+      });
+      navigate("/profile");
     }
+    
+    setIsLoading(false);
   };
 
   return (
