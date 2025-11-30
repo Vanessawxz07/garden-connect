@@ -250,6 +250,8 @@
 
 ### 6.2 隐私设置页面布局
 双列布局（左侧导航，右侧内容）; 样式参考示意图
+<img width="362" height="452" alt="局部截取_20251130_221442" src="https://github.com/user-attachments/assets/de81da5d-774a-48d9-987b-50d5febfaa3b" />
+
 ```
 ```
 
