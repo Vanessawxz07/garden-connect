@@ -97,11 +97,9 @@ export const GiveawayCard = ({ giveaway }: GiveawayCardProps) => {
 
   const isCompleted = giveaway.status === "completed";
   const isUpcoming = new Date(giveaway.draw_time) > new Date();
-  const participantCount = giveaway.giveaway_participants?.[0]?.count || 0;
-  const hasWinner = giveaway.giveaway_winners && giveaway.giveaway_winners.length > 0;
 
   // Get first item for display
-  const firstItem = giveaway.giveaway_items?.[0]?.item;
+  const firstItem = giveaway.giveaway_items?.[0]?.items;
 
   return (
     <Card className="overflow-hidden border border-border bg-card transition-all hover:shadow-md">
@@ -166,7 +164,7 @@ export const GiveawayCard = ({ giveaway }: GiveawayCardProps) => {
           <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <Users className="h-4 w-4" />
-              <span>{participantCount} joined</span>
+              <span>Join to enter</span>
             </div>
             <div className="flex items-center gap-1">
               <Clock className="h-4 w-4" />
@@ -181,7 +179,7 @@ export const GiveawayCard = ({ giveaway }: GiveawayCardProps) => {
           </div>
 
           {/* Winner Info for completed giveaways */}
-          {isCompleted && hasWinner && (
+          {isCompleted && (
             <div className="flex items-center gap-2 rounded-md bg-primary/10 px-3 py-2">
               <CheckCircle2 className="h-4 w-4 text-primary" />
               <span className="text-sm font-medium text-primary">

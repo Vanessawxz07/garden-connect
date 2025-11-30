@@ -15,15 +15,9 @@ const Giveaways = () => {
         .from("giveaways")
         .select(`
           *,
-          vip_user:vip_user_id (id),
           giveaway_items (
             quantity,
-            item:items (*)
-          ),
-          giveaway_participants (count),
-          giveaway_winners (
-            user_id,
-            claimed
+            items (*)
           )
         `)
         .order("created_at", { ascending: false });
