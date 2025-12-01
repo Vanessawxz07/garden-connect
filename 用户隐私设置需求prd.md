@@ -102,7 +102,7 @@
 - Successful Trades: X
 - Total Trades: Y
 - Pets Owned: Z
-- 纠纷: Z (新增字段-该用户被举报次数，该字段需增加hover信息提示“交易中report的次数”)
+- 纠纷数: Z (新增字段-该用户被举报次数，该字段需增加hover信息提示“交易中report的次数”)
 
 **粉丝数**
 - **显示格式**：`粉丝 340`
