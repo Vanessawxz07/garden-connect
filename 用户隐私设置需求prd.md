@@ -101,6 +101,10 @@
 - **访客态**：仅展示
 - **默认值**：空时显示"这个人很懒，什么都没写~"（仅主人态可见）
 
+> **【文案建议】个人简介默认值（仅主人态可见）**
+> - **版本A**：This user hasn't written a bio yet.
+> - **版本B**：No bio added yet. Tell the world about yourself!
+
 > **【Q&A】问题2：个人简介的"防钓鱼诱导信息"具体策略是什么？是前端过滤还是人工审核？**
 > **结论**：前端过滤，应用现有的聊天消息黑词屏蔽策略。命中黑词则不支持提交简介内容，报错通知也复用现有逻辑。
 
@@ -119,16 +123,34 @@
 **粉丝数**
 - **显示格式**：`粉丝 340`
 
+> **【文案建议】粉丝数标签**
+> - **版本A**：Followers
+> - **版本B**：Fans
+
 **关注数**
 - **显示格式**：`关注 120`
+
+> **【文案建议】关注数标签**
+> - **版本A**：Following
+> - **版本B**：Follows
   
 **注册时间**
 - **显示格式**：`注册时间 年月日`（精确到日）
+
+> **【文案建议】注册时间标签**
+> - **版本A**：Joined
+> - **版本B**：Member since
 
 #### 3.2.6 在线状态
 - **显示格式**：`● 当前在线` / `○ 离线`
 - **在线判定**：用当前默认逻辑
 - **偏好在线时间**：用户设置常在线时间段（已有逻辑，调整展示位置）
+
+> **【文案建议】在线状态**
+> - **在线 版本A**：Online now
+> - **在线 版本B**：Currently online
+> - **离线 版本A**：Offline
+> - **离线 版本B**：Last seen recently
 
 
 ### 3.3 Tab导航设计
@@ -138,6 +160,16 @@
 2. **交易记录**（已有tab）
 3. **收藏**（V2迭代，本次占位）
 4. **宠物图鉴**（V2迭代，本次占位）
+
+> **【文案建议】Tab名称**
+> - **动态 版本A**：Activity
+> - **动态 版本B**：Feed
+> - **交易记录 版本A**：Trades
+> - **交易记录 版本B**：Trade History
+> - **收藏 版本A**：Favorites
+> - **收藏 版本B**：Saved
+> - **宠物图鉴 版本A**：Pet Collection
+> - **宠物图鉴 版本B**：My Pets
 
 #### 3.3.2 Tab样式
 - **未选中态**：灰色文字，无下划线
@@ -176,6 +208,16 @@
 - **主人态**：显示"你还没有发起过任何抽奖活动"，提供「创建抽奖」按钮（若有VIP权限则可直接发起抽奖；如无抽奖功能权限，则按钮引导进入discord子频道申请）
 - **访客态**：显示"该用户还没有发起过任何抽奖活动"
 
+> **【文案建议】动态Tab空状态**
+> - **主人态 版本A**：You haven't created any giveaways yet.
+> - **主人态 版本B**：No giveaways yet. Start your first one!
+> - **访客态 版本A**：This user hasn't created any giveaways yet.
+> - **访客态 版本B**：No giveaways from this user yet.
+
+> **【文案建议】创建抽奖按钮**
+> - **版本A**：Create Giveaway
+> - **版本B**：Start a Giveaway
+
 #### 4.1.5 默认隐私设置
 - **默认**：所有人可见
 - **可配置**：在隐私设置中关闭开关（即访客不可见）
@@ -183,6 +225,10 @@
 #### 4.1.6 访客态访问被限制时的展示
 - 显示锁定图标🔒或图片
 - 提示文案：示意"人家不给你看哦"
+
+> **【文案建议】访客态访问被限制时**
+> - **版本A**：This content is private.
+> - **版本B**：This user has chosen to keep this private.
 
 > **【Q&A】问题7：访客态访问被限制的Tab时，除了锁定图标，是否显示Tab名称？**
 > **结论**：显示tab名称，tab中原来展示内容的地方改为展示一个图片+文案，示意未开放查看权限。
@@ -204,6 +250,10 @@
 
 #### 4.3.2 占位实现
 - 显示"Coming soon..."
+
+> **【文案建议】占位Tab内容**
+> - **版本A**：Coming soon...
+> - **版本B**：This feature is coming soon. Stay tuned!
 
 #### 4.3.3 默认隐私设置
 - **默认**：仅自己可见，支持手动开放
@@ -235,13 +285,29 @@
 **未关注状态**
 - 图标+文案：「Follow」
 
+> **【文案建议】未关注状态按钮**
+> - **版本A**：Follow
+> - **版本B**：+ Follow
+
 **已关注状态**
 - 图标+文案：「Followed」
 - Hover时显示：「取消关注」
 
+> **【文案建议】已关注状态按钮**
+> - **版本A**：Following
+> - **版本B**：Followed
+
+> **【文案建议】Hover取消关注**
+> - **版本A**：Unfollow
+> - **版本B**：Remove
+
 **加载状态**（如耗时少则不需要）
 - 文案：「处理中...」
 - 按钮禁用，显示loading spinner
+
+> **【文案建议】加载状态**
+> - **版本A**：Loading...
+> - **版本B**：Please wait...
 
 #### 5.1.3 关注/取消关注交互
 1. 点击「关注」按钮
@@ -256,9 +322,21 @@
    - 显示错误Toast
    - 按钮恢复到「关注」状态
 
+> **【文案建议】关注成功Toast**
+> - **版本A**：You are now following @username
+> - **版本B**：Followed @username successfully
+
+> **【文案建议】关注失败Toast**
+> - **版本A**：Failed to follow. Please try again.
+> - **版本B**：Something went wrong. Please try again.
+
 #### 5.1.4 取消关注确认
 - Hover「已关注」按钮时，文案变为「取消关注」，背景变色
 - 点击按钮后执行取消关注操作
+
+> **【文案建议】取消关注成功Toast**
+> - **版本A**：You have unfollowed @username
+> - **版本B**：Unfollowed @username
 
 ---
 
@@ -273,6 +351,10 @@
 
 > **【Q&A】问题8：主人态的"设置"按钮是文字按钮还是图标按钮（齿轮）？**
 > **结论**：文字按钮"SETTINGS"。
+
+> **【文案建议】设置按钮**
+> - **版本A**：Settings
+> - **版本B**：SETTINGS
 
 #### 6.1.2 样式
 用文案+开关按钮示意该项内容模块设置打开/关闭
@@ -292,12 +374,38 @@
 你可以自主选择每项信息的可见范围，我们不会未经你的同意分享你的个人信息。
 敏感信息（如交易记录）默认为私密状态，只有你自己可见。
 ```
+
+> **【文案建议】隐私说明卡片**
+> - **版本A**：
+>   ```
+>   ℹ️ Privacy Notice
+>   We respect your privacy and give you full control.
+>   You decide who can see your information. We never share your data without your consent.
+>   Sensitive information (like trade history) is private by default.
+>   ```
+> - **版本B**：
+>   ```
+>   ℹ️ Your Privacy, Your Control
+>   Choose what others can see on your profile.
+>   We keep sensitive info private by default and never share your data without permission.
+>   ```
+
 #### 6.2.2 每个设置项的说明文案
 在每个设置项下方增加简短说明（灰色小字）：
 - **动态**："你发起的抽奖活动"
 - **交易记录**："你的道具交易历史，涉及敏感信息，建议仅自己可见"
 - **收藏**："你收藏的内容"
 - **宠物图鉴**："你拥有的宠物收藏"
+
+> **【文案建议】设置项说明文案**
+> - **动态 版本A**：Your giveaway activity
+> - **动态 版本B**：Giveaways you've created or joined
+> - **交易记录 版本A**：Your trade history. Contains sensitive info, we recommend keeping this private.
+> - **交易记录 版本B**：Your item trades. We suggest keeping this private for security.
+> - **收藏 版本A**：Items and content you've saved
+> - **收藏 版本B**：Your saved favorites
+> - **宠物图鉴 版本A**：Your pet collection
+> - **宠物图鉴 版本B**：Pets you own
 
 ### 6.3 隐私设置项详细说明
 
@@ -325,6 +433,12 @@
 - **选项**：所有人可见 / 仅自己可见
 - **默认值**：仅自己可见
 
+> **【文案建议】可见性选项**
+> - **所有人可见 版本A**：Everyone
+> - **所有人可见 版本B**：Public
+> - **仅自己可见 版本A**：Only me
+> - **仅自己可见 版本B**：Private
+
 
 ### 6.4 隐私设置保存
 
@@ -338,6 +452,22 @@
 5. 失败时：
    - 显示错误Toast："保存失败，请重试"
    - 按钮恢复到「保存设置」状态
+
+> **【文案建议】保存按钮**
+> - **版本A**：Save Settings
+> - **版本B**：Save Changes
+
+> **【文案建议】保存中状态**
+> - **版本A**：Saving...
+> - **版本B**：Updating...
+
+> **【文案建议】保存成功Toast**
+> - **版本A**：Privacy settings saved
+> - **版本B**：Your settings have been updated
+
+> **【文案建议】保存失败Toast**
+> - **版本A**：Failed to save. Please try again.
+> - **版本B**：Something went wrong. Please try again.
 
 
 ### 6.5 隐私设置初始化
@@ -401,6 +531,52 @@
 关联：隐私政策法律文件需更新
 ```
 
+> **【文案建议】更新通知弹窗完整内容**
+> 
+> **版本A**：
+> ```
+> ✨ Your Profile Just Got Better!
+> 
+> Your profile is now more social and feature-rich.
+> 
+> What's New:
+> 🔹 Other users can now visit your profile
+> 🔹 Follow your favorite users
+> 🔹 Showcase your giveaways, trades, and favorites
+> 🔹 Fine-grained privacy controls
+> 
+> Privacy Note:
+> To protect your privacy, we've set smart defaults:
+> • Trade history is private by default
+> • You control what others can see
+> 
+> [Go to Settings]  [Maybe Later]
+> 
+> View Privacy Policy
+> ```
+> 
+> **版本B**：
+> ```
+> ✨ New Profile Features!
+> 
+> We've upgraded your profile with new social features.
+> 
+> Here's what's new:
+> 🔹 Let others discover your profile
+> 🔹 Follow and connect with users
+> 🔹 Display your activity, trades, and collections
+> 🔹 Full control over your privacy
+> 
+> Your Privacy Matters:
+> We've already set safe defaults for you:
+> • Sensitive info stays private
+> • You decide what to share
+> 
+> [Open Settings]  [Remind Me Later]
+> 
+> View Privacy Policy
+> ```
+
 > **【Q&A】问题6："查看隐私政策"链接指向哪里？是否需要本期准备隐私政策页面？**
 > **结论**：待定，可留空。
 
@@ -413,6 +589,10 @@
   - 跳转到 `/settings/privacy` 页面
   - 记录用户已查看通知（不再重复显示）
 
+> **【文案建议】前往设置按钮**
+> - **版本A**：Go to Settings
+> - **版本B**：Open Settings
+
 **稍后再说**
 - 样式：次要按钮（Secondary）
 - 行为：
@@ -420,6 +600,14 @@
   - 增加查看次数计数
   - 如果查看次数 < 2，下次登录时再次显示
   - 如果查看次数 >= 2，不再显示
+
+> **【文案建议】稍后再说按钮**
+> - **版本A**：Maybe Later
+> - **版本B**：Remind Me Later
+
+> **【文案建议】查看隐私政策链接**
+> - **版本A**：View Privacy Policy
+> - **版本B**：Read our Privacy Policy
 
 
 ### 7.3 数据存储方案
@@ -498,6 +686,14 @@ profile_visibility = ?
 │                                              │
 └─────────────────────────────────────────────┘
 ```
+
+> **【文案建议】用户不存在错误页**
+> - **标题 版本A**：User Not Found
+> - **标题 版本B**：Oops! User Not Found
+> - **说明 版本A**：This user may have been deleted or the ID is incorrect.
+> - **说明 版本B**：We couldn't find this user. They may have left or the link is broken.
+> - **按钮 版本A**：Back to Home
+> - **按钮 版本B**：Go Home
 
 ---
 
@@ -621,6 +817,7 @@ profile_visibility = ?
 |------|------|---------|------|
 | 1.0 | 2024-11-30 | 初始版本，完整PRD | Vanessa |
 | 1.1 | 2024-12-04 | 添加8个Q&A澄清结论 | AI |
+| 1.2 | 2024-12-04 | 添加所有文案建议（双版本供选择） | AI |
 
 ---
 
