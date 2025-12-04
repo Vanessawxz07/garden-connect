@@ -331,10 +331,14 @@
 在每个设置项下方增加简短说明（灰色小字）：
 
 > **【文案建议】设置项说明文案**
-> - **动态**：Your giveaway activity
-> - **交易记录**：Your trade history. Contains sensitive info, we recommend keeping this private.
-> - **收藏**：Trades and other content you've saved
-> - **宠物图鉴**：Your pet collection (created from Pet Management feature)
+> - **Feeds**：Your giveaway activity
+> - **交易记录**：
+> - **Your trades**: Suggest it be visible to
+all to boost your exposure and complete
+your trades
+> - **Your offers**: Open offers you've made
+> - **Favourites**：Trades and other content you've saved
+> - **Pet Collection**：Your pet collection created from Pet Management feature
 
 
 ### 6.3 隐私设置项详细说明
@@ -362,12 +366,6 @@
 **宠物图鉴**
 - **选项**：所有人可见 / 仅自己可见
 - **默认值**：仅自己可见
-
-> **【文案建议】可见性选项**
-> - **所有人可见 版本A**：Everyone
-> - **所有人可见 版本B**：Public
-> - **仅自己可见 版本A**：Only me
-> - **仅自己可见 版本B**：Private
 
 
 ### 6.4 隐私设置保存
