@@ -211,7 +211,9 @@
 ### 4.2 交易记录 Tab
 
 #### 4.2.1 内容说明
-展示用户的Roblox道具交易记录，本需求中暂不更新功能，后续迭代支持按自己发布、参与的交易分类，并复用搜索、排序等公共组件。
+展示用户的Roblox道具交易记录，增加支持按自己发布"My Trades"、参与的交易"My Offers"分类，并复用搜索、排序等公共组件。
+- **My Trades**：用原逻辑，本期暂不新增其他优化。后续迭代增加不同交易状态的分类。
+- **My Offers**：新增，展示用户所有提交了offer的open offer订单list，使用订单列表组件。已经结束/关闭的订单，按钮分别展示"Closed/Complete"
 
 #### 4.2.2 默认隐私设置
 - **默认**：仅自己可见，支持手动开放
@@ -325,17 +327,16 @@
 
 #### 6.2.2 隐私选项样式
 - 用文案+开关按钮示意某个tab的内容模块设置打开/关闭
-- 交易tab需独立管理交易tab下一级（发布的交易/参与的offer两类内容）的可见性，其他tab只在tab层级控制
+- 交易tab需独立管理交易tab下一级（发布的交易"Your trades"/参与的offer"Your offers"两类内容）的可见性，其他tab只在tab层级控制
 
 每个设置项的说明文案
 在每个设置项下方增加简短说明（灰色小字）：
 
-> **【文案建议】设置项说明文案**
+> **【文案建议】**
+> 标题：**Privacy Settings**
+> 描述：Turn on means you want to make the content public
 > - **Feeds**：Your giveaway activity
-> - **交易记录**：
-> - **Your trades**: Suggest it be visible to
-all to boost your exposure and complete
-your trades
+> - **Your trades**: Suggest it be visible to all to boost trades exposure
 > - **Your offers**: Open offers you've made
 > - **Favourites**：Trades and other content you've saved
 > - **Pet Collection**：Your pet collection created from Pet Management feature
@@ -349,53 +350,25 @@ your trades
 #### 6.3.2 个人信息
 不支持设置，默认公开
 
-#### 6.3.3 内容模块可见性
-
-**动态**
-- **选项**：所有人可见 / 仅自己可见
-- **默认值**：所有人可见
-
-**交易记录**
-- **选项**：所有人可见 / 仅自己可见
-- **默认值**：仅自己可见（敏感信息）
-
-**收藏**
-- **选项**：所有人可见 / 仅自己可见
-- **默认值**：仅自己可见
-
-**宠物图鉴**
-- **选项**：所有人可见 / 仅自己可见
-- **默认值**：仅自己可见
+#### 6.3.3 各内容模块可见性
+**选项**：仅2种-所有人可见 / 仅自己可见
+  
+- **动态**默认值：所有人可见
+- **Your trades/Your offers**默认值：仅自己可见（敏感信息）
+- **收藏**默认值：仅自己可见
+- **宠物图鉴**默认值：仅自己可见
 
 
 ### 6.4 隐私设置保存
 
 #### 6.6.2 保存流程
-1. 点击「保存设置」按钮
-2. 按钮进入加载状态：「保存中...」
+1. 点击「Save Settings」按钮
+2. 按钮进入加载状态：「Saving...」
 3. 发送更新请求到后端
-4. 成功后：
-   - Toast提示："隐私设置已保存"
-   - 2秒后自动返回个人中心
+4. 成功后：toast提示："Privacy settings saved"，自动返回个人中心
 5. 失败时：
-   - 显示错误Toast："保存失败，请重试"
+   - 显示错误Toast："Something went wrong. Please try again."
    - 按钮恢复到「保存设置」状态
-
-> **【文案建议】保存按钮**
-> - **版本A**：Save Settings
-> - **版本B**：Save Changes
-
-> **【文案建议】保存中状态**
-> - **版本A**：Saving...
-> - **版本B**：Updating...
-
-> **【文案建议】保存成功Toast**
-> - **版本A**：Privacy settings saved
-> - **版本B**：Your settings have been updated
-
-> **【文案建议】保存失败Toast**
-> - **版本A**：Failed to save. Please try again.
-> - **版本B**：Something went wrong. Please try again.
 
 
 ### 6.5 隐私设置初始化
@@ -463,79 +436,45 @@ your trades
 > 
 > **版本A**：
 > ```
-> ✨ Your Profile Just Got Better!
+> ✨ New Profile Features! ✨ 
 > 
 > Your profile is now more social and feature-rich.
 > 
 > What's New:
 > 🔹 Other users can now visit your profile
 > 🔹 Follow your favorite users
-> 🔹 Showcase your giveaways, trades, and favorites
-> 🔹 Fine-grained privacy controls
+> 🔹 Showcase your giveaways, trades and favorites
+> 🔹 Full control over your privacy
 > 
 > Privacy Note:
 > To protect your privacy, we've set smart defaults:
-> • Trade history is private by default
-> • You control what others can see
+> • Sensitive info stays private
+> • You deside what others can see
 > 
 > [Go to Settings]  [Maybe Later]
 > 
 > View Privacy Policy
 > ```
-> 
-> **版本B**：
-> ```
-> ✨ New Profile Features!
-> 
-> We've upgraded your profile with new social features.
-> 
-> Here's what's new:
-> 🔹 Let others discover your profile
-> 🔹 Follow and connect with users
-> 🔹 Display your activity, trades, and collections
-> 🔹 Full control over your privacy
-> 
-> Your Privacy Matters:
-> We've already set safe defaults for you:
-> • Sensitive info stays private
-> • You decide what to share
-> 
-> [Open Settings]  [Remind Me Later]
-> 
-> View Privacy Policy
-> ```
 
-> **【Q&A】问题6："查看隐私政策"链接指向哪里？是否需要本期准备隐私政策页面？**
-> **结论**：待定，可留空。
+> **todo**：隐私政策需更新
+
 
 #### 7.2.3 按钮说明
 
 **前往设置**
-- 样式：主要按钮（Primary）
+- 样式：主要按钮（Go to Settings）
 - 行为：
   - 关闭弹窗
   - 跳转到 `/settings/privacy` 页面
   - 记录用户已查看通知（不再重复显示）
 
-> **【文案建议】前往设置按钮**
-> - **版本A**：Go to Settings
-> - **版本B**：Open Settings
-
 **稍后再说**
-- 样式：次要按钮（Secondary）
+- 样式：次要按钮（Maybe Later）
 - 行为：
   - 关闭弹窗
   - 增加查看次数计数
   - 如果查看次数 < 2，下次登录时再次显示
   - 如果查看次数 >= 2，不再显示
-
-> **【文案建议】稍后再说按钮**
-> - **版本A**：Maybe Later
-> - **版本B**：Remind Me Later
-
-> **【文案建议】查看隐私政策链接**
-> - **版本A**：View Privacy Policy
-> - **版本B**：Read our Privacy Policy
 
 
 ### 7.3 数据存储方案
@@ -565,19 +504,20 @@ your trades
 ### 8.1 路由列表
 | 路由 | 说明 | 访问权限 |
 |------|------|---------|
-| `/profile` | 个人中心（主人态） | 仅登录用户本人 |
-| `/user/:userId` | 用户主页（访客态/主人态） | 根据隐私设置控制 |
+| （研发确认）| 个人中心（主人态） | 仅登录用户本人 |
+| （研发确认）| 用户主页（访客态/主人态） | 根据隐私设置控制 |
 | `/settings/privacy` | 隐私设置页面 | 仅登录用户本人 |
 
-### 8.2 路由跳转逻辑
 
-#### 8.2.1 `/profile` 路由
-- 未登录用户访问：重定向到 `/login`
+### 8.2 跳转逻辑
+
+#### 8.2.1 
+- 未登录用户访问：重定向到登录页面
 - 已登录用户访问：展示主人态页面
 
-#### 8.2.2 `/user/:userId` 路由
+#### 8.2.2 
 - 检查 `userId` 是否为当前登录用户
-  - 是：展示主人态（与 `/profile` 相同）
+  - 是：展示主人态
   - 否：根据隐私设置展示访客态或403页面
 
 #### 8.2.3 隐私权限检查流程
@@ -614,20 +554,17 @@ profile_visibility = ?
 │                                              │
 └─────────────────────────────────────────────┘
 ```
-
 > **【文案建议】用户不存在错误页**
-> - **标题 版本A**：User Not Found
-> - **标题 版本B**：Oops! User Not Found
-> - **说明 版本A**：This user may have been deleted or the ID is incorrect.
-> - **说明 版本B**：We couldn't find this user. They may have left or the link is broken.
-> - **按钮 版本A**：Back to Home
-> - **按钮 版本B**：Go Home
+> - **标题**：User Not Found
+> - **说明**：This user may have been deleted or the ID is incorrect.
+> - **按钮**：Back to Home
 
 ---
 
 ## 十、测试用例设计
 
 ### 10.1 功能测试
+以下访问路径根据研发实际实现而定。
 
 #### 10.1.1 主人态访问
 - [ ] 访问 `/profile`，正确展示个人信息
