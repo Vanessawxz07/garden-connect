@@ -290,31 +290,21 @@
 ---
 
 ## 六、隐私设置功能详细设计
+设置中包括**隐私、在线时间**两类：原"在线时间"设置弹窗中样式和交互、数据逻辑挪到新的页面中；新增隐私设置页面
 
 ### 6.1 设置入口
+- 主人态页面右上角「SETTINGS」按钮，点击后默认跳转到 `/settings/privacy` 页面
 
-#### 6.1.1 入口位置
-- 主人态页面右上角「设置」按钮 
-- 点击后跳转到 `/settings/privacy` 页面
-- 原弹窗中设置在线时间，将所有样式和交互、数据逻辑迁到页面中，设置中包括隐私、在线时间两类，点击tab切换
-
-> **【Q&A】问题8：主人态的"设置"按钮是文字按钮还是图标按钮（齿轮）？**
-> **结论**：文字按钮"SETTINGS"。
-
-> **【文案建议】设置按钮**
-> - **版本A**：Settings
-> - **版本B**：SETTINGS
-
-#### 6.1.2 样式
-用文案+开关按钮示意该项内容模块设置打开/关闭
 
 ### 6.2 隐私设置页面布局
-双列布局（左侧导航，右侧内容）; 样式参考示意图
+双列布局（左侧导航，右侧内容）; 通过点击左列tab导航切换两类设置 
+样式参考示意图
 <img width="362" height="452" alt="局部截取_20251130_221442" src="https://github.com/user-attachments/assets/de81da5d-774a-48d9-987b-50d5febfaa3b" />
 
 ```
 ```
 
+- 
 #### 6.2.1 设置页面合规文案
 在隐私设置页面顶部增加说明卡片：
 ```
@@ -325,36 +315,27 @@
 ```
 
 > **【文案建议】隐私说明卡片**
-> - **版本A**：
 >   ```
 >   ℹ️ Privacy Notice
 >   We respect your privacy and give you full control.
 >   You decide who can see your information. We never share your data without your consent.
->   Sensitive information (like trade history) is private by default.
->   ```
-> - **版本B**：
->   ```
->   ℹ️ Your Privacy, Your Control
->   Choose what others can see on your profile.
->   We keep sensitive info private by default and never share your data without permission.
+>   Sensitive information (like Trade history, Favourites, Pet Collection) is private by default.
 >   ```
 
-#### 6.2.2 每个设置项的说明文案
+
+#### 6.2.2 隐私选项样式
+- 用文案+开关按钮示意某个tab的内容模块设置打开/关闭
+- 交易tab需独立管理交易tab下一级（发布的交易/参与的offer两类内容）的可见性，其他tab只在tab层级控制
+
+每个设置项的说明文案
 在每个设置项下方增加简短说明（灰色小字）：
-- **动态**："你发起的抽奖活动"
-- **交易记录**："你的道具交易历史，涉及敏感信息，建议仅自己可见"
-- **收藏**："你收藏的内容"
-- **宠物图鉴**："你拥有的宠物收藏"
 
 > **【文案建议】设置项说明文案**
-> - **动态 版本A**：Your giveaway activity
-> - **动态 版本B**：Giveaways you've created or joined
-> - **交易记录 版本A**：Your trade history. Contains sensitive info, we recommend keeping this private.
-> - **交易记录 版本B**：Your item trades. We suggest keeping this private for security.
-> - **收藏 版本A**：Items and content you've saved
-> - **收藏 版本B**：Your saved favorites
-> - **宠物图鉴 版本A**：Your pet collection
-> - **宠物图鉴 版本B**：Pets you own
+> - **动态**：Your giveaway activity
+> - **交易记录**：Your trade history. Contains sensitive info, we recommend keeping this private.
+> - **收藏**：Trades and other content you've saved
+> - **宠物图鉴**：Your pet collection (created from Pet Management feature)
+
 
 ### 6.3 隐私设置项详细说明
 
