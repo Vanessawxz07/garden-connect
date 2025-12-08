@@ -87,7 +87,8 @@
   
 - **奖品领取**：双方通过聊天沟通游戏中奖品交接，并上传确认交接的截图
 
-#### 5. Giveaway列表页面（本期与双节活动需求合并，即常规Giveaway列表页基础上增加活动模块，待活动结束后可下线活动模块，聚合展示日常Giveaways，具体见Jiaming需求单）
+#### 5. Giveaway列表页面
+本期与双节活动需求合并，即常规Giveaway列表页基础上增加活动模块，待活动结束后可下线活动模块，聚合展示日常Giveaways（具体见Jiaming需求单）
 - **展示维度**
   - 全站抽奖列表（按时间/热度排序）
   - 进行中/已结束分类
@@ -142,50 +143,35 @@
 
 ## 🔐 关键业务逻辑
 
-### 1. VIP用户权限管理
-```
-规则：
-- 角色必须存储在独立的user_roles表（安全要求）
-- 前期由平台运营手动指定VIP权限
-- 用户可以申请成为VIP，但需要人工审核通过后手动添加
-
-安全要求：
-- 禁止使用客户端存储（localStorage等）验证权限
-- 所有权限验证必须在服务端完成
-- 使用SECURITY DEFINER函数避免RLS递归问题
-```
-
 ### 2. 抽奖活动生命周期
 ```
 创建 → 进行中 → 开奖 → 已结束
 
 状态说明：
 - created: 刚创建，未开始
-- ongoing: 进行中，可以参与
-- drawing: 正在开奖（锁定状态）
+- ongoing: 进行中，即处于报名参与期
+- drawing: 正在开奖（锁定状态，不支持报名）——与研发讨论，如抽奖过程极短，不需要展示抽奖过程，则无需该状态，直接报名期结束时则直接抽出中奖者。
 - completed: 已完成，展示结果
-- cancelled: 已取消
+- （待确认-是否支持取消）cancelled: 已取消
 ```
 
 ### 3. 参与与开奖逻辑
 ```
 参与条件：
-1. 用户必须已登录
+1. 用户必须已登录登录账号
 2. 用户必须关注该VIP（未关注则自动关注）
 3. 抽奖活动处于"进行中"状态
 4. 用户未重复参与同一抽奖
+5. 用户并非该抽奖的创建者
 
 开奖逻辑（MVP-定时开奖）：
 1. 到达设定时间自动触发
 2. 检查有效参与者（已关注+已参与）
 3. 随机抽取指定数量获奖者
 4. 生成中奖记录
-5. 发送中奖通知
-6. 奖品自动发放
+5. 触发机制化的中奖通知
 
-未中奖处理：
-- 参与记录保留
-- 积累参与积分（future: 可兑换奖励）
+未中奖处理：保留参与记录
 ```
 
 ### 4. 领奖与交接流程
@@ -197,23 +183,24 @@
 1. 创建中奖记录（giveaway_winners表）
 2. 发送站内通知给中奖者（系统消息）
 3. 发送站内通知给发奖者（系统消息）
-4. 自动创建发奖者与中奖者的聊天会话
-5. 在聊天会话中发送首条系统消息（包含抽奖信息卡片）
+4. 自动创建发奖者与中奖者的聊天会话（参考交易成功时拉起聊天的逻辑）
+
 ```
 
 #### 4.2 聊天系统集成
 
-##### 4.2.1 系统消息通知（截图1样式）
-发送到「System Message」频道，采用橙色主题卡片样式：
+##### 4.2.1 系统消息通知
+<img width="1020" height="380" alt="局部截取_20251208_135819" src="https://github.com/user-attachments/assets/dbd48fc6-bf56-4cec-a838-f90a28734b59" />
 
-**发奖者收到的通知：**
+发送到「System Message」频道，采用橙色主题卡片样式：
+**发奖者（抽奖创建者）收到的通知：**
 ```
 🎉 Giveaway Draw Completed!                    [时间戳]
 Your giveaway "[标题]" has been drawn successfully!
 Winner: [中奖者用户名]
 Please deliver the prize in-game and confirm handover.
 
-[VIEW DETAILS]
+[VIEW DETAILS(抽奖详情页入口)]
 ```
 
 **中奖者收到的通知：**
@@ -225,9 +212,10 @@ Please contact the host to receive your prize.
 [VIEW DETAILS]
 ```
 
-##### 4.2.2 用户聊天会话（截图2样式）
-系统自动创建发奖者与中奖者的一对一聊天，首条消息为系统卡片：
+##### 4.2.2 用户聊天会话
+<img width="1059" height="529" alt="局部截取_20251208_135858" src="https://github.com/user-attachments/assets/3818bd24-b16c-435e-aab7-bacb06121ecb" />
 
+系统自动创建发奖者与中奖者的一对一聊天，包含抽奖主要信息卡片：
 ```
 +-------------------------------------------------------------+
 | Giveaway #[ID短码]                          View Details    |
@@ -238,20 +226,27 @@ Please contact the host to receive your prize.
 | [发奖者] won [奖品名称] from your giveaway.                  |
 | Please deliver the prize in-game.                            |
 |                                                              |
-|           [CONFIRM HANDOVER]     [VIEW DETAILS]              |
+|         [VIEW DETAILS]        [CONFIRM HANDOVER]             |
 +-------------------------------------------------------------+
 ```
 
 **卡片字段说明：**
-- Giveaway ID短码：取UUID前8位
+- Giveaway ID短码
 - View Details：跳转giveaway详情页
 - 奖品图片：显示中奖的道具图片
-- CONFIRM HANDOVER：点击拉起「确认交接弹窗」
 - VIEW DETAILS：跳转giveaway详情页
+- CONFIRM HANDOVER：点击拉起「确认交接弹窗」
+
 
 #### 4.3 确认交接弹窗
+发奖者与中奖者均可点击"确认交接"按钮，在弹窗中上传交接截图（发奖者必须上传图片，中奖者可选），并输入一句话（可选）。
 
-##### 4.3.1 弹窗UI设计
+| 角色 | 截图上传 | 备注填写 | 操作必要性 |
+|------|---------|---------|-----------|
+| 发奖者 | 必填 | 选填 | 必须操作确认 |
+| 中奖者 | 选填 | 选填 | 可选操作 |
+
+##### 弹窗UI设计
 ```
 +-------------------------------------------------------------+
 |                    Confirm Prize Handover                    |
@@ -272,25 +267,9 @@ Please contact the host to receive your prize.
 +-------------------------------------------------------------+
 ```
 
-##### 4.3.2 交接逻辑规则
+#### 4.4 交接二次提醒机制
 
-| 角色 | 截图上传 | 备注填写 | 操作必要性 |
-|------|---------|---------|-----------|
-| 发奖者 | 必填 | 选填 | 必须操作确认 |
-| 中奖者 | 选填 | 选填 | 可选操作 |
-
-**交接状态流转：**
-```
-pending（待交接）
-    ↓ 发奖者点击CONFIRM HANDOVER
-handover_submitted（发奖者已提交）
-    ↓ 中奖者确认（可选）或 7天后自动
-completed（交接完成）
-```
-
-#### 4.4 交接提醒机制
-
-##### 7天未操作提醒
+##### 7天未操作的二次提醒
 如果开奖后7天内双方均未操作确认交接，系统在聊天会话中推送提醒消息：
 
 ```
@@ -310,38 +289,8 @@ completed（交接完成）
 - 提醒频率：仅发送一次
 - 按钮行为：点击后拉起「确认交接弹窗」
 
-#### 4.5 交接记录存储
 
-新增 `giveaway_handovers` 表记录交接信息：
-
-```sql
-create type handover_status as enum ('pending', 'handover_submitted', 'completed');
-
-create table public.giveaway_handovers (
-    id uuid primary key default gen_random_uuid(),
-    giveaway_id uuid references public.giveaways(id) on delete cascade,
-    winner_id uuid references auth.users(id) on delete cascade,
-    
-    -- 发奖者提交
-    giver_screenshot_url text,
-    giver_note text,
-    giver_submitted_at timestamp with time zone,
-    
-    -- 中奖者提交（可选）
-    winner_screenshot_url text,
-    winner_note text,
-    winner_submitted_at timestamp with time zone,
-    
-    -- 状态
-    status handover_status default 'pending',
-    reminder_sent_at timestamp with time zone, -- 提醒发送时间
-    completed_at timestamp with time zone,
-    
-    created_at timestamp with time zone default now()
-);
-```
-
-#### 4.6 完整交接流程图
+#### 4.5 完整交接流程图
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -354,7 +303,7 @@ create table public.giveaway_handovers (
               │ 1. 创建中奖记录                │
               │ 2. 发送系统消息通知双方         │
               │ 3. 创建双方聊天会话            │
-              │ 4. 发送首条消息（抽奖卡片）     │
+              │ 4. 发送首条消息（带抽奖卡片）   │
               │ 5. 创建handover记录(pending)   │
               └───────────────────────────────┘
                               │
@@ -391,14 +340,14 @@ create table public.giveaway_handovers (
     │ 存储截图URL和备注              │
     └───────────────────────────────┘
            │
-           ▼ 中奖者确认（可选）或自动完成
+           ▼ 中奖者确认（可选）或自动完成（）
     ┌───────────────────────────────┐
     │ 更新handover状态为             │
     │ "completed"                   │
     │ 记录completed_at              │
     └───────────────────────────────┘
 ```
-
+如任一方已完成确认交接，则所有入口中"CONFIRM HANDOVER"按钮状态变为"HANDOVER CONFIRMED"，不支持点击。
 ---
 
 ## 📊 数据模型设计
