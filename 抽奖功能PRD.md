@@ -43,6 +43,10 @@
 ### P1：核心功能
 优先级：高
 
+主要流程
+<img width="1529" height="454" alt="局部截取_20251208_123956" src="https://github.com/user-attachments/assets/5060031f-0a6c-4e12-a534-a71d057ce037" />
+
+
 #### 1. VIP抽奖发起
 - **创建抽奖活动**
   - 选择奖品（支持1个or多个奖品，包括token或普通道具，跟创建交易中选择方式相同）
