@@ -520,6 +520,7 @@ create table public.giveaways (
     status giveaway_status default 'created',
     winner_count integer not null default 1, -- 中奖人数
     draw_time timestamp with time zone not null, -- 开奖时间
+    campaign_tag text, -- 关联活动标签（管理端手动配置，如"圣诞活动"，显示为标签样式，不可点击）
     created_at timestamp with time zone default now(),
     ended_at timestamp with time zone
 );
@@ -618,6 +619,7 @@ create table public.giveaway_permission_requests (
 | ended_at | 实际结束时间 | ✅ | - | - | ✅ | 开奖完成时间 |
 | countdown_text | 倒计时文案 | - | ✅ | ✅ | ✅ | 计算字段："Ends in 2h 30m" |
 | time_status | 时间状态标签 | - | ✅ | ✅ | - | "FAIR"/"ONGOING"/"ENDED" |
+| campaign_tag | 关联活动标签 | ✅ | ✅ | ✅ | ✅ | 管理端配置，标签样式显示，不可点击 |
 | **参与信息** |
 | winner_count | 中奖人数上限 | ✅ | ✅ | ✅ | ✅ | 默认1 |
 | participant_count | 当前参与人数 | - | ✅ | ✅ | ✅ | 计算字段 |
@@ -1043,6 +1045,7 @@ create table public.giveaway_permission_requests (
 | v1.0 | 2025-11-30 | 初始版本，完成MVP需求定义 | AI Product Manager |
 | v1.1 | 2025-12-05 | 与用户隐私PRD对齐：更新角色体系、权限申请入口；新增Giveaway字段表、用户旅程与逻辑图 | AI Product Manager |
 | v1.2 | 2025-12-08 | 新增奖品交接流程：聊天系统集成、确认交接弹窗、7天提醒机制、giveaway_handovers表 | AI Product Manager |
+| v1.3 | 2025-12-08 | 新增关联活动字段（campaign_tag），管理端手动配置，标签样式展示 | AI Product Manager |
 
 ---
 
