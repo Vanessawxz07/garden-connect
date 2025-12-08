@@ -374,10 +374,7 @@ Please contact the host to receive your prize.
 | creator_tags | 创建者标签 | - | ✅(3个+more) | - | ✅(最多8个) | 从user_tags表获取 |
 | is_following | 当前用户是否已关注创建者 | - | ✅ | - | ✅ | 运行时计算 |
 | **奖品信息** |
-| items | 奖品列表 | ✅ | ✅ | ✅ | ✅ | 关联giveaway_items表 |
-| item_images | 奖品图片列表 | - | ✅(首个) | ✅(首个) | ✅(全部) | 从items表获取 |
-| item_names | 奖品名称列表 | - | ✅ | ✅ | ✅ | 从items表获取 |
-| total_prizes | 奖品总数量 | - | ✅ | ✅ | ✅ | 计算字段 |
+关联token或道具数据表（需展示奖品名称、图片、value+token数量、宠物年龄、体重、变异；用道具信息卡片和弹窗）
 | **时间信息** |
 | created_at | 创建时间 | ✅ | ✅ | - | ✅ | 展示"X ago"格式 |
 | draw_time | 开奖时间 | ✅ | ✅ | ✅ | ✅ | 定时开奖触发时间 |
@@ -388,7 +385,6 @@ Please contact the host to receive your prize.
 | **参与信息** |
 | winner_count | 中奖人数上限 | ✅ | ✅ | ✅ | ✅ | 默认1 |
 | participant_count | 当前参与人数 | - | ✅ | ✅ | ✅ | 计算字段 |
-| participation_progress | 参与进度百分比 | - | ✅ | - | ✅ | 可选：用于进度条展示 |
 | is_participated | 当前用户是否已参与 | - | ✅ | - | ✅ | 运行时计算 |
 | my_participation_time | 我的参与时间 | - | - | - | ✅ | 仅已参与时显示 |
 | **中奖信息（已结束时）** |
@@ -414,7 +410,7 @@ Please contact the host to receive your prize.
 
 ### 不同场景的展示重点
 
-#### 1. 长条卡片（抽奖列表/动态Tab）
+#### 1. 长条卡片（抽奖列表/抽奖Tab）
 主要展示：创建者信息、奖品缩略、参与统计、倒计时、操作按钮
 - 适用场景：Giveaway列表页、用户主页动态Tab
 - 信息密度：中等，需快速浏览
