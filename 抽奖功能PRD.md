@@ -348,131 +348,12 @@ Please contact the host to receive your prize.
     └───────────────────────────────┘
 ```
 如任一方已完成确认交接，则所有入口中"CONFIRM HANDOVER"按钮状态变为"HANDOVER CONFIRMED"，不支持点击。
----
-
-## 📊 数据模型设计
-
-### 核心数据表
-
-#### 1. user_roles - 用户角色表
-> **说明**：角色体系详见「用户隐私设置PRD」2.1节。网站用户角色分为 `vip`（特权用户）和 `user`（普通用户，默认）。`admin`/`moderator` 为内部管理角色，不在此体现。
-
-```sql
-create type public.app_role as enum ('vip', 'user');
-
-create table public.user_roles (
-    id uuid primary key default gen_random_uuid(),
-    user_id uuid references auth.users(id) on delete cascade not null,
-    role app_role not null,
-    created_at timestamp with time zone default now(),
-    unique (user_id, role)
-);
-```
-
-#### 2. user_follows - 用户关注关系表
-```sql
-create table public.user_follows (
-    id uuid primary key default gen_random_uuid(),
-    follower_id uuid references auth.users(id) not null, -- 关注者
-    following_id uuid references auth.users(id) not null, -- 被关注者
-    created_at timestamp with time zone default now(),
-    unique (follower_id, following_id)
-);
-```
-
-#### 3. items - 道具库表
-```sql
-create table public.items (
-    id uuid primary key default gen_random_uuid(),
-    name text not null,
-    description text,
-    image_url text,
-    value numeric(10,2), -- 道具价值
-    category text, -- 道具分类
-    created_at timestamp with time zone default now()
-);
-```
-
-#### 4. giveaways - 抽奖活动表
-```sql
-create type giveaway_status as enum ('created', 'ongoing', 'drawing', 'completed', 'cancelled');
-
-create table public.giveaways (
-    id uuid primary key default gen_random_uuid(),
-    creator_id uuid references auth.users(id) not null, -- VIP用户
-    title text not null,
-    description text,
-    status giveaway_status default 'created',
-    winner_count integer not null default 1, -- 中奖人数
-    draw_time timestamp with time zone not null, -- 开奖时间
-    campaign_tag text, -- 关联活动标签（管理端手动配置，如"圣诞活动"，显示为标签样式，不可点击）
-    created_at timestamp with time zone default now(),
-    ended_at timestamp with time zone
-);
-```
-
-#### 5. giveaway_items - 抽奖奖品表
-```sql
-create table public.giveaway_items (
-    id uuid primary key default gen_random_uuid(),
-    giveaway_id uuid references public.giveaways(id) on delete cascade,
-    item_id uuid references public.items(id),
-    quantity integer default 1,
-    created_at timestamp with time zone default now()
-);
-```
-
-#### 6. giveaway_participants - 参与记录表
-```sql
-create table public.giveaway_participants (
-    id uuid primary key default gen_random_uuid(),
-    giveaway_id uuid references public.giveaways(id) on delete cascade,
-    user_id uuid references auth.users(id) on delete cascade,
-    participated_at timestamp with time zone default now(),
-    points_earned integer default 1, -- 参与积分
-    unique (giveaway_id, user_id)
-);
-```
-
-#### 7. giveaway_winners - 中奖记录表
-```sql
-create type claim_status as enum ('pending', 'claimed', 'expired');
-
-create table public.giveaway_winners (
-    id uuid primary key default gen_random_uuid(),
-    giveaway_id uuid references public.giveaways(id) on delete cascade,
-    user_id uuid references auth.users(id) on delete cascade,
-    item_id uuid references public.items(id),
-    claimed_status claim_status default 'pending',
-    claimed_at timestamp with time zone,
-    expire_at timestamp with time zone, -- 领取截止时间（7天）
-    created_at timestamp with time zone default now()
-);
-```
-
-#### 8. giveaway_permission_requests - VIP权限申请表
-```sql
-create type request_status as enum ('pending', 'approved', 'rejected');
-
-create table public.giveaway_permission_requests (
-    id uuid primary key default gen_random_uuid(),
-    user_id uuid references auth.users(id) on delete cascade,
-    name text not null,
-    contact text not null,
-    reason text not null,
-    attachments jsonb, -- 附件URLs
-    status request_status default 'pending',
-    reviewed_by uuid references auth.users(id),
-    reviewed_at timestamp with time zone,
-    created_at timestamp with time zone default now()
-);
-```
 
 ---
 
 ## 📋 Giveaway 字段表
 
-> 本节抽象出 Giveaway 的完整字段，区分业务逻辑字段与展示字段，供不同场景（长条卡片、方形卡片、详情页）选择使用。
+> 本节抽象出 Giveaway 的完整字段，区分业务逻辑字段与展示字段，供不同场景（个人中心/用户主页tab中或抽奖列表中的长条形卡片、方形卡片、抽奖详情页）选择使用。
 
 ### 字段分类说明
 - **业务逻辑字段**：后端存储、业务计算所需
@@ -888,21 +769,6 @@ create table public.giveaway_permission_requests (
 - VIP粉丝增长数
 - 奖品发放成功率
 
----
-
-## 🔄 后续迭代计划
-
-### V2.0 规划（春节版本）
-- 高级开奖方式（达到人数开奖、手动开奖）
-- 社交分享功能
-- 数据统计看板
-- 积分兑换系统
-
-### V3.0 规划（全年规划）
-- VIP等级体系
-- 付费抽奖功能
-- 联合抽奖（多VIP合作）
-- 移动端优化
 
 ---
 
@@ -936,4 +802,4 @@ create table public.giveaway_permission_requests (
 
 **文档状态**：✅ 已确认  
 **最后更新**：2025-12-08  
-**下一步行动**：开始架构设计和技术选型
+
