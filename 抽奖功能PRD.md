@@ -71,13 +71,15 @@
 
 以下为具体功能与逻辑：
 #### 1. **个人主页-有发起抽奖权限**
+<img width="2124" height="486" alt="企业微信截图_3e222f57-5aae-445d-9ac7-b2f1cbf59c92" src="https://github.com/user-attachments/assets/20a495cd-8ae6-4055-aebe-87b73fb4aff0" />
+
 - **个人主页**
   - "动态"tab中展示Giveaway列表：按开奖时间倒序，不同状态的抽奖展示对应状态标签
   - **分类展示**：
-    - **"My Giveaways"**：该用户创建的所有抽奖活动
+    - **"Published"**：该用户创建的所有抽奖活动
       - 主态：展示自己创建的抽奖，标题 "My Giveaways"
       - 客态：展示该VIP创建的抽奖，标题 "[Username]'s Giveaways"
-    - **"Participated Giveaways"**：该用户参与的抽奖活动
+    - **"Participated"**：该用户参与的抽奖活动
       - 主态：展示自己参与的抽奖，标题 "Participated Giveaways"
       - 客态：根据隐私设置决定是否可见，标题 "[Username]'s Participated Giveaways"
 
