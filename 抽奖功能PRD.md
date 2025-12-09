@@ -264,7 +264,7 @@
 ##### 4.1.1 系统消息通知
 <img width="1020" height="380" alt="局部截取_20251208_135819" src="https://github.com/user-attachments/assets/dbd48fc6-bf56-4cec-a838-f90a28734b59" />
 
-发送到「System Message」频道，采用橙色主题卡片样式：
+发送到「System Message」频道，采用橙色(或其他醒目颜色)主题卡片样式：
 **发奖者（抽奖创建者）收到的通知：**
 ```
 🎉 Giveaway Draw Completed!                    [时间戳]
