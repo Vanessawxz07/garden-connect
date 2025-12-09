@@ -53,13 +53,13 @@
 创建 → 进行中 → 开奖 → 已开奖 → 已交接/过期失效
 
 状态说明：
-- created: 刚创建，未开始
-- ongoing: 进行中，即处于报名参与期
+- created: 刚创建，未开始 → "AWAITING START"
+- ongoing: 进行中，即处于报名参与期 → "ONGOING"
 - drawing: 正在开奖（锁定状态，不支持报名）——待讨论，如抽奖过程极短，不需要展示抽奖过程，则无需该状态
-- ended: 已开奖，不管是否完成奖品交接都进入此状态
-- completed: 已交接，任一方（发奖者或中奖者）完成确认交接即变更为此状态
-- expired: 过期失效，开奖后14天内双方均未确认交接，则自动变为此状态
-- （后续-支持取消）cancelled: 已取消
+- ended: 已开奖，不管是否完成奖品交接都进入此状态 → "ENDED"
+- completed: 已交接，任一方（发奖者或中奖者）完成确认交接即变更为此状态 → "COMPLETED"
+- expired: 过期失效，开奖后14天内双方均未确认交接，则自动变为此状态 → "EXPIRED"
+- （后续-支持取消）cancelled: 已取消 → "CANCELLED"
 
 状态互斥规则：
 - ended与completed/expired互斥：开奖后先进入ended状态
@@ -72,11 +72,11 @@
   - "动态"tab中展示Giveaway列表：按开奖时间倒序，不同状态的抽奖展示对应状态标签
   - **分类展示**：
     - **"My Giveaways"**：该用户创建的所有抽奖活动
-      - 主态：展示自己创建的抽奖
-      - 客态：展示该VIP创建的抽奖（标题改为"[用户名]'s Giveaways"）
+      - 主态：展示自己创建的抽奖，标题 "My Giveaways"
+      - 客态：展示该VIP创建的抽奖，标题 "[Username]'s Giveaways"
     - **"Participated Giveaways"**：该用户参与的抽奖活动
-      - 主态：展示自己参与的抽奖
-      - 客态：根据隐私设置决定是否可见
+      - 主态：展示自己参与的抽奖，标题 "Participated Giveaways"
+      - 客态：根据隐私设置决定是否可见，标题 "[Username]'s Participated Giveaways"
   - 长条卡片样式，包含：
     - 奖品图片
     - 参与条件（如"Requirements: 50 users join"）
@@ -149,6 +149,8 @@
 - **申请入口**
   - 用户个人主页 → 动态Tab → 空状态中的按钮（参见「用户隐私设置PRD」5.1.4节）
   - 按钮文案：「Create Giveaway」
+  - 空状态文案："No giveaways yet. Want to host your own? Apply for creator access!"
+  - 副文案建议2："Start your first giveaway and grow your community!"
 
 
 #### 2. 用户参与抽奖
@@ -180,7 +182,8 @@
     - 获得粉丝铭牌（`[Avatar] Fan`样式，14天有效期）
     - 参与成功
   - 已关注则直接参与成功
-  - 展示参与成功提示Toast，方案"Joined successfully! Please remember come back to get your result."
+  - 展示参与成功提示Toast："You're in! 🎉 Good luck!"
+  - Toast建议2："Joined successfully! Come back to check your result."
 
 - **参与记录**
   - 个人中心：我参与的抽奖列表、抽奖活动状态
@@ -197,6 +200,7 @@
 
 ##### 2.1 **粉丝铭牌（Fan Badge）**
 获取方式: 用户通过参与抽奖自动关注VIP时，获得该VIP的粉丝铭牌。
+英文名称：Fan Badge
 
 ##### 展示样式
 ```
@@ -204,7 +208,7 @@
 | [VIP头像] Fan     |
 +-------------------+
 ```
-- 样式：圆形小头像 + "Fan"文字
+- 样式：圆形小头像 + "Fan" 文字
 - 头像尺寸：与其他标签高度一致
 - 点击行为：点击后跳转至该VIP的用户主页
 
@@ -218,7 +222,7 @@
 2. **粉丝铭牌**按获得时间倒序排列
 3. **显示上限**：与其他标签一起计算总数（下方为标签总数），保持原有逻辑
    - 个人主页：最多8个（超出不展示）
-   - 其他场景：3个 + "more"按钮
+   - 其他场景：3个 + "+X more" 按钮
 
 ##### 设计要点
 - 视觉上需与身份标签有所区分，体现趣味性和社交属性；头像使设计上有辨识度，吸引其他用户点击查看。鼓励用户通过参与多个抽奖收集不同VIP的粉丝铭牌
@@ -351,8 +355,8 @@ Please contact the host to receive your prize in 14 days.
 5. **中奖者失去领奖资格**：不再支持领取奖品
 
 ##### 用户提示
-- 在参与确认弹窗中需展示领奖有效期说明
-- 在中奖通知中明确标注领奖截止时间
+- 在参与确认弹窗中需展示领奖有效期说明："Prize must be claimed within 14 days after draw."
+- 在中奖通知中明确标注领奖截止时间："Claim Deadline: [Date]"
 
 
 #### 5. Giveaway列表页面
@@ -362,13 +366,14 @@ URL规则：/growagarden/giveaways/
 - **展示维度**
   - 全站抽奖列表（按时间/热度排序）
   - 进行中/已结束分类
+  - Tab文案："All" / "Ongoing" / "Ended"
 
 - **卡片设计**
   - 参考现有交易订单列表的长条卡片样式
   - 左侧：VIP头像、用户名
   - 中间：奖品缩略图、活动描述、参与条件
   - 右侧：参与人数、倒计时、操作按钮
-  - 状态标签：待开始/进行中/已结束
+  - 状态标签："AWAITING START" / "ONGOING" / "ENDED"
 
 #### 6. Giveaway详情页
 URL规则：/growagarden/giveaways/抽奖标题slug
@@ -398,15 +403,17 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | End:   Dec 15, 2025 10:00 AM                                |
 |                                                              |
 | ⏰ Draw Time: Dec 15, 2025 10:00 AM                         |
-| (or 倒计时: Ends in 2d 5h 30m)                               |
+| (or 倒计时: "Ends in 2d 5h 30m")                             |
 +-------------------------------------------------------------+
 | 👥 Participants: 156 users joined                            |
 | [参与者头像列表，最多显示10个 + "and 146 more"]               |
+| 无参与者时显示："Be the first to join!"                       |
+| 无参与者建议2："No one joined yet. Be the first!"             |
 +-------------------------------------------------------------+
 | [AWAITING START] / [JOIN NOW] / [JOINED ✓]                   |
 | [SHARE 🔗]                                                   |
 +-------------------------------------------------------------+
-| [Discover More Giveaways]  抽奖推荐模块                      |
+| Discover More Giveaways                                      |
 | 拉取最新3条未结束的抽奖                                       |
 +-------------------------------------------------------------+
 
@@ -459,6 +466,10 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 - **仅当任一方上传了截图时**才显示交接区域
 - 如双方都未上传，则隐藏整个交接模块
 - 设计要体现**真实感和社区氛围**，鼓励用户参与；截图可点击放大查看
+- 交接完成标题："Prize Handover Complete! ✨"
+- 交接完成标题建议2："Handover Successful! 🎊"
+- 交接模块底部文案："Another successful giveaway on GAG!"
+- 底部文案建议2："This trade was made possible by our awesome community!"
 
 ##### 6.4 不同状态下的详情页差异
 | 状态 | 操作按钮 | 中奖区域 | 交接区域 |
@@ -502,7 +513,20 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 3. **角色差异**：
    - 发奖者：必须上传截图才能确认交接
    - 中奖者：必选上传截图，确认操作可选
-4. **过期处理**：到期自动将所有入口按钮变为Expired状态
+4. **过期处理**：到期自动将所有入口按钮变为"Expired"状态
+
+##### 7.4 按钮文案汇总
+| 英文文案 | 使用场景 |
+|---------|---------|
+| VIEW | 查看详情（通用） |
+| JOIN NOW | 可参与时 |
+| JOINED ✓ | 已参与（禁用态） |
+| CONFIRM HANDOVER | 待确认交接 |
+| HANDOVER CONFIRMED | 已完成交接（禁用态） |
+| Expired | 已过期（禁用态，灰色） |
+| SHARE | 分享按钮 |
+| FOLLOW | 关注按钮 |
+| FOLLOWING | 已关注（禁用态） |
 
 ---
 
@@ -633,6 +657,7 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | v1.3 | 2025-12-08 | 新增关联活动字段（campaign_tag），管理端手动配置，标签样式展示 | AI Product Manager |
 | v1.4 | 2025-12-09 | 重大更新：(1) 参与确认弹窗流程 (2) 粉丝铭牌设计 (3) 抽奖时间限制30天 (4) 领奖有效期14天 (5) 状态体系调整 (6) 关联活动下拉选择 (7) 过期失效机制 | AI Product Manager |
 | v1.5 | 2025-12-09 | 文档精简：(1) 补充无参与者开奖处理逻辑 (2) 删除用户旅程与逻辑图章节 (3) 删除UI/UX设计方向章节 (4) 修正开奖状态流转逻辑 | AI Product Manager |
+| v1.6 | 2025-12-09 | 全面补充英文展示文案：状态标签、按钮文案、Toast提示、空状态文案、交接模块文案等 | AI Product Manager |
 
 ---
 
