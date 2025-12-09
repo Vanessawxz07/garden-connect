@@ -308,11 +308,6 @@ Please contact the host to receive your prize in 14 days.
 如一方已完成确认交接，则其所有入口中"UPLOAD"按钮状态变为"HANDOVER CONFIRMED"，不支持点击。
 注意：用户中心中的抽奖卡片的操作按钮状态与这里联动，任一地方操作，均统一切换状态。
 
-| 角色 | 截图上传 | 备注填写 | 操作必要性 |
-|------|---------|---------|-----------|
-| 发奖者 | 必填 | 选填 | 必须操作确认 |
-| 中奖者 | 选填 | 选填 | 可选操作 |
-
 **弹窗UI设计**
 ```
 +-------------------------------------------------------------+
@@ -325,7 +320,6 @@ Please contact the host to receive your prize in 14 days.
 +-------------------------------------------------------------+
 | Upload Screenshot *                                          |
 | [拖拽上传 或 点击选择图片]                                 |
-| (Required for prize giver / Optional for winner)             |
 +-------------------------------------------------------------+
 | Warm Words to [中奖者/发奖者昵称] (Optional)                 |
 | [文本输入框，限制100字符]                                      |
@@ -355,6 +349,8 @@ Please contact the host to receive your prize in 14 days.
 
 
 #### 5. Giveaway列表页面
+URL规则：/growagarden/giveaways/
+
 本期与双节活动需求合并，即常规Giveaway列表页基础上增加活动模块，待活动结束后可下线活动模块，聚合展示日常Giveaways（具体见Jiaming需求单）
 - **展示维度**
   - 全站抽奖列表（按时间/热度排序）
@@ -368,28 +364,29 @@ Please contact the host to receive your prize in 14 days.
   - 状态标签：待开始/进行中/已结束
 
 #### 6. Giveaway详情页
+URL规则：/growagarden/giveaways/抽奖标题slug
 
-##### 6.1 页面布局
+##### 6.1 页面布局（以下为字段示意，具体布局以视觉设计稿为准）
 ```
 +-------------------------------------------------------------+
-|                    ← Back to Giveaways                       |
+| 面包屑/Giveaway/抽奖标题                                     |
 +-------------------------------------------------------------+
-| [创建者头像]  Creator Name                                   |
-|              @username · [Official] [Creator]                |
-|              [FOLLOW] / [FOLLOWING]                          |
+| [创建者头像]  发奖者名称                                      |
+|              @username ·             [FOLLOW] / [FOLLOWING]       
+|             [标签1] [标签2]...                               |
 +-------------------------------------------------------------+
-|                                                              |
-| [大尺寸奖品图片]                                              |
-|                                                              |
-| 🎁 [奖品名称] x [数量]                                       |
-| Value: [价值]                                                |
-+-------------------------------------------------------------+
-| [活动标签]  ONGOING / ENDED / EXPIRED                        |
-|                                                              |
+| [活动状态]                                                   |
+|AWAITING START(创建至报名开始前)/ ONGOING（报名期间）/ ENDED（开奖后）|
 | [抽奖标题]                                                   |
-| [抽奖描述完整内容...]                                         |
+| [抽奖描述完整内容...]                                        | 
+| [关联活动标签，如有...]                                      |
++-------------------------------------------------------------+|  
+| [奖品图片]                                                    |
+| 🎁 [奖品名称] x [数量]                                       |
+| Value: [价值]                                               |  
+| 宠物字段（变异、年龄、重量）                                  |                                           
 +-------------------------------------------------------------+
-| 📅 Registration Period                                       |
+| 📅 Joining Period                                       |
 | Start: Dec 10, 2025 10:00 AM                                |
 | End:   Dec 15, 2025 10:00 AM                                |
 |                                                              |
@@ -399,21 +396,22 @@ Please contact the host to receive your prize in 14 days.
 | 👥 Participants: 156 users joined                            |
 | [参与者头像列表，最多显示10个 + "and 146 more"]               |
 +-------------------------------------------------------------+
-| [JOIN NOW] / [JOINED ✓] / [VIEW RESULT]                     |
+| [AWAITING START] / [JOIN NOW] / [JOINED ✓]                   |
 | [SHARE 🔗]                                                   |
 +-------------------------------------------------------------+
+| [Discover More Giveaways]  抽奖推荐模块                      |
+| 拉取最新3条未结束的抽奖                                       |
++-------------------------------------------------------------+
 
---- 以下为已结束状态时显示 ---
-
+--- 中奖者介绍：已结束/开奖状态时才显示，展示在奖品展示模块下方 ---
 +-------------------------------------------------------------+
 | 🎉 Winner                                                    |
 | [中奖者头像] Winner Name @username                           |
 | Won on: Dec 15, 2025 10:00 AM                               |
 | Claim Deadline: Dec 29, 2025 10:00 AM                       |
-| Status: [Pending / Claimed / Expired]                        |
 +-------------------------------------------------------------+
 
---- 以下为已完成交接时显示（任一方上传了截图） ---
+---交接展示：以下为已完成交接时显示（任一方上传了截图），展示在中奖者介绍下方---
 
 +-------------------------------------------------------------+
 | ✨ Prize Handover Complete!                                  |
@@ -431,9 +429,9 @@ Please contact the host to receive your prize in 14 days.
 | 区域 | 字段 | 说明 |
 |-----|-----|-----|
 | **创建者信息** | 头像、用户名、标签 | 最多显示8个标签 |
-| | 关注按钮 | 根据关注状态显示 |
-| **奖品信息** | 奖品图片（大图） | 点击可查看道具详情弹窗 |
-| | 奖品名称、数量、价值 | |
+| | 关注按钮 | 根据访客的关注状态显示 |
+| **奖品信息** | 奖品图片（大图） | hover信息卡片、点击可查看道具交易信息弹窗 |
+| | 奖品名称、数量、value | |
 | **活动信息** | 活动标签(Campaign) | 如关联了运营活动则显示 |
 | | 状态标签 | ONGOING/ENDED/COMPLETED/EXPIRED |
 | | 标题、描述 | 完整展示 |
@@ -443,7 +441,6 @@ Please contact the host to receive your prize in 14 days.
 | | 参与者头像 | 最多10个 + "and X more" |
 | **操作按钮** | JOIN NOW | 可参与时 |
 | | JOINED ✓ | 已参与（禁用态） |
-| | VIEW RESULT | 已结束时 |
 | | SHARE | 始终可见 |
 | **中奖信息** | 中奖者信息 | 仅已结束时显示 |
 | | 领奖截止时间 | |
@@ -454,18 +451,16 @@ Please contact the host to receive your prize in 14 days.
 ##### 6.3 交接展示设计要点
 - **仅当任一方上传了截图时**才显示交接区域
 - 如双方都未上传，则隐藏整个交接模块
-- 设计要体现**真实感和社区氛围**，鼓励用户参与
-- 截图可点击放大查看
-- 留言区域采用引用样式，突出用户发言
+- 设计要体现**真实感和社区氛围**，鼓励用户参与；截图可点击放大查看
 
 ##### 6.4 不同状态下的详情页差异
-
 | 状态 | 操作按钮 | 中奖区域 | 交接区域 |
 |-----|---------|---------|---------|
+| created | AWAITING START | 隐藏 | 隐藏 |
 | ongoing | JOIN NOW / JOINED | 隐藏 | 隐藏 |
-| ended（待交接） | VIEW RESULT | 显示中奖者，状态Pending | 隐藏 |
-| completed（已交接） | VIEW RESULT | 显示中奖者，状态Claimed | 显示截图和留言 |
-| expired（已过期） | VIEW RESULT | 显示中奖者，状态Expired | 隐藏 |
+| ended（待交接） | 无  | 显示中奖者，状态显示ended | 隐藏 |
+| completed（已交接） | 无  | 显示中奖者，状态ended | 显示截图和留言 |
+| expired（已过期） | 无  | 显示中奖者，状态ended | 隐藏 |
 
 #### 7. 用户中心抽奖卡片操作按钮状态
 
@@ -475,9 +470,10 @@ Please contact the host to receive your prize in 14 days.
 
 | 抽奖状态 | 交接状态 | 按钮文案 | 可操作 | 说明 |
 |---------|---------|---------|:------:|-----|
+| created | - | VIEW | ✅ | 查看详情 |
 | ongoing | - | VIEW | ✅ | 查看详情 |
 | ended | pending | CONFIRM HANDOVER | ✅ | 点击拉起交接弹窗 |
-| ended | handover_submitted (对方已确认) | HANDOVER CONFIRMED | ❌ | 禁用态 |
+| ended | handover_submitted (对方已确认) | CONFIRM HANDOVER | ✅ | 点击拉起交接弹窗 |
 | completed | completed | HANDOVER CONFIRMED | ❌ | 禁用态 |
 | expired | - | Expired | ❌ | 禁用态，灰色文字 |
 
@@ -488,7 +484,7 @@ Please contact the host to receive your prize in 14 days.
 | ongoing | - | - | JOINED | ❌ | 禁用态 |
 | ended | 否 | - | VIEW | ✅ | 查看详情 |
 | ended | 是 | pending | CONFIRM HANDOVER | ✅ | 点击拉起交接弹窗（中奖者可选上传） |
-| ended | 是 | handover_submitted | HANDOVER CONFIRMED | ❌ | 禁用态 |
+| ended | 是 | handover_submitted |CONFIRM HANDOVER | ✅ | 点击拉起交接弹窗 |
 | completed | 是 | completed | HANDOVER CONFIRMED | ❌ | 禁用态 |
 | expired | 是 | - | Expired | ❌ | 禁用态，灰色文字 |
 
@@ -498,10 +494,8 @@ Please contact the host to receive your prize in 14 days.
 2. **实时同步**：任一入口完成交接操作，所有入口按钮状态同步更新
 3. **角色差异**：
    - 发奖者：必须上传截图才能确认交接
-   - 中奖者：可选上传截图，确认操作可选
+   - 中奖者：必选上传截图，确认操作可选
 4. **过期处理**：到期自动将所有入口按钮变为Expired状态
-
-
 
 ---
 
@@ -605,7 +599,7 @@ Please contact the host to receive your prize in 14 days.
    ├─ 查看实时参与人数
    ├─ 查看粉丝增长数据
    ├─ 分享抽奖链接
-   └─ 提前结束/开奖（可选）
+
 
 4. 查看结果（已结束）
    ├─ 查看中奖者列表
