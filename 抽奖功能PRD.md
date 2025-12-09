@@ -145,10 +145,7 @@
 
 - **申请入口**
   - 用户个人主页 → 动态Tab → 空状态中的按钮（参见「用户隐私设置PRD」5.1.4节）
-  - 按钮文案：「Create Giveaway」
-  - 空状态文案："No giveaways yet. Want to host your own? Apply for creator access!"
-  - 副文案建议2："Start your first giveaway and grow your community!"
-
+ 
 
 #### 2. 用户参与抽奖
 - **发现抽奖入口**
@@ -180,7 +177,6 @@
     - 参与成功
   - 已关注则直接参与成功
   - 展示参与成功提示Toast："You're in! 🎉 Good luck!"
-  - Toast建议2："Joined successfully! Come back to check your result."
 
 - **参与记录**
   - 个人中心：我参与的抽奖列表、抽奖活动状态
@@ -229,6 +225,7 @@
 - **自动开奖机制**
   - 支持设定抽奖的报名时间范围，到报名时间截止时即为开奖时间，到时自动触发抽奖/开奖（同时）
   - 随机算法抽取获奖者（已关注且参与的用户，所有用户中奖机率相同；未来可考虑引入积分体系，增加中奖机率，本期不用）
+  - 本期不校验开奖时用户是否仍要在关注中
 
 - **开奖逻辑（MVP-定时开奖）**：
   1. 到达设定时间自动触发
@@ -241,10 +238,9 @@
 - **无参与者时的处理**：
   - 抽奖状态仍变为`ended`
   - 无中奖者记录生成
-  - 详情页显示"No participants joined this giveaway"
   - 不发送任何通知
 
-- **未中奖处理**：保留参与记录
+- **未中奖用户处理**：保留参与记录
 
 
 #### 4. 中奖通知与领取
@@ -272,7 +268,8 @@
 🎉 Giveaway Draw Completed!                    [时间戳]
 Your giveaway "[标题]" has been drawn successfully!
 Winner: [中奖者用户名]
-Please deliver the prize in-game in 14 days and confirm handover.
+Please deliver the prize in-game in **14 days** and confirm handover.
+Big thanks from Tradekitsune!
 
 [VIEW DETAILS(抽奖详情页入口)]
 ```
@@ -281,7 +278,8 @@ Please deliver the prize in-game in 14 days and confirm handover.
 ```
 🎊 Congratulations! You Won!                   [时间戳]
 You won "[奖品名称]" from [发奖者用户名]'s giveaway!
-Please contact the host to receive your prize in 14 days.
+Please contact the host to receive your prize in **14 days**.
+Claim Deadline: [Date Time]
 
 [VIEW DETAILS]
 ```
@@ -408,7 +406,7 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | 无参与者时显示："Be the first to join!"                       |
 | 无参与者建议2："No one joined yet. Be the first!"             |
 +-------------------------------------------------------------+
-| [AWAITING START] / [JOIN NOW] / [JOINED ✓]                   |
+| [AWAITING START] / [JOIN NOW] / [JOINED ✓]  /[ENDED]         |
 | [SHARE 🔗]                                                   |
 +-------------------------------------------------------------+
 | Discover More Giveaways                                      |
@@ -456,7 +454,6 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | | SHARE | 始终可见 |
 | **中奖信息** | 中奖者信息 | 仅已结束时显示 |
 | | 领奖截止时间 | |
-| | 领奖状态 | Pending / Claimed / Expired |
 | **交接展示** | 双方截图 | 仅已完成交接时显示 |
 | | 双方留言 | 增加社区氛围感 |
 
@@ -464,10 +461,9 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 - **仅当任一方上传了截图时**才显示交接区域
 - 如双方都未上传，则隐藏整个交接模块
 - 设计要体现**真实感和社区氛围**，鼓励用户参与；截图可点击放大查看
-- 交接完成标题："Prize Handover Complete! ✨"
-- 交接完成标题建议2："Handover Successful! 🎊"
-- 交接模块底部文案："Another successful giveaway on GAG!"
-- 底部文案建议2："This trade was made possible by our awesome community!"
+- 交接完成标题："Prize Handover Complete! 🎊"
+- 交接模块底部文案："Another successful giveaway on Tradekitsune!"
+
 
 ##### 6.4 不同状态下的详情页差异
 | 状态 | 操作按钮 | 中奖区域 | 交接区域 |
