@@ -91,35 +91,8 @@ ps: 机制化标签本期可以先不上，以上仅示意规划方案
 ## 四、页面布局与模块设计
 
 ### 4.1 页面整体布局
-<img width="607" height="764" alt="局部截取_20251130_221616" src="https://github.com/user-attachments/assets/1b825d04-5122-4952-abe3-035e7d461894" />
+<img width="772" height="564" alt="局部截取_20251209_195713" src="https://github.com/user-attachments/assets/95150a01-8732-4c81-be8a-8137211ffa4d" />
 
-```
-┌─────────────────────────────────────────────────────┐
-│  Navigation Bar                        │
-├─────────────────────────────────────────────────────┤
-│                                                       │
-│  ┌─────────────────────────────────────────────┐   │
-│  │         个人信息头部区域                       │   │
-│  │  ┌──────┐                                    │   │
-│  │  │ 头像  │  用户名                 标签1 标签2  │   按钮 [设置]/[关注] │
-│  │  │ 88x88│  @username                         │   │
-│  │  └──────┘  个人简介...                        │   │
-│  │                                               │   │
-│  │  关注 120  |  粉丝 340  |  注册时间 2024-01  │   │
-│  │  在线状态：● 当前在线                          │   │
-│  └─────────────────────────────────────────────┘   │
-│                                                       │
-│  ┌─────────────────────────────────────────────┐   │
-│  │ Tab导航                                       │   │
-│  │ [动态] [交易记录] [收藏] [宠物图鉴]             │   │
-│  ├─────────────────────────────────────────────┤   │
-│  │                                               │   │
-│  │         Tab内容区域                            │   │
-│  │                                               │   │
-│  └─────────────────────────────────────────────┘   │
-│                                                       │
-└─────────────────────────────────────────────────────┘
-```
 
 ### 4.2 个人信息头部区域
 以下未单独说明的，均默认为始终公开，不受隐私设置控制。
@@ -359,14 +332,17 @@ ps: 机制化标签本期可以先不上，以上仅示意规划方案
 ### 7.2 隐私设置页面布局
 双列布局（左侧导航，右侧内容）; 通过点击左列tab导航切换两类设置 
 Tab 1文案：Privacy Settings
-Tab 2文案：Trading Session Preference 
+Tab 2文案：Trading Time Preference 
 样式参考示意图
 <img width="362" height="452" alt="局部截取_20251130_221442" src="https://github.com/user-attachments/assets/de81da5d-774a-48d9-987b-50d5febfaa3b" />
 
-```
-```
+**原设置弹窗中（用户设定交易时段）的部分移到新的页面中**。主逻辑不变，小调整如下（下面未提到的文案参考现网，不变）：
+- 标题文案：Trading Time Preference 
+- 介绍文案：Select Your Available Trading Days & Time
+- 底部展示文案：使用用户已选的Days + Time进行拼接（见视觉稿），这个文案同样使用在用户主页的相应字段展示
+  <img width="743" height="287" alt="局部截取_20251209_200632" src="https://github.com/user-attachments/assets/4b1c1bba-6833-43a5-8db8-bc4ff9cdfb6e" />
+ 
 
-- 
 #### 7.2.1 设置页面合规文案
 在隐私设置页面顶部增加说明卡片：
 ```
@@ -394,13 +370,13 @@ Tab 2文案：Trading Session Preference
 
 > **【文案建议】**
 > 标题：**Privacy Settings**
-> 描述：Turn on means you want to make the content public
-> - **Giveaways**：Your giveaway activity
-> - **Trades**: The trades you've posted. 
-Suggest it be visible to all to boost trades exposure
-> - **Offers**: Offers you've made to others
-> - **Favourites**：Trades and other content you've saved
-> - **Pet Collection**：Your pet collection created from Pet Management feature
+> 描述：Turn on means you want to make the content public.
+> - **Giveaways**：Your giveaway activity.
+> - **Trades**: The trades you've posted.
+(灯泡emoji)Suggest it be visible to all to boost your trades exposure.
+> - **Offers**: Offers you've made to others.
+> - **Favourites**：Trades and other content you've saved.
+> - **Pet Collection**：Your pet collection created from Pet Management feature.
 
 
 ### 7.3 隐私设置项详细说明
@@ -415,7 +391,7 @@ Suggest it be visible to all to boost trades exposure
 **选项**：仅2种-所有人可见 / 仅自己可见
   
 - **动态**默认值：所有人可见
-- **Your trades/Your offers**默认值：仅自己可见（敏感信息）
+- **Trades/Offers**默认值：仅自己可见（敏感信息）
 - **收藏**默认值：仅自己可见
 - **宠物图鉴**默认值：仅自己可见
 
@@ -423,7 +399,7 @@ Suggest it be visible to all to boost trades exposure
 ### 7.4 隐私设置保存
 
 #### 7.4.1 保存流程
-1. 点击「Save Settings」按钮
+1. 点击「SAVE SETTINGS」按钮
 2. 按钮进入加载状态：「Saving...」
 3. 发送更新请求到后端
 4. 成功后：toast提示："Privacy settings saved"，自动返回个人中心
