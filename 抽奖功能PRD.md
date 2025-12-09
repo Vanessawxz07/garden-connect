@@ -98,15 +98,7 @@
 | [Select Prize]  ← 点击拉起道具选择器                          |
 | (Choose one item from your inventory)                        |
 +-------------------------------------------------------------+
-| Title *                                                      |
-| [Enter giveaway title...]                                    |
-| (Max 50 characters)                                          |
-+-------------------------------------------------------------+
-| Description                                                  |
-| [Describe your giveaway...]                                  |
-| (Optional, max 500 characters)                               |
-+-------------------------------------------------------------+
-| Registration Period *                                        |
+| Joining Period *                                        |
 | Start: [Date Picker] [Time Picker]                          |
 | End:   [Date Picker] [Time Picker]                          |
 | ⚠️ Draw time must be within 30 days from now                |
@@ -114,12 +106,20 @@
 | Draw Time                                                    |
 | [Auto-generated based on registration end time]  (Read-only) |
 +-------------------------------------------------------------+
-| Campaign (Optional)                                          |
+| Requirement                                                  |
+| ✓ Follow you to participate (Default, can't be changed)    |
++-------------------------------------------------------------+
+| Title *                                                      |
+| [Enter giveaway title...]                                    |
+| (Max 50 characters)                                          |
++-------------------------------------------------------------+
+| Description                                                  |
+| [Describe your giveaway...]                                  |
+| (Optional, max 100 characters)                               |
++-------------------------------------------------------------+
+| Related Campaign (Optional)                                  |
 | [Select Campaign ▼]                                          |
 | (Link to an ongoing platform campaign)                       |
-+-------------------------------------------------------------+
-| Requirement                                                  |
-| ✓ Follow you to participate (Default, cannot be changed)    |
 +-------------------------------------------------------------+
 |                    [CANCEL]    [CREATE]                      |
 +-------------------------------------------------------------+
@@ -128,10 +128,10 @@
 **字段说明：**
 | 字段 | 必填 | 说明 |
 |-----|-----|-----|
-| Prize | ✅ | 从道具库选择，支持token或普通道具 |
+| Prize | ✅ | 使用道具选择组件，支持token或普通道具 |
 | Title | ✅ | 活动标题，限50字符 |
 | Description | ❌ | 活动描述，限500字符 |
-| Registration Period | ✅ | 报名时间段，精确到分钟 |
+| Joining Period | ✅ | 报名时间段，精确到分钟 |
 | Draw Time | 自动 | 根据报名截止时间自动生成，不可修改 |
 | Campaign | ❌ | 下拉选择运营预配置的活动名称 |
 | Requirement | 默认 | 本期固定为"关注发奖者"，不可更改 |
@@ -141,6 +141,7 @@
 - **查看抽奖活动**
   - 查看活动参与人数统计、活动状态等（用户中心动态tab、抽奖详情页）
   - （mvp阶段先不支持取消或编辑抽奖，后续再加-如报名开始之前可支持取消或修改）
+
 
 ##### 1.3 **个人主页-无抽奖权限**
 > **说明**：VIP角色和抽奖功能权限由运营在管理后台授予，普通用户可通过Discord频道申请。
