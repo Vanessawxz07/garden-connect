@@ -240,7 +240,7 @@
 - **无参与者时的处理**：
   - 抽奖状态仍变为`ended`
   - 无中奖者记录生成
-  - 详情页显示"0 winners"
+  - 详情页显示"No participants joined this giveaway"
   - 不发送任何通知
 
 - **未中奖处理**：保留参与记录
@@ -383,7 +383,7 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 |             [标签1] [标签2]...                               |
 +-------------------------------------------------------------+
 | [活动状态]                                                   |
-|AWAITING START(创建至报名开始前)/ ONGOING（报名期间）/ ENDED（开奖后）|
+| AWAITING START / ONGOING / ENDED                            |
 | [抽奖标题]                                                   |
 | [抽奖描述完整内容...]                                        | 
 | [关联活动标签，如有...]                                      |
@@ -451,7 +451,7 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | | SHARE | 始终可见 |
 | **中奖信息** | 中奖者信息 | 仅已结束时显示 |
 | | 领奖截止时间 | |
-| | 领奖状态 | Pending/Claimed/Expired |
+| | 领奖状态 | Pending / Claimed / Expired |
 | **交接展示** | 双方截图 | 仅已完成交接时显示 |
 | | 双方留言 | 增加社区氛围感 |
 
