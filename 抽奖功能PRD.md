@@ -47,6 +47,8 @@
 **主要流程**
 <img width="1529" height="454" alt="局部截取_20251208_123956" src="https://github.com/user-attachments/assets/5060031f-0a6c-4e12-a534-a71d057ce037" />
 
+**抽奖卡片示例**
+<img width="973" height="312" alt="局部截取_20251209_140915" src="https://github.com/user-attachments/assets/7652f799-ff8c-418a-a274-a43abaef1c4d" />
 
 #### 抽奖活动生命周期-状态定义
 ```
@@ -77,13 +79,7 @@
     - **"Participated Giveaways"**：该用户参与的抽奖活动
       - 主态：展示自己参与的抽奖，标题 "Participated Giveaways"
       - 客态：根据隐私设置决定是否可见，标题 "[Username]'s Participated Giveaways"
-  - 长条卡片样式，包含：
-    - 奖品图片
-    - 参与条件（如"Requirements: 50 users join"）
-    - 参与进度条
-    - 当前参与人数
-    - "VIEW"按钮进入详情页；发起者不能参加本人的抽奖，因此不展示"JOIN NOW"的参与按钮
-    - 分享按钮
+
 
 ##### 1.2 VIP抽奖发起
 - **创建抽奖活动**：拉起抽奖配置弹窗
@@ -370,9 +366,10 @@ URL规则：/growagarden/giveaways/
 
 - **卡片设计**
   - 参考现有交易订单列表的长条卡片样式
-  - 左侧：VIP头像、用户名
-  - 中间：奖品缩略图、活动描述、参与条件
-  - 右侧：参与人数、倒计时、操作按钮
+  - 顶部：状态、倒计时
+  - 左侧：头像、用户名
+  - 中间：奖品缩略图、活动描述
+  - 右侧：参与人数、操作按钮
   - 状态标签："AWAITING START" / "ONGOING" / "ENDED"
 
 #### 6. Giveaway详情页
@@ -538,7 +535,7 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 - **业务逻辑字段**：后端存储、业务计算所需
 - **展示字段**：前端UI展示所需，部分为计算/派生字段
 
-### 完整字段表
+### 字段表（非全部枚举，以下字段名、数据表仅作示意，具体由研发根据实际已有数据表和命名规则而定）
 
 | 字段名 | 字段说明 | 业务逻辑 | 长条卡片 | 方形卡片(日历hover) | 详情页 | 备注 |
 |--------|----------|:--------:|:--------:|:-------------------:|:------:|------|
@@ -548,11 +545,10 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | description | 活动描述/说明 | ✅ | 摘要 | - | ✅完整 | 限制500字符 |
 | status | 活动状态 | ✅ | ✅ | ✅ | ✅ | created/ongoing/drawing/ended/completed/expired/cancelled |
 | **创建者信息** |
-| creator_id | 创建者用户ID | ✅ | - | - | - | 关联user表 |
+| ？？ | 创建者用户ID | ✅ | - | - | - | 关联user表 |
 | creator_avatar | 创建者头像URL | - | ✅ | ✅ | ✅ | 从user表获取 |
 | creator_name | 创建者用户名 | - | ✅ | ✅ | ✅ | 从user表获取 |
 | creator_tags | 创建者标签 | - | ✅(3个+more) | - | ✅(最多8个) | 从user_tags表获取 |
-| is_following | 当前用户是否已关注创建者 | - | ✅ | - | ✅ | 运行时计算 |
 | **奖品信息** |
 关联token或道具数据表（需展示奖品名称、图片、value+token数量、宠物年龄、体重、变异；用道具信息卡片和弹窗）
 | **时间信息** |
@@ -560,7 +556,7 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | draw_time | 开奖时间 | ✅ | ✅ | ✅ | ✅ | 定时开奖触发时间 |
 | ended_at | 实际结束时间 | ✅ | - | - | ✅ | 开奖完成时间 |
 | countdown_text | 倒计时文案 | - | ✅ | ✅ | ✅ | 计算字段："Ends in 2h 30m" |
-| time_status | 时间状态标签 | - | ✅ | ✅ | - | "FAIR"/"ONGOING"/"ENDED" |
+| time_status | 时间状态标签 | - | ✅ | ✅ | - | "AWAITING START"/"ONGOING"/"ENDED" |
 | campaign_tag | 关联活动标签 | ✅ | ✅ | ✅ | ✅ | 管理端配置，标签样式显示，不可点击 |
 | **参与信息** |
 | winner_count | 中奖人数上限 | ✅ | ✅ | ✅ | ✅ | 默认1 |
@@ -610,23 +606,16 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 
 ### 核心指标
 1. **抽奖活跃度**
-   - 目标：每周至少10个VIP创建抽奖
    - 目标：平均每个抽奖吸引50+用户参与
 
 2. **用户参与度**
-   - 目标：用户参与抽奖转化率 > 30%
-   - 目标：通过抽奖带来的新关注转化率 > 50%
-
-3. **系统稳定性**
-   - 目标：定时开奖成功率 > 99%
-   - 目标：页面加载时间 < 2秒
+   - 目标：聚合页列表中抽奖卡片曝光点击率 > 30%
 
 ### 数据监控
 - 每日活跃抽奖数
 - 用户参与次数
 - VIP粉丝增长数
 - 奖品发放成功率
-
 
 ---
 
