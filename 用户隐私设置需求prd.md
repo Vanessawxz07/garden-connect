@@ -130,7 +130,8 @@ ps: 机制化标签本期可以先不上，以上仅示意规划方案
 
 
 #### 4.2.2 用户名与用户ID
-- **用户名**：大号字体，粗体，显示在头像右侧
+- **用户名**：userName；大号字体，粗体，显示在头像右侧
+- **用户ID**: robloxOpenId（roblox平台的唯一id）；唯一性
 
 
 #### 4.2.3 用户标签
@@ -161,50 +162,47 @@ ps: 机制化标签本期可以先不上，以上仅示意规划方案
 > **结论**：后端过滤，初期mvp仅需要应用现有的聊天消息黑词屏蔽策略。命中黑词则不支持提交简介内容，报错通知也复用现有逻辑。
 
 
-#### 4.2.5 统计数据
-（基础文案已有，考虑如何优化，以增加用户信任度（交易数据、信息如何解读更直观，topxx%的用户）
 
-**交易数据**
-现网已有逻辑：
-- Successful Trades: X
-- Total Trades: Y
-- Pets Owned: Z
-- 纠纷数: Z (新增字段-目前直接使用该用户被举报的次数，该字段需加信息图标，增加tooltip提示"交易中report的次数")
-
-**粉丝数**
-- **显示格式**：`粉丝 340`
-> 【文案建议】Followers
-
-**关注数**
-- **显示格式**：`关注 120`
-> 【文案建议】Following
+#### 4.2.5 其他字段
   
 **注册时间**
 - **显示格式**：`注册时间 年月日`（精确到日）
 > 【文案建议】Joined
 
-
-#### 4.2.6 在线状态
-- **显示格式**：`● 当前在线` / `○ 离线`
+**在线状态**
 - **在线判定**：用当前默认逻辑
-- **偏好在线时间**：用户设置常在线时间段（现网已有逻辑，调整展示位置）
-
+- **偏好在线时间**：用户设置常在线时间段（现网已有逻辑，调整展示位置）；使用DAY+TIME进行拼接（如视觉稿）
 > **【文案建议】在线状态**
 > - **在线**：Online now
 > - **离线**：Offline
+
+**粉丝数**
+> 【文案建议】Followers
+
+**关注数**
+> 【文案建议】Following
+
+**交易数据**
+现网已有逻辑：
+- Completed Trades: xx (新增：交易数据表现-Top xx%，表示该数据在站内代表什么水平，以提升用户交易信任度；带tooltip提示，文案待定；待与研发讨论展示逻辑) 
+<img width="242" height="85" alt="局部截取_20251209_192911" src="https://github.com/user-attachments/assets/2152c503-1636-48d9-99a1-92698d558da0" />
+ - Successful Trades: xx 
+- Pets Owned: xx
 
 
 ### 4.3 Tab导航设计
 
 #### 4.3.1 Tab列表
-1. **动态**（本次实现）
-2. **交易记录**（已有tab）
-3. **收藏**（V2迭代，本次占位）
-4. **宠物图鉴**（V2迭代，本次占位）
+1. **动态**（本次实现--->本期只上抽奖功能，因此动态tab文案暂时先用"Giveaways"，下文中动态tab = Giveaways tab）
+2. **交易记录-我发布的交易**（已有内容）
+3. **交易记录-我提交的offer**（V2迭代，本次占位）
+4. **收藏**（V2迭代，本次占位）
+5. **宠物图鉴**（V2迭代，本次占位）
 
 > **【文案建议】Tab名称**
-> - **动态**：Feed
-> - **交易记录**：Trades
+> - **动态**：Giveaways
+> - **交易记录-我发布的交易**：Trades
+> - **交易记录-我提交的offer**：Offers
 > - **收藏**：Favorites
 > - **宠物图鉴**：Pet Collection
 
@@ -251,7 +249,7 @@ ps: 机制化标签本期可以先不上，以上仅示意规划方案
   1. 用户在动态Tab空状态点击「Create Giveaway」
   2. 系统检测用户是否有 `create_giveaway` 权限
   3. 无权限：弹窗提示需申请（标题+描述+取消和前往按钮），引导跳转Discord频道申请
-  4. 有权限：进入创建抽奖流程
+  4. 有权限：进入创建抽奖流程，拉起创建抽奖弹窗（后续流程详见抽奖需求prd）
 
 - **审核流程**：用户在Discord频道提交申请，平台运营人工审核,通过后由运营在管理后台为用户添加抽奖权限
 
@@ -260,17 +258,19 @@ ps: 机制化标签本期可以先不上，以上仅示意规划方案
 - **可配置**：在隐私设置中关闭开关（即访客不可见）
 
 #### 5.1.6 访客态访问被限制时的展示
-- tab可点击，但内容区域显示锁定图片（待设计，AI生成即可）+提示文案，示意未开放查看权限，而非实际内容
+- tab可点击，但内容区域 显示锁定图片（待设计，AI生成即可）+提示文案，示意未开放查看权限，而非实际内容
 > **【文案建议】访客态访问被限制时**
-> - **提示**：This content is private.
+> - **提示**：This content is private. 
 
 
-### 5.2 交易记录 Tab
+### 5.2 交易记录（Trades/Offers） Tab
 
 #### 5.2.1 内容说明
-展示用户的Roblox道具交易记录，增加支持按自己发布"My Trades"、参与的交易"My Offers"分类，并复用搜索、排序等公共组件。
-- **My Trades**：用原逻辑，本期暂不新增其他优化。后续迭代增加不同交易状态的分类。
-- **My Offers**：新增，展示用户所有提交了offer的open offer订单list，使用订单列表组件。已经结束/关闭的订单，按钮分别展示"Closed/Complete"
+- 展示用户的Roblox道具交易记录，增加按自己发布"Trades"、参与的交易"Offers"分类为2个tab
+- 后续优化中会复用搜索、排序等公共组件，本期mvp中只实现Trades，直接复用原有逻辑和公共组件订单列表的样式
+- Offers仍使用COMING SOON占位
+<img width="1113" height="479" alt="局部截取_20251209_193315" src="https://github.com/user-attachments/assets/29e20387-7b09-441e-a286-b598645350b0" />
+
 
 #### 5.2.2 默认隐私设置
 - **默认**：仅自己可见，支持手动开放
@@ -284,6 +284,7 @@ ps: 机制化标签本期可以先不上，以上仅示意规划方案
 
 #### 5.3.2 占位实现
 - 显示"Coming soon..."
+<img width="840" height="278" alt="局部截取_20251209_193627" src="https://github.com/user-attachments/assets/8be49637-8008-4c47-b748-5ab90b57d27a" />
 
 > **【文案建议】Tab内容**
 > - **占位**：This feature is coming soon. Stay tuned!
@@ -322,7 +323,7 @@ ps: 机制化标签本期可以先不上，以上仅示意规划方案
 - 图标+文案：「Followed」
 - Hover时显示：「Unfollow」取消关注
 
-**加载状态**（如耗时少则不需要）
+**加载状态**
 - 文案：「Loading...」
 - 按钮禁用，显示loading spinner
 
@@ -344,7 +345,7 @@ ps: 机制化标签本期可以先不上，以上仅示意规划方案
 #### 6.1.4 取消关注确认
 - Hover「Followed」按钮时，文案变为「Unfollow」，背景变色
 - 点击按钮后执行取消关注操作
-- Toast提示：Unfollowed @username
+- Toast提示："Unfollowed @username"
 
 ---
 
@@ -357,6 +358,8 @@ ps: 机制化标签本期可以先不上，以上仅示意规划方案
 
 ### 7.2 隐私设置页面布局
 双列布局（左侧导航，右侧内容）; 通过点击左列tab导航切换两类设置 
+Tab 1文案：Privacy Settings
+Tab 2文案：Trading Session Preference 
 样式参考示意图
 <img width="362" height="452" alt="局部截取_20251130_221442" src="https://github.com/user-attachments/assets/de81da5d-774a-48d9-987b-50d5febfaa3b" />
 
@@ -392,9 +395,10 @@ ps: 机制化标签本期可以先不上，以上仅示意规划方案
 > **【文案建议】**
 > 标题：**Privacy Settings**
 > 描述：Turn on means you want to make the content public
-> - **Feeds**：Your giveaway activity
-> - **Your trades**: Suggest it be visible to all to boost trades exposure
-> - **Your offers**: Open offers you've made
+> - **Giveaways**：Your giveaway activity
+> - **Trades**: The trades you've posted. 
+Suggest it be visible to all to boost trades exposure
+> - **Offers**: Offers you've made to others
 > - **Favourites**：Trades and other content you've saved
 > - **Pet Collection**：Your pet collection created from Pet Management feature
 
