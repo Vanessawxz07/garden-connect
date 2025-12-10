@@ -119,7 +119,7 @@
 | 区域 | 主人态空状态 | 访客态空状态 |
 |------|-------------|-------------|
 |发起抽奖(Published) | "No giveaways yet. Start your first one!" + 「CREATE GIVEAWAYS」按钮 | "No giveaways from this user yet." |
-|参与的抽奖(Participated) | "You haven't joined any giveaways yet." +  | "No participated giveaways." + 「CHECK GIVEAWAYS」按钮|
+|参与的抽奖(Participated) | "You haven't joined any giveaways yet." + 「CHECK GIVEAWAYS」 | "No participated giveaways." + 「CHECK GIVEAWAYS」按钮|
 
 - 「CREATE GIVEAWAYS」按钮:（交互见1.3部分）
 - 「CHECK GIVEAWAYS」按钮：点击跳转giveaway聚合页
