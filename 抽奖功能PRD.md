@@ -67,7 +67,9 @@
 - ended与completed/expired互斥：开奖后先进入ended状态
 - completed与expired互斥：以是否完成交接区分，只能存在一个
 ```
-注意：所有外显的时间应统一，与value一样都需要转为UTC时间
+注意：
+- 前端外显的状态名称只有"AWAITING START/ONGOING/ENDED"；completed/expired仅为后端内部状态，不影响前端状态标签展示，只要开奖后统一显示"ENDED"
+- 所有外显的时间应统一，与value一样都需要转为UTC时间
 
 以下为具体功能与逻辑：
 #### 1. **个人主页-有发起抽奖权限**
