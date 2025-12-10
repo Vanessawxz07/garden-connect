@@ -194,42 +194,17 @@ ps: 机制化标签本期可以先不上，以上仅示意规划方案
 - 新表： `giveaways` 表
 - 按giveaway抽奖时间倒序排列展示，最晚的排最上方
 
-#### 5.1.3 展示内容
-- 使用 `GiveawayCard` 卡片组件
-- 卡片布局：瀑布流式长条卡片，响应式
-- 支持数字分页切换（使用组件），默认单页xx个活动（待视觉稿确认，初定8个）
+#### 5.1.3 展示内容与交互
+> **详细说明**：卡片组件、布局、分类展示（Published/Participated）、空状态文案、创建抽奖与权限检查等具体逻辑，详见「抽奖功能PRD」第三章第1节"个人主页-动态Tab中的Giveaway展示"。
 
-#### 5.1.4 分类展示与空状态
-
-**分类展示规则**：
-- 始终展示两个独立区域（二级tab）：发布的"Published" 和 参与的"Participated"
-- 两个区域各自独立处理空状态
-
-**空状态文案**：
-| 区域 | 主人态空状态 | 访客态空状态 |
-|------|-------------|-------------|
-| Published | "No giveaways yet. Start your first one!" + 「Create Giveaway」按钮 | "No giveaways from this user yet." |
-| Participated | "You haven't joined any giveaways yet." | "No participated giveaways to show." |
-
-**点击创建后流程**（主人态-My Giveaways区域）：
-1. 用户点击「Create Giveaway」按钮
-2. 系统检测用户是否有 `create_giveaway` 权限
-3. **无权限**：弹窗提示需申请，引导跳转Discord频道申请
-   - 弹窗标题：Want to Host Giveaways?
-   - 描述：Ready to share amazing items with the community? Apply for giveaway permission on our Discord - only takes minutes!
-   - 按钮：Maybe Later（取消） / Go to Discord（确认）     
-4. **有权限**：进入创建抽奖流程，拉起创建抽奖弹窗（后续流程详见抽奖需求prd）
-
-- **审核流程**：用户在Discord频道提交申请，平台运营人工审核，通过后由运营在管理后台为用户添加抽奖权限
-
-#### 5.1.5 默认隐私设置
+#### 5.1.4 默认隐私设置
 - **默认**：所有人可见
 - **可配置**：在隐私设置中关闭开关（即访客不可见）
 
-#### 5.1.6 访客态访问被限制时的展示
-- tab可点击，但内容区域 显示锁定图片（待设计，AI生成即可）+提示文案，示意未开放查看权限，而非实际内容
+#### 5.1.5 访客态访问被限制时的展示
+- tab可点击，但内容区域显示锁定图片（待设计，AI生成即可）+提示文案，示意未开放查看权限，而非实际内容
 > **【文案建议】访客态访问被限制时**
-> - **提示**：This content is private. 
+> - **提示**：This content is private.
 
 
 ### 5.2 交易记录（Trades/Offers） Tab
