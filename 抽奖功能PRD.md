@@ -72,21 +72,71 @@
 - 所有外显的时间应统一，与value一样都需要转为UTC时间
 
 以下为具体功能与逻辑：
-#### 1. **个人主页-有发起抽奖权限**
+
+#### 1. 个人主页-动态Tab中的Giveaway展示
+
+> **说明**：个人主页动态Tab用于展示用户的抽奖活动，包括创建的抽奖和参与的抽奖。本期动态Tab文案暂时使用"Giveaways"。
+
 <img width="2124" height="486" alt="企业微信截图_3e222f57-5aae-445d-9ac7-b2f1cbf59c92" src="https://github.com/user-attachments/assets/20a495cd-8ae6-4055-aebe-87b73fb4aff0" />
 
-- **个人主页**
-  - "动态"tab中展示Giveaway列表：按开奖时间倒序，不同状态的抽奖展示对应状态标签
-  - **分类展示**：
-    - **"Published"**：该用户创建的所有抽奖活动
-      - 主态：展示自己创建的抽奖，标题 "My Giveaways"
-      - 客态：展示该VIP创建的抽奖，标题 "[Username]'s Giveaways"
-    - **"Participated"**：该用户参与的抽奖活动
-      - 主态：展示自己参与的抽奖，标题 "Participated Giveaways"
-      - 客态：根据隐私设置决定是否可见，标题 "[Username]'s Participated Giveaways"
+##### 1.1 展示内容与布局
+- 使用 `GiveawayCard` 卡片组件
+- 卡片布局：瀑布流式长条卡片，响应式
+- 支持数字分页切换（使用组件），默认单页8个活动（待视觉稿确认）
+- 按开奖时间倒序排列，不同状态的抽奖展示对应状态标签
 
+##### 1.2 分类展示与空状态
 
-##### 1.2 VIP抽奖发起
+**分类展示规则**：
+- 始终展示两个独立区域："My Giveaways" 和 "Participated Giveaways"
+- 两个区域垂直排列，各自独立处理空状态
+- 每个区域有独立的分页
+
+**布局说明**：
+```
++-------------------------------------------------------------+
+| [Published] [Participated]  ← 二级Tab切换                   |
++-------------------------------------------------------------+
+| My Giveaways / [Username]'s Giveaways                        |
+| [GiveawayCard] [GiveawayCard] ...                           |
+| 或 空状态提示                                                |
++-------------------------------------------------------------+
+| Participated Giveaways / [Username]'s Participated Giveaways |
+| [GiveawayCard] [GiveawayCard] ...                           |
+| 或 空状态提示                                                |
++-------------------------------------------------------------+
+```
+
+**分类说明**：
+- **"Published"**：该用户创建的所有抽奖活动
+  - 主态：展示自己创建的抽奖，标题 "My Giveaways"
+  - 客态：展示该VIP创建的抽奖，标题 "[Username]'s Giveaways"
+- **"Participated"**：该用户参与的抽奖活动
+  - 主态：展示自己参与的抽奖，标题 "Participated Giveaways"
+  - 客态：根据隐私设置决定是否可见，标题 "[Username]'s Participated Giveaways"
+
+**空状态文案**：
+| 区域 | 主人态空状态 | 访客态空状态 |
+|------|-------------|-------------|
+| My Giveaways | "No giveaways yet. Start your first one!" + 「Create Giveaway」按钮 | "No giveaways from this user yet." |
+| Participated Giveaways | "You haven't joined any giveaways yet." | "No participated giveaways to show." |
+
+##### 1.3 创建抽奖与权限检查
+
+> **说明**：VIP角色和抽奖功能权限由运营在管理后台授予，普通用户可通过Discord频道申请。
+
+**点击创建流程**（主人态-My Giveaways区域）：
+1. 用户点击「Create Giveaway」按钮
+2. 系统检测用户是否有 `create_giveaway` 权限
+3. **无权限**：弹窗提示需申请，引导跳转Discord频道申请
+   - 弹窗标题：Want to Host Giveaways?
+   - 描述：Ready to share amazing items with the community? Apply for giveaway permission on our Discord - only takes minutes!
+   - 按钮：Maybe Later（取消） / Go to Discord（确认）     
+4. **有权限**：进入创建抽奖流程，拉起创建抽奖弹窗（见1.4节）
+
+- **审核流程**：用户在Discord频道提交申请，平台运营人工审核，通过后由运营在管理后台为用户添加抽奖权限
+
+##### 1.4 VIP抽奖发起
 - **创建抽奖活动**：拉起抽奖配置弹窗
 
 **创建抽奖弹窗UI设计**
@@ -142,13 +192,6 @@
 - **查看抽奖活动**
   - 查看活动参与人数统计、活动状态等（用户中心动态tab、抽奖详情页）
   - （mvp阶段先不支持取消或编辑抽奖，后续再加-如报名开始之前可支持取消或修改）
-
-
-##### 1.3 **个人主页-无抽奖权限**
-> **说明**：VIP角色和抽奖功能权限由运营在管理后台授予，普通用户可通过Discord频道申请。
-
-- **申请入口**
-  - 用户个人主页 → 动态Tab → 空状态中的按钮（参见「用户隐私设置PRD」5.1.4节）
  
 
 #### 2. 用户参与抽奖
