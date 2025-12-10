@@ -90,6 +90,7 @@
 **分类展示规则**：
 - 始终展示两个独立区域："Published" 和 "Participated"
 - 两个区域各自独立处理空状态；每个区域有独立的分页
+- 用户以主人态/访客态进入用户主页时，默认优先展示Giveaways的Participated tab内容
 
 **分类说明**：
 - **"Published"**：该用户创建的所有抽奖活动
@@ -117,8 +118,11 @@
 **空状态文案**：（无数据时的兜底）
 | 区域 | 主人态空状态 | 访客态空状态 |
 |------|-------------|-------------|
-|发起抽奖 | "No giveaways yet. Start your first one!" + 「Create Giveaway」按钮 | "No giveaways from this user yet." |
-|参与的抽奖 | "You haven't joined any giveaways yet." | "No participated giveaways." |
+|发起抽奖(Published) | "No giveaways yet. Start your first one!" + 「CREATE GIVEAWAYS」按钮 | "No giveaways from this user yet." |
+|参与的抽奖(Participated) | "You haven't joined any giveaways yet." +  | "No participated giveaways." + 「CHECK GIVEAWAYS」按钮|
+
+- 「CREATE GIVEAWAYS」按钮:（交互见1.3部分）
+- 「CHECK GIVEAWAYS」按钮：点击跳转giveaway聚合页
 
 
 ##### 1.3 创建抽奖与权限检查
@@ -126,7 +130,7 @@
 > **说明**：VIP角色和抽奖功能权限由运营在管理后台授予，普通用户可通过Discord频道申请。
 
 **点击创建流程**（主人态-Published区域）：
-1. 用户点击「Create Giveaway」按钮
+1. 用户点击「CREATE GIVEAWAYS」按钮
 2. 系统检测用户是否有 `create_giveaway` 权限
 3. **无权限**：弹窗提示需申请，引导跳转Discord频道申请
    - 弹窗标题：Want to Host Giveaways?
