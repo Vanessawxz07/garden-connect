@@ -1,4 +1,4 @@
-# 抽奖功能产品需求文档 (PRD) v1.6
+# 抽奖功能产品需求文档 (PRD) v1.7
 
 ## 📋 一、概述
 
@@ -83,49 +83,49 @@
 - 使用 `GiveawayCard` 卡片组件
 - 卡片布局：瀑布流式长条卡片，响应式
 - 支持数字分页切换（使用组件），默认单页8个活动（待视觉稿确认）
-- 按开奖时间倒序排列，不同状态的抽奖展示对应状态标签
+- 按开奖时间倒序排列（越早的排下方），不同状态的抽奖展示对应状态标签
 
 ##### 1.2 分类展示与空状态
 
 **分类展示规则**：
-- 始终展示两个独立区域："My Giveaways" 和 "Participated Giveaways"
-- 两个区域垂直排列，各自独立处理空状态
-- 每个区域有独立的分页
+- 始终展示两个独立区域："Published" 和 "Participated"
+- 两个区域各自独立处理空状态；每个区域有独立的分页
 
+**分类说明**：
+- **"Published"**：该用户创建的所有抽奖活动
+  - 主态：展示自己创建的抽奖，小标题 "My Giveaways"
+  - 客态：展示该用户创建的抽奖，根据隐私设置决定是否可见，标题 "[Username]'s Giveaways"
+- **"Participated"**：该用户参与的抽奖活动
+  - 主态：展示自己参与的抽奖，标题 "Participated Giveaways"
+  - 客态：根据隐私设置决定是否可见，标题与上同
+    
 **布局说明**：
 ```
 +-------------------------------------------------------------+
 | [Published] [Participated]  ← 二级Tab切换                   |
 +-------------------------------------------------------------+
-| My Giveaways / [Username]'s Giveaways                        |
-| [GiveawayCard] [GiveawayCard] ...                           |
+| （主态小标题）My Giveaways / （客态）[Username]'s Giveaways  |
+| [GiveawayCard] ...                                          |
 | 或 空状态提示                                                |
 +-------------------------------------------------------------+
-| Participated Giveaways / [Username]'s Participated Giveaways |
-| [GiveawayCard] [GiveawayCard] ...                           |
+| （主客态小标题）Participated Giveaways                       |
+| [GiveawayCard]...                                           |
 | 或 空状态提示                                                |
 +-------------------------------------------------------------+
 ```
 
-**分类说明**：
-- **"Published"**：该用户创建的所有抽奖活动
-  - 主态：展示自己创建的抽奖，标题 "My Giveaways"
-  - 客态：展示该VIP创建的抽奖，标题 "[Username]'s Giveaways"
-- **"Participated"**：该用户参与的抽奖活动
-  - 主态：展示自己参与的抽奖，标题 "Participated Giveaways"
-  - 客态：根据隐私设置决定是否可见，标题 "[Username]'s Participated Giveaways"
-
-**空状态文案**：
+**空状态文案**：（无数据时的兜底）
 | 区域 | 主人态空状态 | 访客态空状态 |
 |------|-------------|-------------|
-| My Giveaways | "No giveaways yet. Start your first one!" + 「Create Giveaway」按钮 | "No giveaways from this user yet." |
-| Participated Giveaways | "You haven't joined any giveaways yet." | "No participated giveaways to show." |
+|发起抽奖 | "No giveaways yet. Start your first one!" + 「Create Giveaway」按钮 | "No giveaways from this user yet." |
+|参与的抽奖 | "You haven't joined any giveaways yet." | "No participated giveaways." |
+
 
 ##### 1.3 创建抽奖与权限检查
 
 > **说明**：VIP角色和抽奖功能权限由运营在管理后台授予，普通用户可通过Discord频道申请。
 
-**点击创建流程**（主人态-My Giveaways区域）：
+**点击创建流程**（主人态-Published区域）：
 1. 用户点击「Create Giveaway」按钮
 2. 系统检测用户是否有 `create_giveaway` 权限
 3. **无权限**：弹窗提示需申请，引导跳转Discord频道申请
@@ -135,6 +135,7 @@
 4. **有权限**：进入创建抽奖流程，拉起创建抽奖弹窗（见1.4节）
 
 - **审核流程**：用户在Discord频道提交申请，平台运营人工审核，通过后由运营在管理后台为用户添加抽奖权限
+
 
 ##### 1.4 VIP抽奖发起
 - **创建抽奖活动**：拉起抽奖配置弹窗
