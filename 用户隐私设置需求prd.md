@@ -179,7 +179,8 @@ ps: 机制化标签本期可以先不上，以上仅示意规划方案
 每个Tab在隐私设置中都有独立的可见性控制：
 - **仅自己可见**：只有主人态可查看
 - **所有人可见**：所有访客都可查看
-
+- 访客态访问被限制时的展示：tab可点击，但整个内容区域显示锁定图片（待设计，AI生成即可）+提示文案，示意未开放查看权限，而非实际内容
+> **【文案建议】访客态访问被限制时**提示：This content is private.
 ---
 
 ## 五、Tab内容模块详细设计
@@ -190,21 +191,12 @@ ps: 机制化标签本期可以先不上，以上仅示意规划方案
 - 展示用户发起或参加的所有抽奖活动（Giveaways）
 - VIP用户的动态post（非本期需求，在后续迭代增加）
 
-#### 5.1.2 数据来源
-- 新表： `giveaways` 表
-- 按giveaway抽奖时间倒序排列展示，最晚的排最上方
-
-#### 5.1.3 展示内容与交互
-> **详细说明**：卡片组件、布局、分类展示（Published/Participated）、空状态文案、创建抽奖与权限检查等具体逻辑，详见「抽奖功能PRD」第三章第1节"个人主页-动态Tab中的Giveaway展示"。
+ **详细说明**：卡片组件、布局、分类展示（Published/Participated）、空状态文案、创建抽奖与权限检查等具体逻辑，详见「抽奖功能PRD」第三章第1节"个人主页-动态Tab中的Giveaway展示"。
+<img width="1792" height="839" alt="局部截取_20251210_143437" src="https://github.com/user-attachments/assets/aa815dc9-0e0f-4830-9a9b-88a448255af5" />
 
 #### 5.1.4 默认隐私设置
 - **默认**：所有人可见
 - **可配置**：在隐私设置中关闭开关（即访客不可见）
-
-#### 5.1.5 访客态访问被限制时的展示
-- tab可点击，但内容区域显示锁定图片（待设计，AI生成即可）+提示文案，示意未开放查看权限，而非实际内容
-> **【文案建议】访客态访问被限制时**
-> - **提示**：This content is private.
 
 
 ### 5.2 交易记录（Trades/Offers） Tab
@@ -342,7 +334,7 @@ Tab 2文案：Trading Time Preference
 > 描述：Turn on means you want to make the content public.
 > - **Giveaways**：Your giveaway activity.
 > - **Trades**: The trades you've posted.
-(灯泡emoji)Suggest it be visible to all to boost your trades exposure.
+(灯泡emoji)We recommend making your trades public to increase their visibility.
 > - **Offers**: Offers you've made to others.
 > - **Favourites**：Trades and other content you've saved.
 > - **Pet Collection**：Your pet collection created from Pet Management feature.
