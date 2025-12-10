@@ -202,28 +202,14 @@ ps: 机制化标签本期可以先不上，以上仅示意规划方案
 #### 5.1.4 分类展示与空状态
 
 **分类展示规则**：
-- 始终展示两个独立区域："My Giveaways" 和 "Participated Giveaways"
-- 两个区域垂直排列，各自独立处理空状态
-- 每个区域有独立的分页
-
-**布局说明**：
-```
-+-------------------------------------------------------------+
-| My Giveaways                                                 |
-| [GiveawayCard] [GiveawayCard] ...                           |
-| 或 空状态提示                                                |
-+-------------------------------------------------------------+
-| Participated Giveaways                                       |
-| [GiveawayCard] [GiveawayCard] ...                           |
-| 或 空状态提示                                                |
-+-------------------------------------------------------------+
-```
+- 始终展示两个独立区域（二级tab）：发布的"Published" 和 参与的"Participated"
+- 两个区域各自独立处理空状态
 
 **空状态文案**：
 | 区域 | 主人态空状态 | 访客态空状态 |
 |------|-------------|-------------|
-| My Giveaways | "No giveaways yet. Start your first one!" + 「Create Giveaway」按钮 | "No giveaways from this user yet." |
-| Participated Giveaways | "You haven't joined any giveaways yet." | "No participated giveaways to show." |
+| Published | "No giveaways yet. Start your first one!" + 「Create Giveaway」按钮 | "No giveaways from this user yet." |
+| Participated | "You haven't joined any giveaways yet." | "No participated giveaways to show." |
 
 **点击创建后流程**（主人态-My Giveaways区域）：
 1. 用户点击「Create Giveaway」按钮
@@ -249,9 +235,9 @@ ps: 机制化标签本期可以先不上，以上仅示意规划方案
 ### 5.2 交易记录（Trades/Offers） Tab
 
 #### 5.2.1 内容说明
-- 展示用户的Roblox道具交易记录，增加按自己发布"Trades"、参与的交易"Offers"分类为2个tab
+- 展示用户的Roblox道具交易记录，增加按自己发布"Trades"、参与的交易"Offers"分类为2个一级tab
 - 后续优化中会复用搜索、排序等公共组件，本期mvp中只实现Trades，直接复用原有逻辑和公共组件订单列表的样式
-- Offers仍使用COMING SOON占位
+- Offers内容仍使用COMING SOON占位
 <img width="1113" height="479" alt="局部截取_20251209_193315" src="https://github.com/user-attachments/assets/29e20387-7b09-441e-a286-b598645350b0" />
 
 
