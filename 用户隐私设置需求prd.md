@@ -199,24 +199,42 @@ ps: 机制化标签本期可以先不上，以上仅示意规划方案
 - 卡片布局：瀑布流式长条卡片，响应式
 - 支持数字分页切换（使用组件），默认单页xx个活动（待视觉稿确认，初定8个）
 
-#### 5.1.4 空状态
-- **主人态**：显示"你还没有发起过任何抽奖活动"，提供「创建抽奖」按钮（若有VIP权限则可直接发起抽奖；如无抽奖功能权限，则按钮引导进入discord子频道申请）
-- **访客态**：显示"No giveaways related to this user yet."
+#### 5.1.4 分类展示与空状态
 
-> **主人态-动态Tab空状态** 文案不区分是否有抽奖权限
-> - **提示文案**：No giveaways yet. Start your first one!
-> - **按钮文案**：Create Giveaway
+**分类展示规则**：
+- 始终展示两个独立区域："My Giveaways" 和 "Participated Giveaways"
+- 两个区域垂直排列，各自独立处理空状态
+- 每个区域有独立的分页
 
- - **点击创建后流程**
-  1. 用户在动态Tab空状态点击「Create Giveaway」
-  2. 系统检测用户是否有 `create_giveaway` 权限
-  3. 无权限：弹窗提示需申请（标题+描述+取消和前往按钮），引导跳转Discord频道申请
-  - 弹窗标题：Want to Host Giveaways?
-  - 描述：Ready to share amazing items with the community? Apply for giveaway permission on our Discord - only takes minutes!
-  - 按钮：Maybe Later（取消） / Go to Discord（确认）     
-  4. 有权限：进入创建抽奖流程，拉起创建抽奖弹窗（后续流程详见抽奖需求prd）
+**布局说明**：
+```
++-------------------------------------------------------------+
+| My Giveaways                                                 |
+| [GiveawayCard] [GiveawayCard] ...                           |
+| 或 空状态提示                                                |
++-------------------------------------------------------------+
+| Participated Giveaways                                       |
+| [GiveawayCard] [GiveawayCard] ...                           |
+| 或 空状态提示                                                |
++-------------------------------------------------------------+
+```
 
-- **审核流程**：用户在Discord频道提交申请，平台运营人工审核,通过后由运营在管理后台为用户添加抽奖权限
+**空状态文案**：
+| 区域 | 主人态空状态 | 访客态空状态 |
+|------|-------------|-------------|
+| My Giveaways | "No giveaways yet. Start your first one!" + 「Create Giveaway」按钮 | "No giveaways from this user yet." |
+| Participated Giveaways | "You haven't joined any giveaways yet." | "No participated giveaways to show." |
+
+**点击创建后流程**（主人态-My Giveaways区域）：
+1. 用户点击「Create Giveaway」按钮
+2. 系统检测用户是否有 `create_giveaway` 权限
+3. **无权限**：弹窗提示需申请，引导跳转Discord频道申请
+   - 弹窗标题：Want to Host Giveaways?
+   - 描述：Ready to share amazing items with the community? Apply for giveaway permission on our Discord - only takes minutes!
+   - 按钮：Maybe Later（取消） / Go to Discord（确认）     
+4. **有权限**：进入创建抽奖流程，拉起创建抽奖弹窗（后续流程详见抽奖需求prd）
+
+- **审核流程**：用户在Discord频道提交申请，平台运营人工审核，通过后由运营在管理后台为用户添加抽奖权限
 
 #### 5.1.5 默认隐私设置
 - **默认**：所有人可见
