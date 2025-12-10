@@ -313,6 +313,7 @@
 
 ##### 4.1.1 系统消息通知
 <img width="1020" height="380" alt="局部截取_20251208_135819" src="https://github.com/user-attachments/assets/dbd48fc6-bf56-4cec-a838-f90a28734b59" />
+仅中奖者和发奖者收到，其他未中奖参与者在个人中心查看参与的抽奖状态。
 
 发送到「System Message」频道，采用橙色(或其他醒目颜色)主题卡片样式：
 **发奖者（抽奖创建者）收到的通知：**
@@ -339,31 +340,28 @@ Claim Deadline: [Date Time]
 ##### 4.1.2 用户聊天会话
 <img width="1059" height="529" alt="局部截取_20251208_135858" src="https://github.com/user-attachments/assets/3818bd24-b16c-435e-aab7-bacb06121ecb" />
 
-系统自动创建发奖者与中奖者的一对一聊天，包含抽奖主要信息卡片，并展示领奖倒计时（从开奖算起超过14天即变为expired，不支持再领奖）
+- 系统自动创建发奖者与中奖者的一对一聊天，包含抽奖主要信息卡片，并展示领奖倒计时
+- 从开奖算起超过14天即过期，不支持再领奖：一对一聊天消失，仅在用户中心中能查看参与的抽奖卡片，按钮状态变为"Expired"
 ```
 +-------------------------------------------------------------+
-| Giveaway #[ID短码]                          View Details    |
+| 信息展示区                                               |
 +-------------------------------------------------------------+
-| [奖品图片]                                                   |
-|                                                              |
 | Prize Delivery                                               |
-| [中奖者] won [奖品名称] from this giveaway.                  |
-| Please handover the prize in-game in 14 days, and upload the |
-| screenshot to **CONFIRM HANDOVER**.                        |
+| Please complete the prize delivery in-game within 14 days, then upload a screenshot to **CONFIRM HANDOVER**.|
 |                              [UPLOAD]                       |
 +-------------------------------------------------------------+
 ```
 
-**信息字段说明：**
-- Giveaway ID短码
-- View Details：跳转giveaway详情页
+**抽奖信息展示区域说明：**
+- Giveaway名称：支持点击跳转giveaway详情页
 - 奖品图片：显示中奖的道具，交互与交易格子中道具、token一致（hover信息卡片、弹窗）
-- UPLOAD：点击拉起「确认交接弹窗」
-
+- 中奖者名称:"Winner: [中奖者]"
+- 中奖时间
+  
 
 ##### 4.1.3 确认交接弹窗
 发奖者与中奖者均可点击"确认交接"按钮，在弹窗中上传交接截图（发奖者必须上传图片，中奖者可选），并输入一句话（可选）。
-如一方已完成确认交接，则其所有入口中"UPLOAD"按钮状态变为"HANDOVER CONFIRMED"，不支持点击。
+如一方已完成确认交接，则ta自己所有入口中"UPLOAD"按钮变为"HANDOVER CONFIRMED"状态，不支持点击。不影响另一方的按钮状态。
 注意：用户中心中的抽奖卡片的操作按钮状态与这里联动，任一地方操作，均统一切换状态。
 
 **弹窗UI设计**
