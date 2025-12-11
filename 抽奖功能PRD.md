@@ -80,6 +80,7 @@ ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
 以下为具体功能与逻辑：
 
 #### 1. 个人主页-动态Tab中的Giveaway展示
+视觉稿：https://www.figma.com/design/0M4JNzqICab4h3Vcewm8RZ/user?node-id=5263-6647&p=f&t=LzMgNh2IDsqyxOzC-0
 
 > **说明**：个人主页动态Tab用于展示用户的抽奖活动，包括创建的抽奖和参与的抽奖。本期动态Tab文案暂时使用"Giveaways"。
 
@@ -137,11 +138,13 @@ ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
 **点击创建流程**（主人态-Published区域）：
 1. 用户点击「CREATE GIVEAWAYS」按钮
 2. 系统检测用户是否有 `create_giveaway` 权限
-3. **无权限**：弹窗提示需申请，引导跳转Discord频道申请
+3. **有权限**：进入创建抽奖流程，拉起创建抽奖弹窗（见1.4节）
+4. **无权限**：弹窗提示需申请，引导跳转Discord频道申请
+   <img width="960" height="374" alt="局部截取_20251211_174823" src="https://github.com/user-attachments/assets/cc43321a-45d8-43e5-8fc4-dee02aaefc22" />
+
    - 弹窗标题：Want to Host Giveaways?
    - 描述：Ready to share amazing items with the community? Apply for giveaway permission on our Discord - only takes minutes!
    - 按钮：Maybe Later（取消） / Go to Discord（确认）     
-4. **有权限**：进入创建抽奖流程，拉起创建抽奖弹窗（见1.4节）
 
 - **审核流程**：用户在Discord频道提交申请，平台运营人工审核，通过后由运营在管理后台为用户添加抽奖权限
 
@@ -306,6 +309,8 @@ ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
 **领奖与交接流程** 集成聊天系统
 
 ##### 4.1.1 系统消息通知
+视觉稿：https://www.figma.com/design/oS9Yg9snhnkrTR3QF8f0Bf/chat?node-id=2959-6485&p=f&t=U1GMg1ovQKnzPysj-0
+
 <img width="1020" height="380" alt="局部截取_20251208_135819" src="https://github.com/user-attachments/assets/dbd48fc6-bf56-4cec-a838-f90a28734b59" />
 仅中奖者和发奖者收到，其他未中奖参与者在个人中心查看参与的抽奖状态。
 
@@ -409,6 +414,7 @@ URL规则：/growagarden/giveaways/
 
 #### 6. Giveaway详情页
 URL规则：/growagarden/giveaways/抽奖标题slug
+视觉稿：https://www.figma.com/design/9Zg2tQV0fIFZu3GgNmtwjl/giveaways?node-id=8011-1845&p=f&t=N2QYqOhQOgCqozwc-0
 
 ##### 6.1 页面布局
 
@@ -450,7 +456,8 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | 27 | | 来自xx | "From [发奖者]/[中奖者]" |
 | 30 | **推荐模块 Discover More Giveaways** | 推荐抽奖 | 使用抽奖列表组件；最多3条，优先展示ONGOING，其次AWAITING START，开奖时间or报名开始时间越近的展示在上方；无符合条件的（表内所有抽奖均已开奖）则隐藏整个模块。点击标题行和底部More按钮，跳转至giveaway聚合页；卡片交互统一（组件） |
 
-**倒计时的逻辑**：
+**倒计时的逻辑**：该逻辑在giveaway详情页和giveaway卡片中复用。
+
 <img width="563" height="258" alt="局部截取_20251211_121725" src="https://github.com/user-attachments/assets/2a0984a6-4590-431a-996d-d7272ab7e061" />
 
 
@@ -468,6 +475,7 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 > **注意**：详情页不提供UPLOAD入口，交接确认操作仅在**个人中心卡片**和**1v1聊天**中进行。
 
 #### 7. 抽奖卡片
+视觉稿：https://www.figma.com/design/4mDwVh4lJ2t1Yy7EcINY5t/UI-Kit?node-id=4747-99&p=f&t=yWnkGrXuQAV1tfQg-0
 
 <img width="1025" height="353" alt="局部截取_20251211_154935" src="https://github.com/user-attachments/assets/80a30579-fb69-4674-a1bd-34ed1c1211df" />
 <img width="1039" height="317" alt="局部截取_20251211_155138" src="https://github.com/user-attachments/assets/8729e015-849e-4cf4-90c8-549461b1d9b8" />
