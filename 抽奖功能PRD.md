@@ -410,6 +410,10 @@ URL规则：/growagarden/giveaways/
 URL规则：/growagarden/giveaways/抽奖标题slug
 
 ##### 6.1 页面布局（以下为字段示意，具体布局以视觉设计稿为准）
+
+<img width="896" height="677" alt="image" src="https://github.com/user-attachments/assets/0a3e708c-095f-43df-b2ac-315d7b40eb7f" />
+<img width="840" height="798" alt="局部截取_20251211_154321" src="https://github.com/user-attachments/assets/d719ac80-ae92-48d4-862d-9ea296f2934d" />
+
 ```
 +-------------------------------------------------------------+
 | 面包屑/Giveaway/抽奖标题                                     |
