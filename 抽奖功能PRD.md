@@ -509,13 +509,17 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 
 
 ##### 6.4 不同状态下的详情页差异
-| 状态 | 操作按钮 | 中奖区域 | 交接区域 |
-|-----|---------|---------|---------|
-| created | AWAITING START | 隐藏 | 隐藏 |
-| ongoing | JOIN NOW / JOINED | 隐藏 | 隐藏 |
-| ended（待交接） | 无  | 显示中奖者，状态显示ended | 隐藏 |
-| completed（已交接） | 无  | 显示中奖者，状态ended | 显示截图和留言 |
-| expired（已过期） | 无  | 显示中奖者，状态ended | 隐藏 |
+
+| 状态 | 用户角色 | 操作按钮 | 中奖区域 | 交接区域 |
+|-----|---------|---------|---------|---------|
+| created | 所有人 | COMING SOON (disabled) | 隐藏 | 隐藏 |
+| ongoing | 未参与 | JOIN NOW | 隐藏 | 隐藏 |
+| ongoing | 已参与 | JOINED (disabled) | 隐藏 | 隐藏 |
+| ended | 所有人 | ENDED (disabled) | 显示中奖者 | 隐藏 |
+| completed | 所有人 | ENDED (disabled) | 显示中奖者 | 显示截图和留言 |
+| expired | 所有人 | ENDED (disabled) | 显示中奖者 | 隐藏 |
+
+> **注意**：详情页不提供UPLOAD入口，交接确认操作仅在**个人中心卡片**和**1v1聊天**中进行。
 
 #### 7. 抽奖卡片
 
@@ -532,10 +536,10 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 |---------|---------|---------|:------:|-----|
 | created | - | VIEW | ✅ | 查看详情 |
 | ongoing | - | VIEW | ✅ | 查看详情 |
-| ended | pending | CONFIRM HANDOVER | ✅ | 点击拉起交接弹窗 |
-| ended | handover_submitted (对方已确认) | CONFIRM HANDOVER | ✅ | 点击拉起交接弹窗 |
-| completed | completed | HANDOVER CONFIRMED | ❌ | 禁用态 |
-| expired | - | Expired | ❌ | 禁用态，灰色文字 |
+| ended | pending | VIEW + UPLOAD | ✅ | VIEW查看详情，UPLOAD点击拉起交接弹窗 |
+| ended | handover_submitted (对方已确认) | VIEW + UPLOAD | ✅ | VIEW查看详情，UPLOAD点击拉起交接弹窗 |
+| completed | completed | VIEW + HANDOVER CONFIRMED | ❌ | VIEW可点击，HANDOVER CONFIRMED禁用态 |
+| expired | - | VIEW + Expired | ❌ | VIEW可点击，Expired禁用态，灰色文字 |
 
 ##### 7.2 客态（我参与的抽奖）操作按钮
 
@@ -543,10 +547,10 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 |---------|---------|---------|---------|:------:|-----|
 | ongoing | - | - | JOINED | ❌ | 禁用态 |
 | ended | 否 | - | VIEW | ✅ | 查看详情 |
-| ended | 是 | pending | CONFIRM HANDOVER | ✅ | 点击拉起交接弹窗（中奖者可选上传） |
-| ended | 是 | handover_submitted |CONFIRM HANDOVER | ✅ | 点击拉起交接弹窗 |
-| completed | 是 | completed | HANDOVER CONFIRMED | ❌ | 禁用态 |
-| expired | 是 | - | Expired | ❌ | 禁用态，灰色文字 |
+| ended | 是 | pending | VIEW + UPLOAD | ✅ | VIEW查看详情，UPLOAD点击拉起交接弹窗（中奖者可选上传） |
+| ended | 是 | handover_submitted | VIEW + UPLOAD | ✅ | VIEW查看详情，UPLOAD点击拉起交接弹窗 |
+| completed | 是 | completed | VIEW + HANDOVER CONFIRMED | ❌ | VIEW可点击，HANDOVER CONFIRMED禁用态 |
+| expired | 是 | - | VIEW + Expired | ❌ | VIEW可点击，Expired禁用态，灰色文字 |
 
 ##### 7.3 状态联动规则
 
@@ -555,17 +559,20 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 3. **过期处理**：过期后自动将操作按钮变为"Expired"状态
 
 ##### 7.4 按钮文案汇总
-| 英文文案 | 使用场景 |
-|---------|---------|
-| VIEW | 查看详情（通用） |
-| JOIN NOW | 可参与时 |
-| JOINED ✓ | 已参与（禁用态） |
-| CONFIRM HANDOVER | 待确认交接 |
-| HANDOVER CONFIRMED | 已完成交接（禁用态） |
-| Expired | 已过期（禁用态，灰色） |
-| SHARE | 分享按钮 |
-| FOLLOW | 关注按钮 |
-| FOLLOWING | 已关注（禁用态） |
+
+| 英文文案 | 使用场景 | 出现位置 |
+|---------|---------|---------|
+| VIEW | 查看详情（通用） | 卡片 |
+| COMING SOON | 未开始（禁用态） | 详情页 |
+| JOIN NOW | 可参与时 | 卡片、详情页 |
+| JOINED ✓ | 已参与（禁用态） | 卡片、详情页 |
+| ENDED | 已结束（禁用态） | 详情页 |
+| UPLOAD | 待确认交接 | 个人中心卡片、聊天 |
+| HANDOVER CONFIRMED | 已完成交接（禁用态） | 个人中心卡片、聊天 |
+| Expired | 已过期（禁用态，灰色） | 个人中心卡片、聊天 |
+| SHARE | 分享按钮 | 卡片、详情页 |
+| FOLLOW | 关注按钮 | 详情页 |
+| FOLLOWING | 已关注（禁用态） | 详情页 |
 
 ---
 
@@ -688,6 +695,7 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | v1.4 | 2025-12-09 | 重大更新：(1) 参与确认弹窗流程 (2) 粉丝铭牌设计 (3) 抽奖时间限制30天 (4) 领奖有效期14天 (5) 状态体系调整 (6) 关联活动下拉选择 (7) 过期失效机制 | AI Product Manager |
 | v1.5 | 2025-12-09 | 文档精简：(1) 补充无参与者开奖处理逻辑 (2) 删除用户旅程与逻辑图章节 (3) 删除UI/UX设计方向章节 (4) 修正开奖状态流转逻辑 | AI Product Manager |
 | v1.6 | 2025-12-09 | 全面补充英文展示文案：状态标签、按钮文案、Toast提示、空状态文案、交接模块文案等 | AI Product Manager |
+| v1.7 | 2025-12-11 | 按钮状态统一：(1) 详情页按钮状态完善 (2) 交接按钮从CONFIRM HANDOVER改为UPLOAD (3) 明确UPLOAD入口仅在个人中心卡片和聊天中 (4) 详情页ended状态统一显示ENDED(disabled) | AI Product Manager |
 
 ---
 
