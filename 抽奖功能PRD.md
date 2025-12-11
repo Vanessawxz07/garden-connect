@@ -63,6 +63,10 @@
 - expired: 过期失效，开奖后14天内双方均未确认交接，则自动变为此状态 → "EXPIRED"
 - （后续-支持取消）cancelled: 已取消 → "CANCELLED"
 
+ex：
+created → ongoing 切换时点 = 报名开始时间
+ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
+
 状态互斥规则：
 - ended与completed/expired互斥：开奖后先进入ended状态
 - completed与expired互斥：以是否完成交接区分，只能存在一个
@@ -70,6 +74,7 @@
 注意：
 - 前端外显的状态名称只有"AWAITING START/ONGOING/ENDED"；completed/expired仅为后端内部状态，不影响前端状态标签展示，只要开奖后统一显示"ENDED"
 - 所有外显的时间应统一，与value一样都需要转为UTC时间
+
 
 以下为具体功能与逻辑：
 
@@ -492,7 +497,7 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | | 状态标签 | ONGOING/ENDED/COMPLETED/EXPIRED |
 | | 标题、描述 | 完整展示 |
 | **时间信息** | 报名时间段 | 起止时间 |
-| | 开奖时间/倒计时 | 未开奖显示倒计时，已开奖显示实际时间 |
+| | 开奖时间/倒计时 | （具体见下方截图） |
 | **参与信息** | 参与人数 | |
 | | 参与者头像 | 最多10个 + "and X more" |
 | **操作按钮** | JOIN NOW | 可参与时 |
@@ -502,6 +507,10 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | | 领奖截止时间 | |
 | **交接展示** | 双方截图 | 仅已完成交接时显示 |
 | | 双方留言 | 增加社区氛围感 |
+
+**倒计时的逻辑**：
+<img width="563" height="258" alt="局部截取_20251211_121725" src="https://github.com/user-attachments/assets/2a0984a6-4590-431a-996d-d7272ab7e061" />
+
 
 ##### 6.3 交接展示设计要点
 - **仅当任一方上传了截图时**才显示交接区域
