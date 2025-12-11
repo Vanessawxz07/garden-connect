@@ -311,7 +311,8 @@ ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
 ##### 4.1.1 系统消息通知
 视觉稿：https://www.figma.com/design/oS9Yg9snhnkrTR3QF8f0Bf/chat?node-id=2959-6485&p=f&t=U1GMg1ovQKnzPysj-0
 
-<img width="1020" height="380" alt="局部截取_20251208_135819" src="https://github.com/user-attachments/assets/dbd48fc6-bf56-4cec-a838-f90a28734b59" />
+<img width="488" height="364" alt="局部截取_20251211_190846" src="https://github.com/user-attachments/assets/0e87f47f-8163-4c82-841c-69c9ab8f75fa" />
+
 仅中奖者和发奖者收到，其他未中奖参与者在个人中心查看参与的抽奖状态。
 
 发送到「System Message」频道，采用橙色(或其他醒目颜色)主题卡片样式：
@@ -337,7 +338,9 @@ Claim Deadline: [Date Time]
 ```
 
 ##### 4.1.2 用户聊天会话
-<img width="1059" height="529" alt="局部截取_20251208_135858" src="https://github.com/user-attachments/assets/3818bd24-b16c-435e-aab7-bacb06121ecb" />
+<img width="1340" height="433" alt="局部截取_20251211_190931" src="https://github.com/user-attachments/assets/136e6b28-1694-4a3a-a6a5-ec39ab175667" />
+
+（Show Less/More的折叠与展开功能在聊天页优化中包含，MVP版本可不开发）
 
 - 系统自动创建发奖者与中奖者的一对一聊天，包含抽奖主要信息卡片，并展示领奖倒计时
 - 从开奖算起超过14天即过期，不支持再领奖：一对一聊天消失，仅在用户中心中能查看参与的抽奖卡片，按钮状态变为"Expired"
