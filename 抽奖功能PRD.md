@@ -416,13 +416,6 @@ URL规则：/growagarden/giveaways/
 
 本期与双节活动需求合并，即常规Giveaway列表页基础上增加活动模块，待活动结束后可下线活动模块，聚合展示日常Giveaways（具体见Jiaming需求单）
 
-- **卡片设计**
-  - 参考现有交易订单列表的长条卡片样式
-  - 顶部：状态、倒计时
-  - 左侧：头像、用户名、用户标签
-  - 中间：奖品缩略图、活动描述
-  - 右侧：参与人数、操作按钮
-  - 状态标签："AWAITING START" / "ONGOING" / "ENDED"
 
 #### 6. Giveaway详情页
 URL规则：/growagarden/giveaways/抽奖标题slug
