@@ -441,11 +441,11 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | 无参与者时显示："Be the first to join!"                       |
 | 无参与者建议2："No one joined yet. Be the first!"             |
 +-------------------------------------------------------------+
-| [AWAITING START] / [JOIN NOW] / [JOINED ✓]  /[ENDED]         |
-| [SHARE 🔗]                                                   |
+| [COMING SOON] / [JOIN NOW] / [JOINED ✓]  /[ENDED]         |
 +-------------------------------------------------------------+
 | Discover More Giveaways                                      |
-| 拉取最新3条未结束的抽奖                                       |
+| 拉取更多抽奖的推荐模块：最多3条，选取AWAITING START和ONGOING中的抽奖，优先展示ONGOING的（按抽奖时间排列，越接近抽奖时间的排上方）;然后展示AWAITING START的。如都无符合条件的情况，则整个模块隐藏。
+交互：点击标题行和底部More按钮，跳转至giveaway聚合页；卡片交互统一（组件）
 +-------------------------------------------------------------+
 
 --- 中奖者介绍：已结束/开奖状态时才显示，展示在奖品展示模块下方 ---
