@@ -72,7 +72,7 @@ ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
 - completed与expired互斥：以是否完成交接区分，只能存在一个
 ```
 注意：
-- 前端外显的状态名称只有"AWAITING START/ONGOING/ENDED"；completed/expired仅为后端内部状态，不影响前端状态标签展示，只要开奖后统一显示"ENDED"
+- 前端外显的状态名称只有"AWAITING START/ONGOING/ENDED"；completed/expired主要作为后端内部状态，不影响前端状态标签展示，开奖后统一显示"ENDED"（具体展示逻辑按下方页面、卡片的详细要求）
 - 所有外显的时间应统一，与value一样都需要转为UTC时间
 
 
