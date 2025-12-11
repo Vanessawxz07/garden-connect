@@ -415,6 +415,7 @@ URL规则：/growagarden/giveaways/
 #### 6. Giveaway详情页
 URL规则：/growagarden/giveaways/抽奖标题slug
 视觉稿：https://www.figma.com/design/9Zg2tQV0fIFZu3GgNmtwjl/giveaways?node-id=8011-1845&p=f&t=N2QYqOhQOgCqozwc-0
+<img width="598" height="260" alt="局部截取_20251211_184140" src="https://github.com/user-attachments/assets/45fb1e37-7940-4529-9e1f-e82eb8324cc5" />
 
 ##### 6.1 页面布局
 
@@ -435,17 +436,18 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | 9 | | 分享按钮 | SHARE，始终可见。点击分享详情页，复用已有分享逻辑 |
 | 10 | **奖品区域** | 奖品图片 | 大图（优先用优化后宠物大图，如无则使用普通宠物图片）展示，hover信息卡片，点击可查看道具详情弹窗 |
 | 11 | | 奖品名称 | 🎁 [道具名称/Token] |
-| 12 | | 奖品价值 | Trade Value: [价值对应的token数量/value值] ，如为token则展示token数量和对应的value值（见视觉稿示意）|
+| 12 | | 奖品价值 | Prize Value: [价值对应的token数量/value值] ，如为token则展示token数量和对应的value值（见视觉稿示意）|
 | 13 | | 宠物属性 | 变异、年龄、重量（仅宠物类道具显示） |
-| 14 | **操作区域** | 操作按钮 | COMING SOON / JOIN NOW / JOINED / ENDED（详见6.4状态表） |
+| 14 | **操作区域** | 按钮 | COMING SOON / JOIN NOW / JOINED / ENDED（详见6.4状态表） |
 | 15 | | 参与提示 | 仅需在ONGOING状态时展示："✓ Get notified if you win"  "✓ Auto-folow 发奖者名称" |
+| 16 | **开奖时间 Draw Time** | 时间点 |文案：抽奖的[日期时间] |
 | 17 | **报名时间 Entry Period** | 时间范围 |具体时间拼接文案：报名开始的[日期时间] - 报名结束的[日期时间] |
 | 2 | **发奖者 Host** | 发奖用户信息 | 下方圆形头像，可点击跳转用户主页 |
 | 3 | | 用户名 | 可点击跳转用户主页 |
 | 4 | | 用户标签 | 最多显示8个标签，交互与展示逻辑和其他标签一致 |
 | 2 | **活动 Campaign** | 关联活动 | 活动名称 "Christmas & New Year" |
 | 20 | **参与者 Participants** | 参与人数 | 仅报名开始前不展示该区域|
-| 21 | | 参与者头像 | 报名开始但无参与者时显示"Be the first to join!"；有参与者时展示"XX users joined" +图像，最多10个头像 + "总人数" |
+| 21 | | 参与者头像 | 报名开始但无参与者时显示"Be the first to join!"；有参与者时展示"XX users(注意单复数) joined" +图像，最多10个头像 + "总人数" |
 | 22 | **中奖者介绍 Winner** | 中奖信息 | 整个区域在开奖d后显示 |
 | 23 | | 中奖者 | 用户名+头像，两者均支持点击跳转用户主页 |
 | 25 | | 用户标签 | 逻辑复用 |
@@ -460,6 +462,7 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 
 <img width="563" height="258" alt="局部截取_20251211_121725" src="https://github.com/user-attachments/assets/2a0984a6-4590-431a-996d-d7272ab7e061" />
 
+文案：created(待开启报名时):"Starts in Xd Xh Xm"；ongoing（报名期间）:"Ends in Xd Xh Xm"；ended:不显示
 
 ##### 6.3 不同状态下的详情页差异
 
@@ -481,73 +484,66 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 <img width="1039" height="317" alt="局部截取_20251211_155138" src="https://github.com/user-attachments/assets/8729e015-849e-4cf4-90c8-549461b1d9b8" />
 
 ##### 7.0 卡片字段说明
+（字段展示位置以视觉设计稿为准，字段序号可忽略）
+**如下方无特殊说明，则该字段与详情页中展示、交互逻辑一致，复用即可**
 
 | 序号 | 字段 | 说明 |
 |:---:|-----|-----|
-| 1 | 奖品图片 | 左侧展示，带状态标签叠加 |
-| 2 | 状态标签 | AWAITING START / ONGOING / ENDED（前端仅显示这3种） |
-| 3 | 标题 | 活动标题，限50字符 |
-| 4 | 倒计时 | created:"Starts in Xd Xh Xm"；ongoing:"Ends in Xd Xh Xm"；ended:不显示 |
-| 5 | 奖品名称 | 🎁 [奖品名称] |
-| 6 | 奖品价值 | Est. Value: [价值] |
+| 1 | 奖品图片 | 同详情页 |
+| 2 | 状态标签 | 同详情页 |
+| 3 | 标题 | 抽奖标题，限50字符 |
+| 4 | 倒计时 | 同详情页 |
+| 5 | 奖品名称 | "Prize:[道具名称/Token]" |
+| 6 | 奖品价值 | "Prize Value: [价值对应的token数量/value值]" ，token和道具展示效果一样（见视觉稿示意） |
 | 7 | 开奖时间 | Draw Time: [日期时间] |
-| 8 | 报名时间段 | Entry Period: [start_time] ~ [draw_time] |
-| 9 | 描述 | 截断展示，超出显示... |
-| 10 | 参与人数 | "XX participants" |
-| 11 | 发奖者信息 | 头像 + "Hosted by @Name" |
-| 12 | 中奖者信息 | 仅ended后显示：头像 + "🎉 Winner: @Name" |
+| 8 | 报名时间段 | Entry Period: [start_time] - [draw_time] |
+| 9 | 描述 | 大屏最多1行，中小屏最多2行，超长则显示... |
+| 10 | 参与人数 | 报名未开始时不展示；报名开始但无参与者时显示"Be the first to join!"；有参与者时展示"XX users(注意单复数) joining!" |
+| 11 | 发奖者信息 | 头像 + "Hosted by [发奖者名称]"+标签（最多3个） |
+| 12 | 中奖者信息 | 仅ended后显示：头像 + "Won by [中奖者名称] |
 | 13 | 操作按钮 | 详见7.1-7.2状态表 |
-| 14 | 分享按钮 | SHARE，始终可见 |
+| 14 | 分享按钮 | SHARE，始终可见。点击后拉起分享组件，但分享内容不是当前页面，而是该抽奖对应的giveaway详情页信息/OG |
 
-> **交互**：卡片整体可点击，跳转至抽奖详情页。
-
+> **交互**：卡片整体也可点击，跳转至抽奖详情页。
 
 
 按钮与状态：用户中心"动态"tab中的抽奖卡片操作按钮需与聊天中的交接操作状态联动。
 
-##### 7.1 主态（我创建的抽奖）操作按钮
+##### 7.1 个人中心-主态（我创建的抽奖）操作按钮
 
 | 抽奖状态 | 交接状态 | 按钮文案 | 可操作 | 说明 |
 |---------|---------|---------|:------:|-----|
 | created | - | VIEW | ✅ | 查看详情 |
 | ongoing | - | VIEW | ✅ | 查看详情 |
 | ended | pending | VIEW + UPLOAD | ✅ | VIEW查看详情，UPLOAD点击拉起交接弹窗 |
-| ended | handover_submitted (对方已确认) | VIEW + UPLOAD | ✅ | VIEW查看详情，UPLOAD点击拉起交接弹窗 |
-| completed | completed | VIEW + HANDOVER CONFIRMED | ❌ | VIEW可点击，HANDOVER CONFIRMED禁用态 |
-| expired | - | VIEW + Expired | ❌ | VIEW可点击，Expired禁用态，灰色文字 |
+| ended | 对方已确认 | VIEW + UPLOAD | ✅ | VIEW查看详情，UPLOAD点击拉起交接弹窗 |
+| completed | 我已确认 | VIEW + HANDOVER CONFIRMED（状态） | ❌ | VIEW可点击，HANDOVER CONFIRMED仅为状态体现 |
+| expired | - | VIEW + Expired（状态） | ❌ | VIEW可点击，Expired仅为状态体现 |
 
-##### 7.2 客态（我参与的抽奖）操作按钮
+##### 7.2 个人中心-主态（我参与的抽奖）操作按钮
 
 | 抽奖状态 | 是否中奖 | 交接状态 | 按钮文案 | 可操作 | 说明 |
 |---------|---------|---------|---------|:------:|-----|
-| ongoing | - | - | JOINED | ❌ | 禁用态 |
+| ongoing | - | - | JOINED | ❌ | 不可点击 |
 | ended | 否 | - | VIEW | ✅ | 查看详情 |
-| ended | 是 | pending | VIEW + UPLOAD | ✅ | VIEW查看详情，UPLOAD点击拉起交接弹窗（中奖者可选上传） |
-| ended | 是 | handover_submitted | VIEW + UPLOAD | ✅ | VIEW查看详情，UPLOAD点击拉起交接弹窗 |
-| completed | 是 | completed | VIEW + HANDOVER CONFIRMED | ❌ | VIEW可点击，HANDOVER CONFIRMED禁用态 |
-| expired | 是 | - | VIEW + Expired | ❌ | VIEW可点击，Expired禁用态，灰色文字 |
+| ended | 是 | pending | VIEW + UPLOAD | ✅ | VIEW查看详情，UPLOAD点击拉起交接弹窗 |
+| ended | 是 | 对方已确认 | VIEW + UPLOAD | ✅ | VIEW查看详情，UPLOAD点击拉起交接弹窗 |
+| completed | 是 | 我已确认 | VIEW + HANDOVER CONFIRMED（状态）  | ❌ | VIEW可点击，HANDOVER CONFIRMED仅为状态体现 |
+| expired | 是 | - | VIEW + Expired（状态）  | ❌ | VIEW可点击，Expired仅为状态体现 |
 
-##### 7.3 状态联动规则
-
+**状态联动规则**：
 1. **统一状态源**：用户中心卡片按钮状态与聊天中UPLOAD按钮状态**共享同一数据源**（giveaway_handovers表）
 2. **实时同步**：任一入口完成交接操作，所有入口按钮状态同步更新
 3. **过期处理**：过期后自动将操作按钮变为"Expired"状态
 
-##### 7.4 按钮文案汇总
 
-| 英文文案 | 使用场景 | 出现位置 |
-|---------|---------|---------|
-| VIEW | 查看详情（通用） | 卡片 |
-| COMING SOON | 未开始（禁用态） | 详情页 |
-| JOIN NOW | 可参与时 | 卡片、详情页 |
-| JOINED ✓ | 已参与（禁用态） | 卡片、详情页 |
-| ENDED | 已结束（禁用态） | 详情页 |
-| UPLOAD | 待确认交接 | 个人中心卡片、聊天 |
-| HANDOVER CONFIRMED | 已完成交接（禁用态） | 个人中心卡片、聊天 |
-| Expired | 已过期（禁用态，灰色） | 个人中心卡片、聊天 |
-| SHARE | 分享按钮 | 卡片、详情页 |
-| FOLLOW | 关注按钮 | 详情页 |
-| FOLLOWING | 已关注（禁用态） | 详情页 |
+##### 7.3 卡片在其他场景时的通用逻辑
+
+| 文案与状态 | 使用场景与条件 |
+|---------|---------|
+| VIEW | 已创建(未到开奖时间)/已开奖（包括开奖后所有状态）；点击跳转详情页 |
+| JOIN NOW | 可参与时 | 
+| JOINED ✓ | 已参与（禁用态） | 
 
 ---
 
