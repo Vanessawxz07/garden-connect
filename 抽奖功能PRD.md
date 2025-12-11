@@ -48,7 +48,8 @@
 <img width="1529" height="454" alt="局部截取_20251208_123956" src="https://github.com/user-attachments/assets/5060031f-0a6c-4e12-a534-a71d057ce037" />
 
 **抽奖卡片示例**
-<img width="973" height="312" alt="局部截取_20251209_140915" src="https://github.com/user-attachments/assets/7652f799-ff8c-418a-a274-a43abaef1c4d" />
+<img width="1405" height="412" alt="局部截取_20251211_172932" src="https://github.com/user-attachments/assets/57a5b504-e351-4e52-b3b1-718ea5a7eb28" />
+
 
 #### 抽奖活动生命周期-状态定义
 ```
@@ -82,42 +83,41 @@ ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
 
 > **说明**：个人主页动态Tab用于展示用户的抽奖活动，包括创建的抽奖和参与的抽奖。本期动态Tab文案暂时使用"Giveaways"。
 
-<img width="2124" height="486" alt="企业微信截图_3e222f57-5aae-445d-9ac7-b2f1cbf59c92" src="https://github.com/user-attachments/assets/20a495cd-8ae6-4055-aebe-87b73fb4aff0" />
-
 ##### 1.1 展示内容与布局
 - 使用 `GiveawayCard` 卡片组件
 - 卡片布局：瀑布流式长条卡片，响应式
-- 支持数字分页切换（使用组件），默认单页8个活动（待视觉稿确认）
+- 支持数字分页切换（使用组件），默认单页8个活动
 - 按开奖时间倒序排列（越早的排下方），不同状态的抽奖展示对应状态标签
 
 ##### 1.2 分类展示与空状态
 
 **分类展示规则**：
-- 始终展示两个独立区域："Published" 和 "Participated"
+- 始终展示两个独立区域："Participated"/"Published" 
 - 两个区域各自独立处理空状态；每个区域有独立的分页
 - 用户以主人态/访客态进入用户主页时，默认优先展示Giveaways的Participated tab内容
 
 **分类说明**：
-- **"Published"**：该用户创建的所有抽奖活动
-  - 主态：展示自己创建的抽奖，小标题 "My Giveaways"
-  - 客态：展示该用户创建的抽奖，根据隐私设置决定是否可见，标题 "[Username]'s Giveaways"
 - **"Participated"**：该用户参与的抽奖活动
   - 主态：展示自己参与的抽奖，标题 "Participated Giveaways"
   - 客态：根据隐私设置决定是否可见，标题与上同
+- **"Published"**：该用户创建的所有抽奖活动
+  - 主态：展示自己创建的抽奖，小标题 "My Giveaways"
+  - 客态：展示该用户创建的抽奖，根据隐私设置决定是否可见，标题 "[Username]'s Giveaways"
     
 **布局说明**：
 ```
 +-------------------------------------------------------------+
-| [Published] [Participated]  ← 二级Tab切换                   |
-+-------------------------------------------------------------+
-| （主态小标题）My Giveaways / （客态）[Username]'s Giveaways  |
-| [GiveawayCard] ...                                          |
-| 或 空状态提示                                                |
+| [Participated] [Published]  ← 二级Tab切换                   |
 +-------------------------------------------------------------+
 | （主客态小标题）Participated Giveaways                       |
 | [GiveawayCard]...                                           |
 | 或 空状态提示                                                |
 +-------------------------------------------------------------+
+| （主态小标题）My Giveaways / （客态）[Username]'s Giveaways  |
+| [GiveawayCard] ...                                          |
+| 或 空状态提示                                                |
++-------------------------------------------------------------+
+
 ```
 
 **空状态文案**：（无数据时的兜底）
@@ -149,7 +149,10 @@ ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
 ##### 1.4 VIP抽奖发起
 - **创建抽奖活动**：拉起抽奖配置弹窗
 
-**创建抽奖弹窗UI设计**
+**创建抽奖弹窗设计**
+ <img width="1155" height="714" alt="局部截取_20251211_173304" src="https://github.com/user-attachments/assets/2e1971d6-7de5-4689-a9fb-2eecf84f7fb1" />
+
+文案如下：
 ```
 +-------------------------------------------------------------+
 |                    Create Giveaway                           |
@@ -157,18 +160,15 @@ ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
 +-------------------------------------------------------------+
 | Prize *                                                      |
 | [Select Prize]  ← 点击拉起道具选择器                          |
-| (Choose one item from your inventory)                        |
+| (Choose 1 item or any tokens as the prize)                   |
 +-------------------------------------------------------------+
-| Joining Period *                                        |
-| Start: [Date Picker] [Time Picker]                          |
-| End:   [Date Picker] [Time Picker]                          |
-| ⚠️ Draw time must be within 30 days from now                |
+| Entry Period *                                             |
+| Start Time: [Date Picker] [Time Picker]                   |
+| End Time:   [Date Picker] [Time Picker]                    |
+| ⚠️ End time must be within 30 days from now                |
 +-------------------------------------------------------------+
 | Draw Time                                                    |
-| [Auto-generated based on registration end time]  (Read-only) |
-+-------------------------------------------------------------+
-| Requirement                                                  |
-| ✓ Follow you to participate (Default, can't be changed)    |
+| [Auto-generated based on entry end time]  (只读，不可修改)    |
 +-------------------------------------------------------------+
 | Title *                                                      |
 | [Enter giveaway title...]                                    |
@@ -176,13 +176,16 @@ ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
 +-------------------------------------------------------------+
 | Description                                                  |
 | [Describe your giveaway...]                                  |
-| (Optional, max 100 characters)                               |
+| (Optional, max 200 characters)                               |
 +-------------------------------------------------------------+
-| Related Campaign (Optional)                                  |
+| Entry Requirement                                          |
+| Follow you to participate (Default)  (只读，不可修改)       |
++-------------------------------------------------------------+
+| Related Campaign                             |
 | [Select Campaign ▼]                                          |
 | (Link to an ongoing platform campaign)                       |
 +-------------------------------------------------------------+
-|                    [CANCEL]    [CREATE]                      |
+|                    [CANCEL]    [CONFIRM]                    |
 +-------------------------------------------------------------+
 ```
 
@@ -191,17 +194,15 @@ ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
 |-----|-----|-----|
 | Prize | ✅ | 使用道具选择组件，支持token或普通道具 |
 | Title | ✅ | 活动标题，限50字符 |
-| Description | ❌ | 活动描述，限500字符 |
-| Joining Period | ✅ | 报名时间段，精确到分钟 |
+| Description | ❌ | 活动描述，限200字符 |
+| Entry Period | ✅ | 报名时间段，精确到分钟 |
 | Draw Time | 自动 | 根据报名截止时间自动生成，不可修改 |
-| Campaign | ❌ | 下拉选择运营预配置的活动名称 |
-| Requirement | 默认 | 本期固定为"关注发奖者"，不可更改 |
+| Related Campaign | ❌ | 下拉选择运营预配置的活动名称，本期只有一个"Christmas & New Year"；也可不选 |
+| Entry Requirement | 默认 | 本期固定为"关注发奖者"，不可更改 |
 
 **时间限制**：报名截止时间/开奖时间不能超过创建时间起30天，以保持活动节奏
 
-- **查看抽奖活动**
-  - 查看活动参与人数统计、活动状态等（用户中心动态tab、抽奖详情页）
-  - （mvp阶段先不支持取消或编辑抽奖，后续再加-如报名开始之前可支持取消或修改）
+- **编辑或取消抽奖活动**：mvp阶段先不支持取消或编辑抽奖，后续再加-如报名开始之前可支持取消或修改
  
 
 #### 2. 用户参与抽奖
@@ -209,7 +210,7 @@ ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
   - 首页顶部giveaway数量拉取入口（支持点击）、活动页（giveaway聚合页）的抽奖列表；用户主页的tab（已参与抽奖）
 
 - **参与流程**
-  1. **抽奖卡片点击「JOIN NOW」**：跳转至抽奖详情页
+  1. **抽奖卡片点击「JOIN NOW」**：跳转至抽奖详情页（非抽奖报名时间段有其他按钮状态，详见第6、7节）
   2. **抽奖详情页**：抽奖信息、参与条件等
   3. **详情页点击「JOIN NOW」**：直接完成参与（无确认弹窗）
   
