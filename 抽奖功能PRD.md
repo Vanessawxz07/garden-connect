@@ -400,7 +400,7 @@ Claim Deadline: [Date Time]
 - 在中奖通知中明确标注领奖截止时间："Claim Deadline: [Date]"
 
 
-#### 5. Giveaway列表页面
+#### 5. Giveaway聚合页面
 URL规则：/growagarden/giveaways/
 
 本期与双节活动需求合并，即常规Giveaway列表页基础上增加活动模块，待活动结束后可下线活动模块，聚合展示日常Giveaways（具体见Jiaming需求单）
@@ -517,9 +517,14 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | completed（已交接） | 无  | 显示中奖者，状态ended | 显示截图和留言 |
 | expired（已过期） | 无  | 显示中奖者，状态ended | 隐藏 |
 
-#### 7. 用户中心抽奖卡片操作按钮状态
+#### 7. 抽奖卡片
 
-用户中心"动态"tab中的抽奖卡片操作按钮需与聊天中的交接操作状态联动。
+<img width="1025" height="353" alt="局部截取_20251211_154935" src="https://github.com/user-attachments/assets/80a30579-fb69-4674-a1bd-34ed1c1211df" />
+<img width="1039" height="317" alt="局部截取_20251211_155138" src="https://github.com/user-attachments/assets/8729e015-849e-4cf4-90c8-549461b1d9b8" />
+
+
+
+按钮与状态：用户中心"动态"tab中的抽奖卡片操作按钮需与聊天中的交接操作状态联动。
 
 ##### 7.1 主态（我创建的抽奖）操作按钮
 
