@@ -38,6 +38,7 @@
 用户标签用于**展示身份和特点**，不控制权限。部分标签需由运营在管理后台为指定用户添加，其他则为机制化的标签（来源于数据条件），可持续丰富
 
 <img width="654" height="204" alt="局部截取_20251209_203053" src="https://github.com/user-attachments/assets/22863a32-3f8f-4959-af12-3a7e449a580d" />
+视觉稿：https://www.figma.com/design/4mDwVh4lJ2t1Yy7EcINY5t/UI-Kit?node-id=3235-2831&p=f&t=bQyhc4FizthRwtO0-0
 
 ps: 机制化标签本期可以先不上，以上仅示意规划方案
 
