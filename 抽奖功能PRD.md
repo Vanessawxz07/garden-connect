@@ -459,7 +459,7 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | 28 | | 截图 | 可点击放大 |
 | 27 | | 留言 | 最多100字符 |
 | 27 | | 来自xx | "From [发奖者]/[中奖者]" |
-| 30 | **推荐模块 Discover More Giveaways** | 推荐抽奖 | 使用抽奖列表组件；最多3条，优先展示ONGOING，其次AWAITING START，开奖时间or报名开始时间越近的展示在上方；无符合条件的（表内所有抽奖均已开奖）则隐藏整个模块。点击标题行和底部More按钮，跳转至giveaway聚合页；卡片交互统一（组件） |
+| 30 | **推荐模块 Discover More Giveaways** | 推荐抽奖 | 使用抽奖列表组件；最多3条，优先展示ONGOING，其次UPCOMING，开奖时间or报名开始时间越近的展示在上方；无符合条件的（表内所有抽奖均已开奖）则隐藏整个模块。点击标题行和底部More按钮，跳转至giveaway聚合页；卡片交互统一（组件） |
 
 **倒计时的逻辑**：该逻辑在giveaway详情页和giveaway卡片中复用。
 
