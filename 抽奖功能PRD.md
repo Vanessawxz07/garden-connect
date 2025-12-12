@@ -56,7 +56,7 @@
 创建 → 进行中 → 开奖 → 已开奖 → 已交接/过期失效
 
 状态说明：
-- created: 刚创建，未开始 → "AWAITING START"
+- created: 刚创建，未开始 → "UPCOMING"
 - ongoing: 进行中，即处于报名参与期 → "ONGOING"
 - drawing: 正在开奖（锁定状态，不支持报名）——待讨论，如抽奖过程极短，不需要展示抽奖过程，则无需该状态
 - ended: 已开奖，不管是否完成奖品交接都进入此状态 → "ENDED"
@@ -73,7 +73,7 @@ ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
 - completed与expired互斥：以是否完成交接区分，只能存在一个
 ```
 注意：
-- 前端外显的状态名称只有"AWAITING START/ONGOING/ENDED"；completed/expired主要作为后端内部状态，不影响前端状态标签展示，开奖后统一显示"ENDED"（具体展示逻辑按下方页面、卡片的详细要求）
+- 前端外显的状态名称只有"UPCOMING/ONGOING/ENDED"；completed/expired主要作为后端内部状态，不影响前端状态标签展示，开奖后统一显示"ENDED"（具体展示逻辑按下方页面、卡片的详细要求）
 - 所有外显的时间应统一，与value一样都需要转为UTC时间
 
 
@@ -432,7 +432,7 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | 序号 | 区域 | 字段 | 说明 |
 |:---:|-----|-----|-----|
 | 1 | **导航** | 面包屑 | Giveaway / [抽奖标题] |
-| 6 | **头部** | 状态标签 | AWAITING START / ONGOING / ENDED（前端仅显示这3种） |
+| 6 | **头部** | 状态标签 | UPCOMING / ONGOING / ENDED（前端仅显示这3种） |
 | 7 | | 倒计时 | 见下方详细逻辑 |
 | 7 | | 标题 | 完整展示 |
 | 8 | | 描述 | 完整展示 |
@@ -579,7 +579,7 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | draw_time | 开奖时间 | ✅ | ✅ | ✅ | ✅ | 定时开奖触发时间 |
 | ended_at | 实际结束时间 | ✅ | - | - | ✅ | 开奖完成时间 |
 | countdown_text | 倒计时文案 | - | ✅ | ✅ | ✅ | 计算字段："Ends in 2h 30m" |
-| time_status | 时间状态标签 | - | ✅ | ✅ | - | "AWAITING START"/"ONGOING"/"ENDED" |
+| time_status | 时间状态标签 | - | ✅ | ✅ | - | "UPCOMING"/"ONGOING"/"ENDED" |
 | campaign_tag | 关联活动标签 | ✅ | ✅ | ✅ | ✅ | 管理端配置，标签样式显示，不可点击 |
 | **参与信息** |
 | winner_count | 中奖人数上限 | ✅ | ✅ | ✅ | ✅ | 默认1 |
