@@ -153,7 +153,7 @@ ps: 机制化标签本期可以先不上，以上仅示意规划方案
 
 **交易数据**
 现网已有逻辑：
-- Completed Trades: xx (新增：交易数据表现-Top xx%，表示该数据在站内代表什么水平，以提升用户交易信任度；带tooltip提示，文案待定；待与研发讨论展示逻辑)
+- Completed Trades: xx (新增：交易数据表现-Top xx%，表示该数据在站内代表什么水平，以提升用户交易信任度；带tooltip提示，文案"This trader ranks in the top {x}% based on completed trade history.")
   
   **12/10更新计算逻辑**：只有前50%的用户才需展示，简化为4个梯度（top3%、10%、25%、50%）。（测试关注：无需花太多精力验证数据准确性，无明显异常即可）
   
