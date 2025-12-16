@@ -239,12 +239,12 @@ ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
 5. 用户并非该抽奖的创建者
 ```
 
-当不满足条件时，进行对应的toast报错提示，告知用户原因，文案如下：
+当不满足条件时，用户在详情页点击按钮时，进行对应的toast报错提示，告知用户原因，文案如下：
 - 条件1：未登录 (跳转登录页，无需toast)
 - 条件2：未关注VIP (自动关注，无需toast；若关注失败则需要，失败时"Failed to follow host. Please try again.")
 - 条件3：抽奖非"进行中"状态
    1）未开始报名："This giveaway hasn't started yet."
-   2）已结束："This giveaway has ended."
+   2）已结束：按钮为ENDED，不可点击，因此无需报错提示。
 - 条件4：已参与过- "You've already joined this giveaway."
 - 条件5：用户是创建者- "You cannot join your own giveaway."
 
@@ -480,14 +480,14 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 
 | 状态 | 用户角色 | 操作按钮 | 中奖者区域 | 交接区域 |
 |-----|---------|---------|---------|---------|
-| created | 所有人 | COMING SOON (disabled) | 隐藏 | 隐藏 |
-| ongoing | 未参与 | JOIN NOW | 隐藏 | 隐藏 |
-| ongoing | 已参与 | JOINED (disabled) | 隐藏 | 隐藏 |
-| ended | 所有人 | ENDED (disabled) | 显示中奖者 | 隐藏 |
-| completed | 所有人 | ENDED (disabled) | 显示中奖者 | 显示截图和留言 |
-| expired | 所有人 | ENDED (disabled) | 显示中奖者 | 隐藏 |
+| created | 所有人 | COMING SOON (点击时toast文案报错"This giveaway hasn't started yet.") | 隐藏 | 隐藏 |
+| ongoing | 未参与 | JOIN NOW（点击报名） | 隐藏 | 隐藏 |
+| ongoing | 已参与 | JOINED  (点击时toast文案报错"You've already joined this giveaway.")  | 隐藏 | 隐藏 |
+| ended | 所有人 | ENDED (disabled，灰色按钮) | 显示中奖者 | 隐藏 |
+| completed | 所有人 | ENDED (disabled，灰色按钮)| 显示中奖者 | 显示截图和留言 |
+| expired | 所有人 | ENDED (disabled，灰色按钮) | 显示中奖者 | 隐藏 |
 
-> **注意**：详情页不提供UPLOAD入口，交接确认操作仅在**个人中心卡片**和**1v1聊天**中进行。
+> **注意**：详情页不提供UPLOAD入口，交接确认入口仅在抽奖卡片中。
 
 #### 7. 抽奖卡片
 视觉稿：https://www.figma.com/design/4mDwVh4lJ2t1Yy7EcINY5t/UI-Kit?node-id=4747-99&p=f&t=yWnkGrXuQAV1tfQg-0
