@@ -1,4 +1,4 @@
-# 抽奖功能产品需求文档 (PRD) v1.8
+# 抽奖功能产品需求文档 (PRD) v1.9
 
 ## 📋 一、概述
 
@@ -403,7 +403,7 @@ Claim Deadline: [Date Time]
 +-------------------------------------------------------------+
 | Upload Screenshot *                                          |
 | [拖拽上传 或 点击选择图片]                                  |
-| Max 5 MB
+| Max 5 MB, supports JPG/PNG/WEBP
 +-------------------------------------------------------------+
 | Warm Words to [中奖者/发奖者昵称] (Optional)                 |
 | [(文本输入框) Max 100 characters]                                      |
@@ -411,6 +411,16 @@ Claim Deadline: [Date Time]
 |                    [CANCEL]    [CONFIRM]                     |
 +-------------------------------------------------------------+
 ```
+
+##### 4.1.4 交接确认校验逻辑与报错文案
+
+| 校验条件 | 报错文案（Toast） |
+|---------|------------------|
+| 发奖者未上传截图 | "Please upload a screenshot to confirm handover." |
+| 图片大小超过5MB | "Image too large (max 5 MB)." |
+| 图片格式不支持 | "Please upload a JPG, PNG, or WEBP image." |
+| 留言超过100字符 | "Message is too long (max 100 characters)." |
+| 上传失败（网络等） | "Upload failed. Please try again." |
 
 #### 4.2 领奖有效期与过期失效机制
 
@@ -680,6 +690,7 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | v1.6 | 2025-12-09 | 全面补充英文展示文案：状态标签、按钮文案、Toast提示、空状态文案、交接模块文案等 | AI Product Manager |
 | v1.7 | 2025-12-11 | 按钮状态统一：(1) 详情页按钮状态完善 (2) 交接按钮从CONFIRM HANDOVER改为UPLOAD (3) 明确UPLOAD入口仅在个人中心卡片和聊天中 (4) 详情页ended状态统一显示ENDED(disabled) | AI Product Manager |
 | v1.8 | 2025-12-16 | (1) 新增创建抽奖校验逻辑与报错文案章节 (2) 开奖时间调整为报名截止时间+1分钟 | AI Product Manager |
+| v1.9 | 2025-12-16 | 新增交接确认弹窗校验逻辑与报错文案（4.1.4节） | AI Product Manager |
 
 ---
 
