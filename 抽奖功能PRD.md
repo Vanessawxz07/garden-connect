@@ -238,8 +238,9 @@ ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
 4. 用户未重复参与同一抽奖
 5. 用户并非该抽奖的创建者
 ```
+
 当不满足条件时，进行对应的toast报错提示，告知用户原因，文案如下：
-- 条件1：未登录	(跳转登录页，无需toast)
+- 条件1：未登录 (跳转登录页，无需toast)
 - 条件2：未关注VIP (自动关注，无需toast；若关注失败则需要，失败时"Failed to follow host. Please try again.")
 - 条件3：抽奖非"进行中"状态
    1）未开始报名："This giveaway hasn't started yet."
@@ -248,7 +249,7 @@ ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
 - 条件5：用户是创建者- "You cannot join your own giveaway."
 
 
-##### 2.1 **粉丝铭牌（Fan Badge）**  （P1-MVP版本不加粉丝铭牌）
+##### 2.2 **粉丝铭牌（Fan Badge）**  （P1-MVP版本不加粉丝铭牌）
 获取方式: 用户通过参与抽奖自动关注VIP时，获得该VIP的粉丝铭牌。
 英文名称：Fan Badge
 
