@@ -521,7 +521,7 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | ongoing | - | VIEW | ✅ | 查看详情 |
 | ended | pending | VIEW + UPLOAD | ✅ | VIEW查看详情，UPLOAD点击拉起交接弹窗 |
 | ended | 对方已确认 | VIEW + UPLOAD | ✅ | VIEW查看详情，UPLOAD点击拉起交接弹窗 |
-| completed | 我已确认 | VIEW + HANDOVER CONFIRMED（状态） | ❌ | VIEW可点击，HANDOVER CONFIRMED仅为状态体现 |
+| completed | 我已确认 | VIEW + Handover Confirmed（状态） | ❌ | VIEW可点击，Handover Confirmed仅为状态体现 |
 | expired | - | VIEW + Expired（状态） | ❌ | VIEW可点击，Expired仅为状态体现 |
 
 ##### 7.2 主态（我参与的抽奖）操作按钮
@@ -529,11 +529,11 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 
 | 抽奖状态 | 是否中奖 | 交接状态 | 按钮文案 | 可操作 | 说明 |
 |---------|---------|---------|---------|:------:|-----|
-| ongoing | - | - | JOINED | ❌ | 不可点击 |
+| ongoing | - | - | VIEW + Joined（状态） | ✅ | VIEW可点击，Joined仅为状态体现 |
 | ended | 否 | - | VIEW | ✅ | 查看详情 |
-| ended | 是 | pending | VIEW + UPLOAD | ✅ | VIEW查看详情，UPLOAD点击拉起交接弹窗 |
-| ended | 是 | 对方已确认 | VIEW + UPLOAD | ✅ | VIEW查看详情，UPLOAD点击拉起交接弹窗 |
-| completed | 是 | 我已确认 | VIEW + HANDOVER CONFIRMED（状态）  | ❌ | VIEW可点击，HANDOVER CONFIRMED仅为状态体现 |
+| ended | 是 | pending | VIEW + UPLOAD 双按钮 | ✅ | VIEW查看详情，UPLOAD点击拉起交接弹窗 |
+| ended | 是 | 对方已确认 | VIEW + UPLOAD 双按钮 | ✅ | VIEW查看详情，UPLOAD点击拉起交接弹窗 |
+| completed | 是 | 我已确认 | VIEW + Handover Confirmed（状态）  | ❌ | VIEW可点击，Handover Confirmed仅为状态体现 |
 | expired | 是 | - | VIEW + Expired（状态）  | ❌ | VIEW可点击，Expired仅为状态体现 |
 
 **状态联动规则**：
@@ -548,7 +548,7 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | 文案与状态 | 使用场景与条件 |
 |---------|---------|
 | VIEW | 已创建(未到开奖时间)/已开奖（包括开奖后所有状态）；点击跳转详情页 |
-| JOIN NOW | 可参与时 | 
+| JOIN NOW | 可参与时；点击跳转详情页 | 
 
 ---
 
