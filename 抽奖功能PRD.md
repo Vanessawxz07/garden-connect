@@ -1,4 +1,4 @@
-# 抽奖功能产品需求文档 (PRD) v1.7
+# 抽奖功能产品需求文档 (PRD) v1.8
 
 ## 📋 一、概述
 
@@ -66,7 +66,7 @@
 
 ex：
 created → ongoing 切换时点 = 报名开始时间
-ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
+ongoing → ended 切换时点 = 开奖时间 = 报名结束时间 + 1分钟
 
 状态互斥规则：
 - ended与completed/expired互斥：开奖后先进入ended状态
@@ -171,7 +171,7 @@ ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
 | ⚠️ End time must be within 30 days from now                |
 +-------------------------------------------------------------+
 | Draw Time                                                    |
-| [Auto-generated based on entry end time]  (只读，不可修改)    |
+| [Auto-generated: Entry end time + 1 min]  (只读，不可修改)    |
 +-------------------------------------------------------------+
 | Title *                                                      |
 | [Enter giveaway title...]                                    |
@@ -199,13 +199,27 @@ ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
 | Title | ✅ | 活动标题，限50字符 |
 | Description | ❌ | 活动描述，限200字符 |
 | Entry Period | ✅ | 报名时间段，精确到分钟 |
-| Draw Time | 自动 | 根据报名截止时间自动生成，不可修改 |
+| Draw Time | 自动 | 根据报名截止时间+1分钟自动生成，不可修改 |
 | Related Campaign | ❌ | 下拉选择运营预配置的活动名称，本期只有一个"Christmas & New Year"；也可不选 |
 | Entry Requirement | 默认 | 本期固定为"关注发奖者"，不可更改 |
 
-**时间限制**：报名截止时间/开奖时间不能超过创建时间起30天，以保持活动节奏
+**时间限制**：报名截止时间不能超过创建时间起30天，开奖时间=报名截止时间+1分钟（系统自动计算）
 
 - **编辑或取消抽奖活动**：mvp阶段先不支持取消或编辑抽奖，后续再加-如报名开始之前可支持取消或修改
+
+##### 1.5 创建抽奖校验逻辑与报错文案
+
+| 字段 | 校验条件 | 报错文案（Toast） |
+|------|---------|------------------|
+| Prize | 未选择道具 | "A prize is required to create a giveaway." |
+| Prize | 道具数量无效 | "Please enter a valid prize quantity." |
+| Title | 为空 | "Title is required." |
+| Title | 超过50字符 | "Title is too long (max 50 characters)." |
+| Description | 超过200字符 | "Description is too long (max 200 characters)." |
+| Entry Period | 未选择 | "Entry start and end times are required." |
+| Entry Period | 开始时间在过去 | "Please select a future start time." |
+| Entry Period | 结束时间≤开始时间 | "Invalid entry period." |
+| Entry Period | 超过30天限制 | "End time must be within 30 days." |
  
 
 #### 2. 用户参与抽奖
@@ -281,7 +295,7 @@ ongoing → ended 切换时点 = 报名结束时间 = 开奖时间
 
 #### 3. 定时开奖**
 - **自动开奖机制**
-  - 支持设定抽奖的报名时间范围，到报名时间截止时即为开奖时间，到时自动触发抽奖/开奖（同时）
+  - 支持设定抽奖的报名时间范围，开奖时间=报名截止时间+1分钟，到开奖时间自动触发抽奖
   - 随机算法抽取获奖者（已关注且参与的用户，所有用户中奖机率相同；未来可考虑引入积分体系，增加中奖机率，本期不用）
   - 本期不校验开奖时用户是否仍要在关注中
 
@@ -508,7 +522,7 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | 5 | 奖品名称 | "Prize:[道具名称/Token]" |
 | 6 | 奖品价值 | "Prize Value: [价值对应的token数量/value值]" ，token和道具展示效果一样（见视觉稿示意） |
 | 7 | 开奖时间 | Draw Time: [日期时间] |
-| 8 | 报名时间段 | Entry Period: [start_time] - [draw_time] |
+| 8 | 报名时间段 | Entry Period: [start_time] - [entry_end_time] |
 | 9 | 描述 | 大屏最多1行，中小屏最多2行，超长则显示... |
 | 10 | 参与人数 | 报名未开始时不展示；报名开始但无参与者时显示"Be the first to join!"；有参与者时展示"XX users(注意单复数) joining!" |
 | 11 | 发奖者信息 | 头像 + "Hosted by [发奖者名称]"+标签（最多3个） |
@@ -665,9 +679,10 @@ URL规则：/growagarden/giveaways/抽奖标题slug
 | v1.5 | 2025-12-09 | 文档精简：(1) 补充无参与者开奖处理逻辑 (2) 删除用户旅程与逻辑图章节 (3) 删除UI/UX设计方向章节 (4) 修正开奖状态流转逻辑 | AI Product Manager |
 | v1.6 | 2025-12-09 | 全面补充英文展示文案：状态标签、按钮文案、Toast提示、空状态文案、交接模块文案等 | AI Product Manager |
 | v1.7 | 2025-12-11 | 按钮状态统一：(1) 详情页按钮状态完善 (2) 交接按钮从CONFIRM HANDOVER改为UPLOAD (3) 明确UPLOAD入口仅在个人中心卡片和聊天中 (4) 详情页ended状态统一显示ENDED(disabled) | AI Product Manager |
+| v1.8 | 2025-12-16 | (1) 新增创建抽奖校验逻辑与报错文案章节 (2) 开奖时间调整为报名截止时间+1分钟 | AI Product Manager |
 
 ---
 
 **文档状态**：✅ 已确认  
-**最后更新**：2025-12-09  
+**最后更新**：2025-12-16  
 
