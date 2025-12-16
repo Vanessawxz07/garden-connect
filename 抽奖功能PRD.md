@@ -212,13 +212,13 @@ ongoing → ended 切换时点 = 开奖时间 = 报名结束时间 + 1分钟
 | 字段 | 校验条件 | 报错文案（Toast） |
 |------|---------|------------------|
 | Prize | 未选择道具 | "A prize is required to create a giveaway." |
-| Prize | 道具数量无效 | "Please enter a valid prize quantity." |
+| Prize | 道具数量无效（如无多选的可能，则不需要检验此项） | "Please enter a valid prize quantity." |
 | Title | 为空 | "Title is required." |
 | Title | 超过50字符 | "Title is too long (max 50 characters)." |
 | Description | 超过200字符 | "Description is too long (max 200 characters)." |
 | Entry Period | 未选择 | "Entry start and end times are required." |
 | Entry Period | 开始时间在过去 | "Please select a future start time." |
-| Entry Period | 结束时间≤开始时间 | "Invalid entry period." |
+| Entry Period | 结束时间≤开始时间 | "End time must be after start time." |
 | Entry Period | 超过30天限制 | "End time must be within 30 days." |
  
 
