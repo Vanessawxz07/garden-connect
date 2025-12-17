@@ -175,7 +175,8 @@ ongoing → ended 切换时点 = 开奖时间 = 报名结束时间 + 1分钟
 +-------------------------------------------------------------+
 | Title *                                                      |
 | [Enter giveaway title...]                                    |
-| (Max 50 characters)                                          |
+| (Use English only and avoid special symbols or Emojis. Max 50 characters. 
+Example: 2026 New Year Kitsune Giveaway!)                      |
 +-------------------------------------------------------------+
 | Description                                                  |
 | [Describe your giveaway...]                                  |
@@ -449,9 +450,11 @@ URL规则：/growagarden/giveaways/
 
 
 #### 6. Giveaway详情页
-URL规则：/growagarden/giveaways/抽奖标题slug
+URL规则：/growagarden/giveaways/抽奖标题slug + giveaway id
 视觉稿：https://www.figma.com/design/9Zg2tQV0fIFZu3GgNmtwjl/giveaways?node-id=8011-1845&p=f&t=N2QYqOhQOgCqozwc-0
 <img width="598" height="260" alt="局部截取_20251211_184140" src="https://github.com/user-attachments/assets/45fb1e37-7940-4529-9e1f-e82eb8324cc5" />
+
+为避免特殊字符、多语言导致的乱码，slugify处理建议：原始标题->转换为全小写->替换所有非字母数字字符为空格->连续空格替换为单个连字符。
 
 ##### 6.1 页面布局
 
