@@ -590,6 +590,17 @@ URL规则：/growagarden/giveaways/抽奖标题slug + giveaway id
 | VIEW | 已创建(未到开奖时间)/已开奖（包括开奖后所有状态）；点击跳转详情页 |
 | JOIN NOW | 可参与时；点击跳转详情页 | 
 
+
+【12/19补充】
+卡片在已开奖的状态时,按钮下方文案：
+- 有用户参加的话：不区分主客态，均为"xx user/users joined!"
+- 无用户参加的话：主态显示"No user joined."，其他用户不展示文案（左边已有ended状态）
+
+详情页在已开奖的状态时：（不区分主客态）
+- 有用户参加的话：xx user/users joined!
+- 无用户参加的话：No user joined.
+
+
 ---
 
 ## 📋 四、Giveaway 字段表
