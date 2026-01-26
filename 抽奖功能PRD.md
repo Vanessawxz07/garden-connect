@@ -8,7 +8,7 @@
 
 | 版本 | 更新日期 | 版本说明 | 状态 |
 |------|---------|---------|------|
-| **v2.0** | 2026-01-23 | 多游戏适配版本：支持平台级抽奖服务 | 🔵 开发中 |
+| **v2.0** | 2026-01-23 | 多游戏适配版本：支持平台级抽奖服务 | 🔵 待开发 |
 | v1.9 | 2025-12-16 | MVP版本：单游戏（GAG）抽奖功能 | ✅ 已上线 |
 
 ---
@@ -34,42 +34,30 @@
 
 ### 详细变更说明
 
-#### 1. 数据层变更
+#### 1. 数据层变更(示例)
+- giveaways表新增game_key字段；现有GAG抽奖数据自动赋值`game_key = 'gag'`
+- 添加索引优化查询
+- giveaway_items关联的item需校验game_key一致性
 
-**数据库迁移**：
-```sql
--- giveaways表新增game_key字段
-ALTER TABLE public.giveaways 
-ADD COLUMN game_key TEXT NOT NULL DEFAULT 'gag';
-
--- 添加索引优化查询
-CREATE INDEX idx_giveaways_game_key ON public.giveaways(game_key);
-
--- giveaway_items关联的item需校验game_key一致性
-```
-
-**字段说明**：
-| 字段 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| game_key | TEXT | ✅ | 游戏标识，如`gag`、`bf`，关联`GameConfig` |
 
 ---
 
 #### 2. 路由与URL变更
+**说明**：抽奖作为平台公共功能，使用公共路径，不再放在游戏子路径下。（待与研发讨论-详情页URL不含game_key，通过giveaway数据字段获取所属游戏，是否有其他影响？）
 
-**旧路由（v1.x）**：
+**旧路由**：
 - 聚合页：`/growagarden/giveaways/`
 - 详情页：`/growagarden/giveaways/{slug}-{id}`
 
-**新路由（v2.0）**：
+**新路由**：
 - 聚合页：`/giveaways` 或 `/giveaways?game={gameKey}`
 - 详情页：`/giveaways/{slug}-{id}`
 
-**说明**：抽奖作为平台公共功能，使用公共路径，不再放在游戏子路径下。详情页URL不含game_key，通过giveaway数据获取所属游戏。
+**URL兼容**：聚合页、详情页旧URL需301重定向至新URL
 
 ---
 
-#### 3. 聚合页变更
+#### 3. 聚合页变更（家铭需求）
 
 **新增游戏筛选Tab**：
 ```
@@ -92,30 +80,30 @@ CREATE INDEX idx_giveaways_game_key ON public.giveaways(game_key);
 
 ---
 
-#### 4. GiveawayCard组件变更
+#### 4. Giveaway信息卡片变更
+<img width="1089" height="269" alt="局部截取_20260126_112156" src="https://github.com/user-attachments/assets/ca361920-e156-4427-a4bc-12df64cf1148" />
 
-**新增游戏标识Badge**：
-
-位置：卡片左上角，与状态标签并列
+**通用Giveaway卡片新增游戏标识Badge**：
+位置：卡片左上角，标题上方一行or标题左侧
 ```
 +-------------------------------------------------------------+
 | [GAG🌱] [ONGOING]                          [SHARE]          |
 | ...                                                          |
 +-------------------------------------------------------------+
 ```
-
-**样式规范**：
-- 使用`GameConfig`中定义的`badge.icon`和`badge.color`
-- Badge格式：`[GameShortName + Icon]`
-- 示例：`GAG🌱`、`BF⚔️`
-- 在"All"列表中始终显示；在游戏专属列表中可选隐藏
+该卡片展示在各场景中均统一相同样式，如giveaway聚合页、用户中心。
 
 ---
 
 #### 5. 创建抽奖弹窗变更
+用户中心tap列增加了游戏筛选，所以默认创建giveaway即为当前用户所在的游戏中创建giveaway, 但支持在创建弹窗中更改游戏选择。游戏选择与下一步的道具选择为对应关系。
+ex，如当前的tab列为BF，所以在giveaway当中点击“创建”，则打开的创建弹窗中默认选择的游戏即为BF，添加奖品时拉起BF的道具选择弹窗。
+<img width="1109" height="683" alt="局部截取_20260126_111200" src="https://github.com/user-attachments/assets/7031f489-dd42-43d0-8ae5-4025efb87cec" />
+
+<img width="532" height="574" alt="局部截取_20260126_105356" src="https://github.com/user-attachments/assets/90ca5fd9-28b9-4b05-9d94-2531aaabf163" />
+<img width="537" height="654" alt="局部截取_20260126_105316" src="https://github.com/user-attachments/assets/bf704858-3ab1-44f7-a092-36911656ef93" />
 
 **新增游戏选择器**：
-
 ```
 +-------------------------------------------------------------+
 |                    Create Giveaway                           |
@@ -132,70 +120,58 @@ CREATE INDEX idx_giveaways_game_key ON public.giveaways(game_key);
 | ... (其他字段保持不变)                                        |
 +-------------------------------------------------------------+
 ```
+**文案**：
+- 游戏选择的介绍文案："Choose which game this giveaway is for"
+- Prize的说明信息调整："Choose 1 item or any tokens as the prize" -> "Choose 1 item as the prize"
 
 **交互逻辑**：
-1. 游戏选择器为必填项，下拉展示所有已上线游戏
-2. 选择游戏后，奖品选择器**仅展示该游戏的道具和Token**
-3. 切换游戏时，如已选奖品，需清空并提示："Switching game will clear the selected prize."
-4. 游戏选择器的选项来源于`GameConfig`配置
+1. 游戏选择器为必填项，下拉展示所有已上线游戏，游戏选择器的选项与站点所有支持游戏选择的场景保持一致
+2. 游戏选择器中展示默认的游戏，点击添加奖品的格子**展示对应该游戏的道具选择弹窗**; 点击选择器可更换游戏，切换游戏后，如已选奖品，则需清空格子回到默认状态
+3. 当未选择游戏时，如点击添加奖品的格子，不拉起道具选择弹窗，并弹出报错通知"Please select a game for this giveaway first."
+4. 增加提交时的校验逻辑：**游戏选择为创建的必选项**，报错通知"Please select a game for this giveaway first."
 
-**校验逻辑新增**：
-| 字段 | 校验条件 | 报错文案（Toast） |
-|------|---------|------------------|
-| Game | 未选择游戏 | "Please select a game for this giveaway." |
+**其他调整**：
+- Related Campaign字段：增加选项"N/A"或直接隐藏（待讨论）
 
 ---
 
 #### 6. 用户中心变更
-
-**"Participated" / "Published" 列表新增游戏筛选**：
-
-```
-+-------------------------------------------------------------+
-| [Participated] [Published]  ← 二级Tab切换                   |
-+-------------------------------------------------------------+
-| [All] [GAG] [BF]  ← 🆕 游戏筛选Tab                          |
-+-------------------------------------------------------------+
-| [GiveawayCard]...                                           |
-+-------------------------------------------------------------+
-```
-
-**交互逻辑**：
-- 默认展示"All"
-- 每个区域（Participated/Published）独立维护游戏筛选状态
-- 空状态文案保持不变
+用户中心已在tap列增加游戏筛选，所以不需要单独在giveaway中再进行游戏选择。
+"Participated" / "Published" 筛选并展示该游戏所属的已参与、已创建抽奖，其他逻辑不变。
 
 ---
 
 #### 7. 聊天与通知变更
 
 **系统消息卡片新增游戏图标**：
-
-```
-🎊 Congratulations! You Won!              [GAG🌱]  [时间戳]
-You won "[奖品名称]" from [发奖者用户名]'s giveaway!
-...
-```
+与交易的系统信息逻辑一致，按游戏展示对应图标。
+<img width="419" height="397" alt="局部截取_20260126_113447" src="https://github.com/user-attachments/assets/a74264ee-15ab-468e-b962-9706856c73c2" />
 
 **私聊卡片新增游戏图标**：
-- 在抽奖相关的聊天会话中，消息卡片右上角显示游戏图标
-- 与交易消息的游戏图标展示逻辑保持一致
+- 在抽奖相关的聊天会话中，消息卡片右上角显示游戏标识
+- 与交易消息的游戏标识展示、交互逻辑保持一致
+聊天页视觉稿：https://www.figma.com/design/oS9Yg9snhnkrTR3QF8f0Bf/chat?node-id=2959-6485&p=f&t=kbrqni77Lo0BWHgN-0
+<img width="1419" height="418" alt="局部截取_20260126_112617" src="https://github.com/user-attachments/assets/c66ca1f4-e1bd-4991-b1c8-cedf6e81f524" />
 
 ---
 
 #### 8. 详情页变更
 
-**面包屑调整**：
-- 旧：`Giveaway / [抽奖标题]`
-- 新：`Giveaways / [游戏名称] / [抽奖标题]`
+**面包屑不变**：`Giveaway / [抽奖标题]`
 
 **新增游戏信息展示**：
-- 在状态标签旁或标题下方展示游戏Badge
-- 奖品区域的道具信息卡片使用对应游戏的样式
+- 在标题区域明显位置展示游戏标识
+- 奖品区域的道具信息卡片使用对应游戏的样式：
+  - 道具图片自动拉取对应游戏的道具
+  - 道具信息字段（建议后续支持根据不同游戏配置展示字段）：Category；Value:{价值数据，KMB标记}；Robux
+
+**Discover More Giveaways**：
+拉取逻辑增加：优先拉取当前抽奖相同游戏的giveaway（其他逻辑不变），如没有则拉取其他游戏。
+<img width="927" height="433" alt="局部截取_20260126_114740" src="https://github.com/user-attachments/assets/76e8279d-89e8-4a72-9dcf-24cb5370fa17" />
 
 ---
 
-### P1待开发功能汇总表
+### P1 前期待开发功能汇总表
 
 > 以下功能在v1.x MVP版本中未开发，需评估本次v2.0迭代是否一并实现。
 
@@ -203,54 +179,12 @@ You won "[奖品名称]" from [发奖者用户名]'s giveaway!
 |------|------------|---------|:------------:|------|
 | **粉丝铭牌（Fan Badge）** | 2.2节（第267-295行） | 参与抽奖自动关注VIP时获得14天有效期铭牌 | ❌ 暂缓 | 复杂度高，可独立迭代 |
 | **关联活动标签（Campaign Tag）** | 1.4节-字段说明（第204行）、四-字段表（第636行） | 下拉选择运营预配置的活动名称 | ✅ 建议开发 | 后台配置，前端展示，工作量小 |
-| **交接截图展示区域** | 6.2节（第494-497行） | 详情页展示已完成交接的截图和留言 | ❌ 暂缓 | 非核心流程，可后续补充 |
 | **分享功能完善** | 6.2节-分享按钮（第475行）、7.0节（第544行） | 卡片和详情页的SHARE按钮功能 | ✅ 建议开发 | 复用现有分享组件 |
-| **参与者头像列表** | 6.2节-参与者区域（第489行） | 展示最多10个参与者头像 | ❌ 暂缓 | 展示优化，非核心 |
-| **中奖者标签展示** | 6.2节-中奖者介绍（第492行） | 中奖者用户标签完整展示 | ✅ 建议开发 | 复用现有标签组件 |
-| **Show Less/More折叠** | 4.1.2节（第367行） | 聊天中抽奖卡片的折叠展开 | ❌ 暂缓 | 聊天页优化中包含 |
-| **7天提醒机制** | 4.2节-原设计（已删除） | 领奖截止前7天发送提醒 | ❌ 不开发 | 已被14天失效机制替代 |
 
-**v2.0开发范围建议**：
-- ✅ **必须**：多游戏核心适配（数据层、路由、筛选、创建流程）
-- ✅ **建议**：关联活动标签、分享功能、中奖者标签
-- ❌ **暂缓**：粉丝铭牌、交接截图展示、参与者头像、折叠功能
 
 ---
 
-### 与GameConfig的集成
-
-抽奖功能需要读取`GameConfig`获取以下信息：
-
-```typescript
-// 抽奖功能使用的GameConfig字段
-interface GiveawayGameConfig {
-  gameKey: string;           // 游戏标识
-  displayName: string;       // 游戏显示名称
-  badge: {
-    icon: string;            // 游戏图标emoji
-    color: string;           // Badge颜色token
-  };
-  items: {
-    categories: string[];    // 道具分类（用于奖品选择器筛选）
-  };
-}
-```
-
----
-
-### 迁移与兼容性
-
-**数据迁移**：
-- 现有GAG抽奖数据自动赋值`game_key = 'gag'`
-- 无需用户操作
-
-**URL兼容**：
-- 旧URL `/growagarden/giveaways/*` 301重定向至 `/giveaways/*`
-- 详情页URL结构变更，需配置重定向规则
-
----
-
-## 📋 一、概述（原v1.x内容）
+## 📋 一、概述（原GIVEAWAY MVP版本内容）
 
 ### 核心价值
 - **平台运营**：提升用户活跃度和留存率，建立健康的社交生态
