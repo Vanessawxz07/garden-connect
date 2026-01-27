@@ -85,7 +85,7 @@
 
 - **通用Giveaway卡片新增游戏标识Badge**：位置在卡片左上角，标题上方一行or标题左侧
 
-- **奖品Value**：不展示token，仅Value。
+- **奖品Value**：根据游戏判断是否展示token，如不是GAG，则默认仅展示Value。
 
 该卡片展示在各场景中均统一相同样式，如giveaway聚合页、用户中心。
 
