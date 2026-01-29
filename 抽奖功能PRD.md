@@ -63,7 +63,7 @@ https://doc.weixin.qq.com/doc/w3_AVsATgZsAGECNRipV2Hf0TzeDibV1?scode=AFIANgeJAA0
 
 #### 4. Giveaway信息卡片变更
 视觉稿：https://www.figma.com/design/4mDwVh4lJ2t1Yy7EcINY5t/UI-Kit?node-id=4747-99&p=f&t=VMbPSkL14aXlUpwa-0
-<img width="1089" height="269" alt="局部截取_20260126_112156" src="https://github.com/user-attachments/assets/ca361920-e156-4427-a4bc-12df64cf1148" />
+<img width="1269" height="340" alt="企业微信截图_17696557353990" src="https://github.com/user-attachments/assets/3695caf0-fca5-4055-a73a-19570a522943" />
 <img width="994" height="328" alt="局部截取_20260129_115612" src="https://github.com/user-attachments/assets/47f5dd47-25c1-44ce-b704-a99933ec8c94" />
 
 
@@ -73,13 +73,22 @@ https://doc.weixin.qq.com/doc/w3_AVsATgZsAGECNRipV2Hf0TzeDibV1?scode=AFIANgeJAA0
 
 ---
 
-#### 5. 创建抽奖弹窗变更
+#### 5. 用户中心
+用户中心已在tap列增加游戏筛选，所以不需要单独在giveaway中再进行游戏选择。
+<img width="1012" height="343" alt="局部截取_20260129_115851" src="https://github.com/user-attachments/assets/25b22169-f27e-40e3-8dbd-cfdf2cc4089e" />
+
+"Participated" / "Published" 筛选并展示该游戏所属的已参与、已创建抽奖，其他逻辑不变。
+
+
+---
+
+#### 6. 创建抽奖弹窗变更
 视觉稿：https://www.figma.com/design/4mDwVh4lJ2t1Yy7EcINY5t/UI-Kit?node-id=4747-99&p=f&t=VMbPSkL14aXlUpwa-0
 
 用户中心tap列增加了游戏筛选，所以默认创建giveaway即为当前用户所在的游戏中创建giveaway, 但支持在创建弹窗中更改游戏选择。
 
-**新增游戏选择器**：
 <img width="683" height="483" alt="局部截取_20260129_112713" src="https://github.com/user-attachments/assets/e6db129e-ba46-4a36-9ad6-68128f3ce96f" />
+**新增游戏选择器**：
 游戏选择与下一步的道具选择为对应关系。ex，如当前的tab列为BF，所以在giveaway当中点击“创建”，则打开的创建弹窗中默认选择的游戏即为BF，添加奖品时拉起BF的道具选择弹窗。
 （ps, Giveaway创建时道具选择弹窗的通用逻辑：不展示道具数量选择）
 
@@ -98,12 +107,6 @@ https://doc.weixin.qq.com/doc/w3_AVsATgZsAGECNRipV2Hf0TzeDibV1?scode=AFIANgeJAA0
 - Related Campaign字段：增加选项"General Giveaway"，默认选择该项。
 此外，其他字段保持不变      
 
-
----
-
-#### 6. 用户中心变更
-用户中心已在tap列增加游戏筛选，所以不需要单独在giveaway中再进行游戏选择。
-"Participated" / "Published" 筛选并展示该游戏所属的已参与、已创建抽奖，其他逻辑不变。
 
 ---
 
