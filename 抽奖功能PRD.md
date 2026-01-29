@@ -62,18 +62,19 @@ https://doc.weixin.qq.com/doc/w3_AVsATgZsAGECNRipV2Hf0TzeDibV1?scode=AFIANgeJAA0
 ---
 
 #### 4. Giveaway信息卡片变更
+视觉稿：https://www.figma.com/design/4mDwVh4lJ2t1Yy7EcINY5t/UI-Kit?node-id=4747-99&p=f&t=VMbPSkL14aXlUpwa-0
 <img width="1089" height="269" alt="局部截取_20260126_112156" src="https://github.com/user-attachments/assets/ca361920-e156-4427-a4bc-12df64cf1148" />
+<img width="994" height="328" alt="局部截取_20260129_115612" src="https://github.com/user-attachments/assets/47f5dd47-25c1-44ce-b704-a99933ec8c94" />
+
 
 - **通用Giveaway卡片新增游戏标识Badge**：位置在卡片标题上方一行 
-
 - **奖品Value**：根据游戏判断是否展示token，如不是GAG，则默认仅展示Value。
-
 该卡片展示在各场景中均统一相同样式，如giveaway聚合页、详情页推荐模块、用户中心。
 
 ---
 
 #### 5. 创建抽奖弹窗变更
-视觉稿：https://www.figma.com/design/0M4JNzqICab4h3Vcewm8RZ/user?node-id=5348-5402&t=FwNaonA55QDvEyp2-0
+视觉稿：https://www.figma.com/design/4mDwVh4lJ2t1Yy7EcINY5t/UI-Kit?node-id=4747-99&p=f&t=VMbPSkL14aXlUpwa-0
 
 用户中心tap列增加了游戏筛选，所以默认创建giveaway即为当前用户所在的游戏中创建giveaway, 但支持在创建弹窗中更改游戏选择。
 
