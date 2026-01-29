@@ -85,6 +85,7 @@
 <img width="760" height="288" alt="局部截取_20260129_145645" src="https://github.com/user-attachments/assets/7c70510e-f497-4957-af5c-ca9a05571c0f" />
 
 （后续可增加discord链接的配置管理，由PM配置，实现对不同游戏的各个discord入口统一更新）
+
 ---
 
 #### 6. 创建抽奖弹窗变更
