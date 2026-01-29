@@ -59,7 +59,9 @@
 ---
 
 #### 3. 聚合页变更（家铭需求）
-https://doc.weixin.qq.com/doc/w3_AVsATgZsAGECNRipV2Hf0TzeDibV1?scode=AFIANgeJAA0zgN0hvbAWkAuwbIADo
+
+企微文档：https://doc.weixin.qq.com/doc/w3_AVsATgZsAGECNRipV2Hf0TzeDibV1?scode=AFIANgeJAA0zgN0hvbAWkAuwbIADo
+
 ---
 
 #### 4. Giveaway信息卡片变更
