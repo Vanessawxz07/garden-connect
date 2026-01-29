@@ -17,6 +17,7 @@
 
 ### 更新背景
 随着平台从单一游戏（Grow a Garden）拓展为多游戏交易平台，抽奖功能需要从游戏专属功能升级为**平台级公共服务**，支持所有游戏的道具抽奖活动。
+需求目标是在本次迭代后，各场景进行通用调整或在统一页面模版基础上进行字段配置，以实现未来多款游戏共用giveaway功能。
 
 ### 核心变更概览
 
@@ -67,7 +68,7 @@ https://doc.weixin.qq.com/doc/w3_AVsATgZsAGECNRipV2Hf0TzeDibV1?scode=AFIANgeJAA0
 <img width="994" height="328" alt="局部截取_20260129_115612" src="https://github.com/user-attachments/assets/47f5dd47-25c1-44ce-b704-a99933ec8c94" />
 
 
-- **通用Giveaway卡片新增游戏标识Badge**：位置在卡片标题上方一行 
+- **通用Giveaway卡片新增游戏标识**：位置在卡片标题上方一行 
 - **奖品Value**：根据游戏判断是否展示token，如不是GAG，则默认仅展示Value。
 该卡片展示在各场景中均统一相同样式，如giveaway聚合页、详情页推荐模块、用户中心。
 
@@ -117,9 +118,10 @@ https://doc.weixin.qq.com/doc/w3_AVsATgZsAGECNRipV2Hf0TzeDibV1?scode=AFIANgeJAA0
 与交易的系统信息逻辑一致，按游戏展示对应图标。
 <img width="419" height="397" alt="局部截取_20260126_113447" src="https://github.com/user-attachments/assets/a74264ee-15ab-468e-b962-9706856c73c2" />
 
-**私聊卡片新增游戏图标**：
-- 在抽奖相关的聊天会话中，消息卡片右上角显示游戏标识
-- 与交易消息的游戏标识展示、交互逻辑保持一致
+**私聊卡片**：
+- 新增游戏标识：在抽奖相关的聊天会话中，消息卡片右上角显示游戏标识，与交易消息的游戏标识展示、交互逻辑保持一致
+- 道具图片：使用对应游戏的道具图片
+  
 聊天页视觉稿：https://www.figma.com/design/oS9Yg9snhnkrTR3QF8f0Bf/chat?node-id=2959-6485&p=f&t=kbrqni77Lo0BWHgN-0
 <img width="1419" height="418" alt="局部截取_20260126_112617" src="https://github.com/user-attachments/assets/c66ca1f4-e1bd-4991-b1c8-cedf6e81f524" />
 
