@@ -74,12 +74,15 @@ https://doc.weixin.qq.com/doc/w3_AVsATgZsAGECNRipV2Hf0TzeDibV1?scode=AFIANgeJAA0
 ---
 
 #### 5. 用户中心
-用户中心已在tap列增加游戏筛选，所以不需要单独在giveaway中再进行游戏选择。
+5.1 用户中心已在tap列增加游戏筛选，所以不需要单独在giveaway中再进行游戏选择。
 <img width="1012" height="343" alt="局部截取_20260129_115851" src="https://github.com/user-attachments/assets/25b22169-f27e-40e3-8dbd-cfdf2cc4089e" />
 
 "Participated" / "Published" 筛选并展示该游戏所属的已参与、已创建抽奖，其他逻辑不变。
 
+5.2 当用户没有创建抽奖的权限时，弹出提示弹窗，点击右侧"go to disord"按钮，链接替换为BF的discord链接：https://discord.gg/88nnmG4dvD
+<img width="760" height="288" alt="局部截取_20260129_145645" src="https://github.com/user-attachments/assets/7c70510e-f497-4957-af5c-ca9a05571c0f" />
 
+（后续可增加discord链接的配置管理，由PM配置，实现对不同游戏的各个discord入口统一更新）
 ---
 
 #### 6. 创建抽奖弹窗变更
