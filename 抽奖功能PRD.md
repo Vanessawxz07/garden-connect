@@ -64,12 +64,11 @@ https://doc.weixin.qq.com/doc/w3_AVsATgZsAGECNRipV2Hf0TzeDibV1?scode=AFIANgeJAA0
 
 #### 4. Giveaway信息卡片变更
 视觉稿：https://www.figma.com/design/4mDwVh4lJ2t1Yy7EcINY5t/UI-Kit?node-id=4747-99&p=f&t=VMbPSkL14aXlUpwa-0
-<img width="1269" height="340" alt="企业微信截图_17696557353990" src="https://github.com/user-attachments/assets/3695caf0-fca5-4055-a73a-19570a522943" />
-<img width="994" height="328" alt="局部截取_20260129_115612" src="https://github.com/user-attachments/assets/47f5dd47-25c1-44ce-b704-a99933ec8c94" />
 
+<img width="863" height="273" alt="局部截取_20260129_144854" src="https://github.com/user-attachments/assets/d15a2bde-f7ef-4cad-ac3f-05096fe1c82b" />
 
-- **通用Giveaway卡片新增游戏标识**：位置在卡片标题上方一行 
-- **奖品Value**：根据游戏判断是否展示token，如不是GAG，则默认仅展示Value。
+- **通用Giveaway卡片新增游戏标识**：新增游戏标识（支持点击跳转到对应游戏首页），与giveaway状态标签同一行。
+- **奖品Value**：根据游戏判断是否展示token，如不是GAG，则默认仅展示Value、无token。
 该卡片展示在各场景中均统一相同样式，如giveaway聚合页、详情页推荐模块、用户中心。
 
 ---
