@@ -88,6 +88,7 @@ https://doc.weixin.qq.com/doc/w3_AVsATgZsAGECNRipV2Hf0TzeDibV1?scode=AFIANgeJAA0
 用户中心tap列增加了游戏筛选，所以默认创建giveaway即为当前用户所在的游戏中创建giveaway, 但支持在创建弹窗中更改游戏选择。
 
 <img width="683" height="483" alt="局部截取_20260129_112713" src="https://github.com/user-attachments/assets/e6db129e-ba46-4a36-9ad6-68128f3ce96f" />
+
 **新增游戏选择器**：
 游戏选择与下一步的道具选择为对应关系。ex，如当前的tab列为BF，所以在giveaway当中点击“创建”，则打开的创建弹窗中默认选择的游戏即为BF，添加奖品时拉起BF的道具选择弹窗。
 （ps, Giveaway创建时道具选择弹窗的通用逻辑：不展示道具数量选择）
