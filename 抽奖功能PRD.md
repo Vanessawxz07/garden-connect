@@ -64,51 +64,39 @@ https://doc.weixin.qq.com/doc/w3_AVsATgZsAGECNRipV2Hf0TzeDibV1?scode=AFIANgeJAA0
 #### 4. Giveaway信息卡片变更
 <img width="1089" height="269" alt="局部截取_20260126_112156" src="https://github.com/user-attachments/assets/ca361920-e156-4427-a4bc-12df64cf1148" />
 
-- **通用Giveaway卡片新增游戏标识Badge**：位置在卡片左上角，标题上方一行or标题左侧
+- **通用Giveaway卡片新增游戏标识Badge**：位置在卡片标题上方一行 
 
 - **奖品Value**：根据游戏判断是否展示token，如不是GAG，则默认仅展示Value。
 
-该卡片展示在各场景中均统一相同样式，如giveaway聚合页、用户中心。
+该卡片展示在各场景中均统一相同样式，如giveaway聚合页、详情页推荐模块、用户中心。
 
 ---
 
 #### 5. 创建抽奖弹窗变更
-用户中心tap列增加了游戏筛选，所以默认创建giveaway即为当前用户所在的游戏中创建giveaway, 但支持在创建弹窗中更改游戏选择。游戏选择与下一步的道具选择为对应关系。
-ex，如当前的tab列为BF，所以在giveaway当中点击“创建”，则打开的创建弹窗中默认选择的游戏即为BF，添加奖品时拉起BF的道具选择弹窗。
-<img width="1109" height="683" alt="局部截取_20260126_111200" src="https://github.com/user-attachments/assets/7031f489-dd42-43d0-8ae5-4025efb87cec" />
+视觉稿：https://www.figma.com/design/0M4JNzqICab4h3Vcewm8RZ/user?node-id=5348-5402&t=FwNaonA55QDvEyp2-0
 
-<img width="532" height="574" alt="局部截取_20260126_105356" src="https://github.com/user-attachments/assets/90ca5fd9-28b9-4b05-9d94-2531aaabf163" />
-<img width="537" height="654" alt="局部截取_20260126_105316" src="https://github.com/user-attachments/assets/bf704858-3ab1-44f7-a092-36911656ef93" />
+用户中心tap列增加了游戏筛选，所以默认创建giveaway即为当前用户所在的游戏中创建giveaway, 但支持在创建弹窗中更改游戏选择。
 
 **新增游戏选择器**：
-```
-+-------------------------------------------------------------+
-|                    Create Giveaway                           |
-|                           ✕                                 |
-+-------------------------------------------------------------+
-| Game *                              ← 🆕 新增字段            |
-| [Select Game ▼]                                              |
-| (Choose which game this giveaway is for)                     |
-+-------------------------------------------------------------+
-| Prize *                                                      |
-| [Select Prize]  ← 根据所选游戏动态筛选道具                   |
-| (Choose 1 item or any tokens as the prize)                   |
-+-------------------------------------------------------------+
-| ... (其他字段保持不变)                                        |
-+-------------------------------------------------------------+
-```
+<img width="683" height="483" alt="局部截取_20260129_112713" src="https://github.com/user-attachments/assets/e6db129e-ba46-4a36-9ad6-68128f3ce96f" />
+游戏选择与下一步的道具选择为对应关系。ex，如当前的tab列为BF，所以在giveaway当中点击“创建”，则打开的创建弹窗中默认选择的游戏即为BF，添加奖品时拉起BF的道具选择弹窗。
+（ps, Giveaway创建时道具选择弹窗的通用逻辑：不展示道具数量选择）
+
 **文案**：
+- 游戏选择中选项：{游戏名称}（纯文本drop down）；单选
 - 游戏选择的介绍文案："Choose which game this giveaway is for"
 - Prize的说明信息调整："Choose 1 item or any tokens as the prize" -> "Choose 1 item as the prize"
 
 **交互逻辑**：
-1. 游戏选择器为必填项，下拉展示所有已上线游戏，游戏选择器的选项与站点所有支持游戏选择的场景保持一致
-2. 游戏选择器中展示默认的游戏，点击添加奖品的格子**展示对应该游戏的道具选择弹窗**; 点击选择器可更换游戏，切换游戏后，如已选奖品，则需清空格子回到默认状态
-3. 当未选择游戏时，如点击添加奖品的格子，不拉起道具选择弹窗，并弹出报错通知"Please select a game for this giveaway first."
+1. 游戏选择器为必填项，下拉展示所有已上线游戏
+2. 游戏选择器中默认展示用户中心tab对应的游戏，点击添加奖品的格子**展示该游戏的道具选择弹窗**; 点击选择器可更换游戏，切换游戏后，如已选奖品，则需清空格子回到默认状态
+3. 当未选择游戏时，如点击添加奖品的格子，不拉起道具选择弹窗，并弹出报错通知"Please select a game for this giveaway first." （待确认是否有该种情况，如没有则不必添加第3、4项逻辑）
 4. 增加提交时的校验逻辑：**游戏选择为创建的必选项**，报错通知"Please select a game for this giveaway first."
-
+  
 **其他调整**：
-- Related Campaign字段：增加选项"N/A"或直接隐藏（待讨论）
+- Related Campaign字段：增加选项"General Giveaway"，默认选择该项。
+此外，其他字段保持不变      
+
 
 ---
 
@@ -133,14 +121,16 @@ ex，如当前的tab列为BF，所以在giveaway当中点击“创建”，则�
 ---
 
 #### 8. 详情页变更
+视觉稿：https://www.figma.com/design/9Zg2tQV0fIFZu3GgNmtwjl/giveaways?node-id=8011-1845&p=f&t=93gZcE79kC8O9jfh-0
 
-**面包屑不变**：`Giveaway / [抽奖标题]`
+**面包屑不变**：`Home (公共首页) / Giveaways / [抽奖标题]`
 
 **新增游戏信息展示**：
-- 在标题区域明显位置展示游戏标识
-- 奖品区域的道具信息卡片使用对应游戏的样式：
+<img width="1243" height="589" alt="局部截取_20260129_113810" src="https://github.com/user-attachments/assets/f119ad19-5246-4409-baf9-d5bd53bc6252" />
+- 在标题上方位置展示游戏的区分，文案拼接规则：{游戏名称} Giveaway
+- 奖品信息卡片使用对应游戏的样式：
   - 道具图片自动拉取对应游戏的道具
-  - 道具信息字段（建议后续支持根据不同游戏配置展示字段）：Category；Value:{价值数据，KMB标记}；Robux
+  - 道具信息字段（建议后续支持按不同游戏配置展示字段）：Value:{价值数据，KMB标记}；Robux；Category；Rarity；Ranking（支持点击 跳转到tier list页面）。如该道具无Robux值或为0、无ranking，则不展示对应字段。
 
 **Discover More Giveaways**：
 拉取逻辑增加：优先拉取当前抽奖相同游戏的giveaway（其他逻辑不变），如没有则拉取其他游戏。
