@@ -1,14 +1,98 @@
+# PRD 文章系统文档重构计划
+
+## 目标
+
+对 `docs/prd/新游拓展-文章系统.md` 进行两项改造：
+
+1. **删除独立需求清单（第三章 3.1）**，将其中的需求项融入第四章各页面模块的详细说明中
+2. **新增平台通用文章方案**，补充已确认的决策
+
+---
+
+## 具体改动
+
+### 一、删除第三章 3.1 需求优先级清单
+
+删除第168-200行的 `3.1 需求优先级` 表格及导流位示意图。这些需求项按以下规则分配到对应章节：
 
 
-## Plan: Create Bilingual Survey Document
+| 原需求项                | 融入位置               |
+| ------------------- | ------------------ |
+| #1 文章数据表增加 game_key | 新增"数据结构"章节         |
+| #2 #3 路由支持          | 2.3 URL结构规范（已有）    |
+| #4 标题/副标题动态显示       | 4.1 列表页改造（已有）      |
+| #5 #6 信息卡片适配        | 3.2 信息卡片（已有，保留）    |
+| #7 编辑后台游戏选择         | 1.2 D 编辑器后台操作流程    |
+| #8 按游戏筛选            | 4.1 列表页改造（已有）      |
+| #9 面包屑              | 4.2 详情页改造中补充       |
+| #10 SEO元信息          | 五、SEO策略（已有）        |
+| #11 推荐模块按游戏过滤       | 4.2 详情页改造（已有）      |
+| #12 #13 底部导流位       | 4.1 列表页改造中新增小节     |
+| #14 文章搜索按游戏隔离       | 4.1 列表页改造中补充       |
+| #15 Sitemap         | 五、SEO策略中补充         |
+| #16 跨游戏推荐           | 标注为P2，放入4.2底部说明    |
+| #17 分类页文案配置         | 4.1 列表页改造（已有动态内容表） |
 
-### Changes from feedback:
-1. **Q8 (Counter Offer):** Fix scenario — users currently accept a trade then negotiate in chat, not "open a new trade"
-2. **Q10 (Inactivity reminder):** Clarify it's after both parties confirm, and reminder is just a nudge, no "cancel" option
-3. **Q11 (Chat UI):** Fix description — it's trade status + action buttons (Accept → Start Trade → Complete), not "progress". Replace WeChat reference with a global e-commerce app (e.g., eBay Messages)
-4. **Q14 (Points system):** Remove entirely — not up for survey, it's a guided behavior
-5. **Output:** English version with casual Roblox-player tone + Chinese reference, saved to `docs/survey-trade-optimization-202603.md`
 
-### File to create:
-- `docs/survey-trade-optimization-202603.md` — Full English survey (14 questions, renumbered after removing Q14) + Chinese reference version
+### 二、新增平台通用文章方案
 
+在第四章末尾新增 `4.3 平台通用文章` 小节，包含：
+
+- **数据层**：`game_key = 'platform'`，与游戏文章共用同一张表，无需额外表
+- **URL**：`/articles/{slug}`，扁平结构，无分类层级
+- **前端展示**：暂不建独立列表页；在各游戏文章分类列表页底部新增"More from TradeKitsune"推荐模块
+- **推荐模块配置方式**：手动指定展示哪几篇文章，不做自动拉取
+- **模块UI**：简单卡片横排（封面图 + 标题 + 摘要），4篇为一行
+- **后续扩展**：内容量上来后可升级为自动拉取逻辑，并增设 `/articles` 聚合列表页
+
+### 三、补充数据结构章节（简单说明即可，具体由研发决定）
+
+在第二章末尾或第三章开头新增 `数据结构` 小节，明确：
+
+- 文章表新增 `game_key` 字段（varchar, 默认 'gag'，可选值含 'platform'）
+- 历史数据兼容：现有GAG文章默认 game_key='gag'，无需迁移
+
+### 四、章节编号调整
+
+重构后的章节结构：
+
+```text
+一、需求背景
+  1.1 现状
+  1.2 现网文章系统功能清单（基线）
+      A. 文章分类列表页
+      B. 文章详情页
+      C. 文章分类体系与内容结构
+      D. 信息卡片详细规格
+二、多游戏拓展目标
+  2.1 URL架构方案决策
+  2.2 核心目标
+  2.3 URL结构规范
+  2.4 导航栏入口
+  2.5 数据结构（新增）
+三、信息卡片多游戏适配（原3.2，提升为独立章节）
+  3.1 道具卡片
+  3.2 通用卡片
+四、页面改造详细说明
+  4.1 文章分类列表页改造（融入原清单相关项）
+      4.1.1 动态内容按游戏切换
+      4.1.2 分页与数据加载
+      4.1.3 底部导流位（新增，含导流位示意图）
+      4.1.4 文章搜索（新增）
+  4.2 文章详情页改造（融入面包屑、推荐过滤等）
+      4.2.1 面包屑（补充）
+      4.2.2 右侧栏 Trending now
+      4.2.3 底部 You may also like
+      4.2.4 底部CTA
+  4.3 平台通用文章（新增）
+五、SEO策略（补充Sitemap按游戏生成）
+六、编辑器后台改造（从1.2D独立出来，补充游戏选择步骤）
+```
+
+---
+
+## 技术说明
+
+- 仅修改 `docs/prd/新游拓展-文章系统.md` 一个文件
+- 保留所有现有截图引用和表格内容，仅调整位置
+- 不改变任何已确认的业务决策，只是重新组织文档结构
